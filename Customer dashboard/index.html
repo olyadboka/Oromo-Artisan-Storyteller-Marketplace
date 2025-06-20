@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oromo Artisan & Storyteller Marketplace</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    body { background: linear-gradient(120deg, #f8f8f8 60%, #e0c3a3 100%); }
+    .hero {
+      background: url('assets/oromo-pattern.png'), #fff4e6;
+      background-size: cover;
+      padding: 2em 1em 3em 1em;
+      border-radius: 1em;
+      box-shadow: 0 4px 24px #0001;
+      margin-bottom: 2em;
+      text-align: center;
+    }
+    .hero h1 { font-size: 2.5em; color: #7c4f1d; margin-bottom: 0.2em; }
+    .hero p { font-size: 1.2em; color: #4d2e00; }
+    .features {
+      display: flex; flex-wrap: wrap; gap: 2em; justify-content: center;
+    }
+    .feature {
+      background: #fff; border-radius: 1em; box-shadow: 0 2px 8px #0001;
+      padding: 1.5em; width: 270px; text-align: center;
+    }
+    .feature h3 { color: #7c4f1d; margin-bottom: 0.5em; }
+    .feature img { width: 60px; margin-bottom: 0.5em; }
+    .cta {
+      margin: 2em 0 0 0; text-align: center;
+    }
+    .cta a {
+      background: #7c4f1d; color: #fff; padding: 1em 2em; border-radius: 2em;
+      text-decoration: none; font-weight: bold; font-size: 1.1em;
+      box-shadow: 0 2px 8px #0002; transition: background 0.2s;
+    }
+    .cta a:hover { background: #a06c2b; }
+    footer {
+      margin-top: 3em;
+      background: #7c4f1d;
+      color: #fff;
+      text-align: center;
+      padding: 1.5em 1em 1em 1em;
+      border-radius: 1em 1em 0 0;
+    }
+    footer div {
+      margin: 0.5em 0;
+    }
+    footer .title {
+      font-size: 1.1em;
+      font-weight: bold;
+    }
+    footer .subtitle {
+      font-size: 0.95em;
+    }
+  </style>
+</head>
+<body>
+  <header style="background: linear-gradient(90deg,#7c4f1d 60%,#e0c3a3 100%);padding:2em 1em 1.5em 1em;border-radius:0 0 2em 2em;box-shadow:0 4px 24px #0001;margin-bottom:2em;position:relative;">
+    <div style="display:flex;align-items:center;justify-content:center;gap:1em;flex-wrap:wrap;text-align:center;width:100%;">
+      <div style="width:100%;">
+        <div style="font-size:2.2em;font-weight:bold;color:#fff;letter-spacing:1px;">Oromo Artisan & Storyteller</div>
+        <div style="font-size:1.1em;color:#ffe7c2;">Marketplace</div>
+      </div>
+    </div>
+    <nav style="margin-top:1.5em;text-align:center;">
+      <a href="index.html" style="color:#fff;font-weight:bold;margin:0 1.2em;text-decoration:none;font-size:1.1em;">Dashboard</a>
+      <a href="products.html" style="color:#fff;font-weight:bold;margin:0 1.2em;text-decoration:none;font-size:1.1em;">Products</a>
+      <a href="stories.html" style="color:#fff;font-weight:bold;margin:0 1.2em;text-decoration:none;font-size:1.1em;">Stories</a>
+      <a href="cart.html" style="color:#fff;font-weight:bold;margin:0 1.2em;text-decoration:none;font-size:1.1em;">Cart</a>
+    </nav>
+  </header>
+  <main>
+    <section class="hero">
+      <h1>Welcome to the Heart of Oromo Craft & Culture</h1>
+      <p>Discover unique artisan products, listen to oral stories, and support local creators. Experience the rich heritage of the Oromo people through crafts and storytelling.</p>
+    </section>
+    <section class="features">
+      <div class="feature">
+        <img src="assets/basket-icon.png" alt="Product">
+        <h3>Browse Artisan Products</h3>
+        <p>Shop authentic, handcrafted goods by Oromo artisans. Filter by category, location, or artisan.</p>
+      </div>
+      <div class="feature">
+        <img src="assets/story-icon.png" alt="Stories">
+        <h3>Oral Story Library</h3>
+        <p>Access and enjoy traditional Oromo stories in audio and video formats, with easy filtering.</p>
+      </div>
+      <div class="feature">
+        <img src="assets/cart-icon.png" alt="Cart">
+        <h3>Easy Shopping & Checkout</h3>
+        <p>Add items to your cart, view your total, and place orders with secure, local payment options.</p>
+      </div>
+      <div class="feature">
+        <img src="assets/payment-icon.png" alt="Payment">
+        <h3>Flexible Payment</h3>
+        <p>Pay with Chapa, Telebirr, HelloCash, or Amole. Support for ETB and international cards.</p>
+      </div>
+    </section>
+    <div class="cta">
+      <a href="products.html">Start Exploring Products</a>
+    </div>
+  </main>
+  <footer>
+    <div class="title">Oromo Artisan & Storyteller Marketplace</div>
+    <div class="subtitle">Empowering Oromo artisans, storytellers, and communities</div>
+    <div>&copy; 2025 Oromo Marketplace. All rights reserved.</div>
+  </footer>
+</body>
+</html>
