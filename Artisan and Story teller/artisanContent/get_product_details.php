@@ -30,7 +30,7 @@ if (!isset($_SESSION['artisan_id'])) {
 $artisanId = $_SESSION['artisan_id'];
 
 try {
-    // Prepare the SQL statement
+    
     $sql = "SELECT p.*, 
                    pi.rImage1, pi.rImage2, pi.rImage3, pi.rVideo
             FROM products p
