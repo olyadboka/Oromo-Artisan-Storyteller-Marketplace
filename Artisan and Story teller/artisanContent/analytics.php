@@ -12,29 +12,7 @@ include '../dbConnection/dbConnection.php';
   <title>My Artisan Analytics</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-  .dashboard-header {
-    background: linear-gradient(135deg, #1e3a8a 0%, #7c2d12 100%);
-  }
-
-  .stat-card {
-    transition: all 0.3s ease;
-  }
-
-  .stat-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  }
-
-  .product-card:hover .product-actions {
-    opacity: 1;
-  }
-
-  .product-actions {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-  </style>
+  <link rel="stylesheet" href="./CSS/analytics.css">
 </head>
 
 <body class="bg-gray-100">
