@@ -55,8 +55,7 @@ include '../dbConnection/dbConnection.php';
         <a href="./orders.php" class="px-6 py-4 font-medium text-gray-600 hover:text-red-600">Orders</a>
         <a href="#" class="px-6 py-4 font-medium text-gray-600 hover:text-red-600">Earnings</a>
 
-        <a href="#" class="px-6 py-4 font-medium text-gray-600 hover:text-red-600">Messages</a>
-      </nav>
+
     </div>
   </div>
   <!-- Main Content -->
