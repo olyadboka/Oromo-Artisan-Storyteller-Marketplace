@@ -333,21 +333,25 @@
       "Customer dashboard/index.php",
       "Artisan and Story teller/artisan.php"
     ];
+    
+    const guideIcons = ["🔑","🔎","🎧","🛒","👤","🌱"];
+    const langSelect = document.getElementById('langSelect');
     fetch('lang.json')
       .then(res => res.json())
       .then(data => {
         langData = data;
+        
+        langSelect.value = currentLang; // Set dropdown to match currentLang
         renderLang(currentLang);
-        setTaglines(currentLang); // Ensure taglines match language on first load
+        setTaglines(currentLang);
       });
-    // Use the language dropdown in the header
-    const langSelect = document.getElementById('langSelect');
     langSelect.addEventListener('change', function() {
       currentLang = this.value;
       renderLang(currentLang);
       setTaglines(currentLang);
     });
     function renderLang(lang) {
+      if (!langData[lang]) { console.error('Language data missing for', lang); return; }
       const d = langData[lang];
       document.getElementById('heroTitle').textContent = d.heroTitle;
       document.getElementById('heroDesc').textContent = d.heroDesc;
@@ -387,6 +391,7 @@
     const taglineEl = document.getElementById('animatedTagline');
     let taglineInterval;
     function setTaglines(lang) {
+      if (!langData[lang]) { console.error('Taglines: Language data missing for', lang); return; }
       taglines = langData[lang].taglines || [
         "Empowering Artisans",
         "Preserving Stories",
@@ -403,11 +408,6 @@
         taglineEl.style.color = taglineIdx % 2 === 0 ? '#a06c2b' : '#7c4f1d';
       }, 2200);
     }
-    // Initialize taglines on load
-    // window.addEventListener('load', function() {
-    //   setTaglines(currentLang);
-    // });
-
     // Showcase card scroll-in animation
     function revealShowcaseCards() {
       const cards = document.querySelectorAll('.showcase-card');
