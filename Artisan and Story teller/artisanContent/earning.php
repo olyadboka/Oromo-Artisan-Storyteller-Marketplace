@@ -12,7 +12,7 @@ include '../dbConnection/dbConnection.php';
   <title>Earnings Dashboard</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link rel="stylesheet" href="earning.css">
+  <link rel="stylesheet" href="./CSS/earning.css">
 </head>
 
 <body class="bg-gray-100">
@@ -49,11 +49,12 @@ include '../dbConnection/dbConnection.php';
   <div class="bg-white shadow-sm">
     <div class="container mx-auto px-4">
       <nav class="flex overflow-x-auto">
-        <a href="#" class="px-6 py-4 font-medium text-red-600 border-b-2 border-red-600">Overview</a>
+        <a href="#" class="px-6 py-4 font-medium ">Overview</a>
         <a href="./product.php" class="px-6 py-4 font-medium text-gray-600 hover:text-red-600">Products</a>
 
         <a href="./orders.php" class="px-6 py-4 font-medium text-gray-600 hover:text-red-600">Orders</a>
-        <a href="#" class="px-6 py-4 font-medium text-gray-600 hover:text-red-600">Earnings</a>
+        <a href="#"
+          class="px-6 py-4 font-medium text-gray-600 hover:text-red-600 text-red-600 border-b-2 border-red-600">Earnings</a>
 
 
     </div>
