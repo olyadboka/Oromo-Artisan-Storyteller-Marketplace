@@ -338,6 +338,7 @@
       .then(data => {
         langData = data;
         renderLang(currentLang);
+        setTaglines(currentLang); // Ensure taglines match language on first load
       });
     // Use the language dropdown in the header
     const langSelect = document.getElementById('langSelect');
@@ -403,9 +404,9 @@
       }, 2200);
     }
     // Initialize taglines on load
-    window.addEventListener('load', function() {
-      setTaglines(currentLang);
-    });
+    // window.addEventListener('load', function() {
+    //   setTaglines(currentLang);
+    // });
 
     // Showcase card scroll-in animation
     function revealShowcaseCards() {
