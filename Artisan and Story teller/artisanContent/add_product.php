@@ -1,5 +1,7 @@
 <?php
 include '../dbConnection/dbConnection.php';
+session_start();
+ $_SESSION['artisan_id'] =1;
 
 ?>
 
@@ -12,29 +14,9 @@ include '../dbConnection/dbConnection.php';
   <title>Add Product</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-  .dashboard-header {
-    background: linear-gradient(135deg, #1e3a8a 0%, #7c2d12 100%);
-  }
-
-  .stat-card {
-    transition: all 0.3s ease;
-  }
-
-  .stat-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  }
-
-  .product-card:hover .product-actions {
-    opacity: 1;
-  }
-
-  .product-actions {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-  </style>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="./CSS/add_product.css
+  ">
 </head>
 
 <body class="bg-gray-100">
@@ -77,7 +59,7 @@ include '../dbConnection/dbConnection.php';
         <a href="./orders.php" class="px-6 py-4 font-medium text-gray-600 hover:text-red-600">Orders</a>
         <a href="./earning.php" class="px-6 py-4 font-medium text-gray-600 hover:text-red-600">Earnings</a>
 
-        <a href="#" class="px-6 py-4 font-medium text-gray-600 hover:text-red-600">Messages</a>
+
       </nav>
     </div>
   </div>
@@ -96,70 +78,74 @@ include '../dbConnection/dbConnection.php';
     </div>
 
     <div class="bg-white rounded-lg shadow overflow-hidden">
-      <form>
+      <form method="post" enctype="multipart/form-data" name="add_product" action="./dbArtisan/add_productdb.php">
         <div class="p-6 border-b border-gray-200">
           <h2 class="text-lg font-medium text-gray-800">Basic Information</h2>
         </div>
 
-        <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- Left Column -->
-          <div class="space-y-6">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Product Name *</label>
-              <input type="text" required
-                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-red-500 focus:border-red-500">
-            </div>
+        <!-- Add Bootstrap CSS -->
 
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Category *</label>
-              <select required
-                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-red-500 focus:border-red-500">
-                <option value="">Select a category</option>
-                <option>Baskets</option>
-                <option>Textiles</option>
-                <option>Jewelry</option>
-                <option>Pottery</option>
-                <option>Wood Carvings</option>
-              </select>
-            </div>
 
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Description *</label>
-              <textarea rows="4" required
-                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-red-500 focus:border-red-500"></textarea>
-              <p class="text-xs text-gray-500 mt-1">Describe your product in detail, including materials used and
-                cultural significance.</p>
+        <div class="p-6">
+          <div class="row g-4">
+            <!-- Left Column -->
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label text-gray-700">Product Name *</label>
+                <input type="text" required class="form-control" name="product_name" placeholder="Enter product name">
+              </div>
+              <div class="mb-3">
+                <label class="form-label text-gray-700">Category *</label>
+                <select required class="form-select" name="product_category">
+                  <option value="">Select a category</option>
+                  <option value="baskets">Baskets</option>
+                  <option value="textiles">Textiles</option>
+                  <option value="jewelry">Jewelry</option>
+                  <option value="pottery">Pottery</option>
+                  <option value="woodCarving">Wood Carvings</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label text-gray-700">Created From *</label>
+                <input type="text" required class="form-control" name="product_material"
+                  placeholder="e.g. Bamboo, Silver">
+              </div>
+              <div class="mb-3">
+                <label class="form-label text-gray-700">Description *</label>
+                <textarea rows="4" required class="form-control" name="product_descrition"
+                  placeholder="Describe your product"></textarea>
+                <div class="form-text">Describe your product in detail, including materials used and cultural
+                  significance.</div>
+              </div>
             </div>
-          </div>
+            <!-- Right Column -->
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label text-gray-700">Price (ETB) *</label>
+                <input type="number" step="0.01" min="0" required class="form-control" name="product_price"
+                  placeholder="e.g. 500">
+              </div>
+              <div class="mb-3">
+                <label class="form-label text-gray-700">Quantity *</label>
+                <input type="number" min="0" required class="form-control" name="product_quantity"
+                  placeholder="e.g. 10">
+              </div>
+              <div class="mb-3">
+                <label class="form-label text-gray-700">Product Images *</label>
+                <input type="file" class="form-control mb-2" name="pImage[]" accept="image/*" multiple required>
 
-          <!-- Right Column -->
-          <div class="space-y-6">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Price (ETB) *</label>
-              <input type="number" step="0.01" min="0" required
-                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-red-500 focus:border-red-500">
-            </div>
+                <div class="form-text">Upload up to 4 product images.</div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label text-gray-700">Related Images</label>
+                <input type="file" class="form-control mb-2" name="rImage[]" accept="image/*" multiple>
 
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Quantity *</label>
-              <input type="number" min="0" required
-                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-red-500 focus:border-red-500">
-            </div>
-
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Product Images *</label>
-              <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg">
-                <div class="space-y-1 text-center">
-                  <div class="flex text-sm text-gray-600">
-                    <label
-                      class="relative cursor-pointer bg-white rounded-md font-medium text-red-600 hover:text-red-500 focus-within:outline-none">
-                      <span>Upload files</span>
-                      <input type="file" multiple class="sr-only">
-                    </label>
-                    <p class="pl-1">or drag and drop</p>
-                  </div>
-                  <p class="text-xs text-gray-500">PNG, JPG up to 5MB</p>
-                </div>
+                <div class="form-text">Optional: Add related images (e.g. artisan at work, raw materials).</div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label text-gray-700">Related Video</label>
+                <input type="file" class="form-control" name="rVideo" accept="video/*">
+                <div class="form-text">Optional: Add a short video about the product or its making.</div>
               </div>
             </div>
           </div>

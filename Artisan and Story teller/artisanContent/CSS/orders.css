@@ -1,0 +1,21 @@
+.dashboard-header {
+  background: linear-gradient(135deg, #1e3a8a 0%, #7c2d12 100%);
+}
+
+.stat-card {
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.product-card:hover .product-actions {
+  opacity: 1;
+}
+
+.product-actions {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
