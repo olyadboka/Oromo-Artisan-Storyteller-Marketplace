@@ -286,109 +286,126 @@
   </style>
 </head>
 <body>
+  <div style="text-align:right;max-width:900px;margin:0 auto 0.5em auto;">
+      <select id="langSelect" style="padding:0.4em 1em;border-radius:1.2em;border:1px solid #e0c3a3;font-size:1em;background:#fffbe6;color:#7c4f1d;font-weight:bold;">
+        <option value="en">English</option>
+        <option value="om">Afaan Oromo</option>
+        <option value="am">Amharic</option>
+      </select>
+    </div>
   <main>
     <div class="landing-hero">
-      <h1>Welcome to Oromo Artisan & Storyteller Marketplace</h1>
-      <p>Discover, support, and celebrate Oromo culture through artisan crafts and oral storytelling. This platform connects artisans, storytellers, and customers in a vibrant, fair-trade community.</p>
+      <h1 id="heroTitle">Welcome to Oromo Artisan & Storyteller Marketplace</h1>
+      <p id="heroDesc">Discover, support, and celebrate Oromo culture through artisan crafts and oral storytelling. This platform connects artisans, storytellers, and customers in a vibrant, fair-trade community.</p>
     </div>
     <div class="showcase-animated-tagline" id="animatedTagline">Empowering Artisans</div>
-    <div class="landing-showcase">
-      <div class="showcase-card">
-        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="Products" class="showcase-img">
-        <div class="showcase-title">Featured Products</div>
-        <div class="showcase-desc">See the most popular and unique Oromo artisan crafts, handpicked for you.</div>
-        <a href="Customer dashboard/products.php" class="showcase-link">Browse Products</a>
-      </div>
-      <div class="showcase-card">
-        <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80" alt="Stories" class="showcase-img">
-        <div class="showcase-title">Oral Story Library</div>
-        <div class="showcase-desc">Listen to captivating Oromo stories, legends, and folktales in audio and video.</div>
-        <a href="Customer dashboard/stories.php" class="showcase-link">Explore Stories</a>
-      </div>
-      <div class="showcase-card">
-        <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80" alt="Cart" class="showcase-img">
-        <div class="showcase-title">Your Cart</div>
-        <div class="showcase-desc">Review your selected items and proceed to secure checkout with local payment options.</div>
-        <a href="Customer dashboard/cart.php" class="showcase-link">View Cart</a>
-      </div>
-      <div class="showcase-card">
-        <img src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?auto=format&fit=crop&w=400&q=80" alt="Profile" class="showcase-img">
-        <div class="showcase-title">Customer Dashboard</div>
-        <div class="showcase-desc">Manage your profile, see your orders, and track your impact on the community.</div>
-        <a href="Customer dashboard/index.php" class="showcase-link">Go to Dashboard</a>
-      </div>
-      <div class="showcase-card">
-        <img src="https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=400&q=80" alt="Artisan & Storyteller" class="showcase-img">
-        <div class="showcase-title">Artisan & Storyteller Hub</div>
-        <div class="showcase-desc">Meet the talented Oromo artisans and storytellers, explore their profiles, and discover their crafts and stories. Artisans can add products, track earnings, and share their culture with the world.</div>
-        <a href="Artisan and Story teller/artisan.php" class="showcase-link">Visit Artisan & Storyteller</a>
-      </div>
+    <div class="landing-showcase" id="showcaseCards">
+      <!-- Showcase cards will be rendered by JS -->
     </div>
     <div class="landing-guides">
-      <h2>How to Get the Most Out of This Marketplace</h2>
-      <ul>
-        <li><span class="guide-icon">🔑</span>Sign up or log in to personalize your experience and support your favorite artisans.</li>
-        <li><span class="guide-icon">🔎</span>Use filters on the <a href="Customer dashboard/products.php">Products</a> page to find crafts by category, location, or artisan.</li>
-        <li><span class="guide-icon">🎧</span>Listen to stories on the <a href="Customer dashboard/stories.php">Stories</a> page and share your favorites with friends.</li>
-        <li><span class="guide-icon">🛒</span>Add products to your <a href="Customer dashboard/cart.php">cart</a> and check out securely with local payment options.</li>
-        <li><span class="guide-icon">👤</span>Visit your <a href="Customer dashboard/index.php">dashboard</a> to manage your profile and see your order history.</li>
-        <li><span class="guide-icon">🌱</span>Every purchase and story you enjoy helps preserve Oromo culture and supports local families.</li>
+      <h2 id="guidesTitle">How to Get the Most Out of This Marketplace</h2>
+      <ul id="guidesList">
+        <!-- Guide items will be rendered by JS -->
       </ul>
     </div>
-    <div class="landing-steps">
-      <div class="step">
-        <span class="step-number">1</span>
-        <span class="step-icon">🛍️</span>
-        <div class="step-content">
-          <h3>Browse Unique Products</h3>
-          <p>Start by exploring beautiful, handcrafted goods made by Oromo artisans. Use filters to find crafts by category, location, or artisan—there’s something for everyone!</p>
-        </div>
-      </div>
-      <div class="step">
-        <span class="step-number">2</span>
-        <span class="step-icon">📖</span>
-        <div class="step-content">
-          <h3>Enjoy Oral Stories</h3>
-          <p>Listen to and watch traditional Oromo stories, legends, and folktales in audio and video formats. Share your favorites with friends and family.</p>
-        </div>
-      </div>
-      <div class="step">
-        <span class="step-number">3</span>
-        <span class="step-icon">🛒</span>
-        <div class="step-content">
-          <h3>Easy Shopping & Secure Checkout</h3>
-          <p>Add items to your cart and pay securely with Chapa, Telebirr, HelloCash, or Amole. Shopping is safe and simple for everyone!</p>
-        </div>
-      </div>
-      <div class="step">
-        <span class="step-number">4</span>
-        <span class="step-icon">🤝</span>
-        <div class="step-content">
-          <h3>Support Local Communities</h3>
-          <p>Your purchases empower Oromo artisans and storytellers, helping preserve culture and support families. Every action makes a difference!</p>
-        </div>
-      </div>
+    <div class="landing-steps" id="stepsList">
+      <!-- Steps will be rendered by JS -->
     </div>
     <div class="landing-cta">
-      <a href="Customer dashboard/index.php">Enter Marketplace</a>
+      <a id="ctaBtn" href="Customer dashboard/index.php">Enter Marketplace</a>
     </div>
   </main>
   <script>
-    // Animated tagline cycling
-    const taglines = [
-      "Empowering Artisans",
-      "Preserving Stories",
-      "Connecting Communities",
-      "Celebrating Oromo Heritage",
-      "Fair-Trade, Real Impact"
+    // Language integration
+    let langData = {};
+    let currentLang = 'en';
+    const showcaseImages = [
+      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
+      "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80",
+      "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
+      "https://images.unsplash.com/photo-1511367461989-f85a21fda167?auto=format&fit=crop&w=400&q=80",
+      "https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=400&q=80"
     ];
+    const showcaseLinks = [
+      "Customer dashboard/products.php",
+      "Customer dashboard/stories.php",
+      "Customer dashboard/cart.php",
+      "Customer dashboard/index.php",
+      "Artisan and Story teller/artisan.php"
+    ];
+    fetch('lang.json')
+      .then(res => res.json())
+      .then(data => {
+        langData = data;
+        renderLang(currentLang);
+      });
+    // Use the language dropdown in the header
+    const langSelect = document.getElementById('langSelect');
+    langSelect.addEventListener('change', function() {
+      currentLang = this.value;
+      renderLang(currentLang);
+      setTaglines(currentLang);
+    });
+    function renderLang(lang) {
+      const d = langData[lang];
+      document.getElementById('heroTitle').textContent = d.heroTitle;
+      document.getElementById('heroDesc').textContent = d.heroDesc;
+      // Showcase
+      const showcase = d.showcase;
+      const showcaseDiv = document.getElementById('showcaseCards');
+      showcaseDiv.innerHTML = '';
+      showcase.forEach((item, i) => {
+        showcaseDiv.innerHTML += `<div class="showcase-card"><img src="${showcaseImages[i]}" alt="${item.title}" class="showcase-img"><div class="showcase-title">${item.title}</div><div class="showcase-desc">${item.desc}</div><a href="${showcaseLinks[i]}" class="showcase-link">${item.link}</a></div>`;
+      });
+      // Guides
+      document.getElementById('guidesTitle').textContent = d.guidesTitle;
+      const guidesList = document.getElementById('guidesList');
+      guidesList.innerHTML = '';
+      d.guides.forEach((g,i) => {
+        let li = `<li><span class=\"guide-icon\">${g.icon || guideIcons[i] || ''}</span>`;
+        li += g.text;
+        if (g.link && g.linkText) {
+          li += `<a href=\"${g.link}\" style=\"color:#7c4f1d;font-weight:bold;text-decoration:underline;\">${g.linkText}</a>`;
+        }
+        if (g.textAfter) li += g.textAfter;
+        li += '</li>';
+        guidesList.innerHTML += li;
+      });
+      // Steps
+      const stepsDiv = document.getElementById('stepsList');
+      stepsDiv.innerHTML = '';
+      d.steps.forEach((step,i) => {
+        stepsDiv.innerHTML += `<div class="step"><span class="step-number">${i+1}</span><span class="step-icon">${guideIcons[i]}</span><div class="step-content"><h3>${step.title}</h3><p>${step.desc}</p></div></div>`;
+      });
+      // CTA
+      document.getElementById('ctaBtn').textContent = d.cta;
+    }
+    // Animated tagline cycling (now language-aware)
+    let taglines = [];
     let taglineIdx = 0;
     const taglineEl = document.getElementById('animatedTagline');
-    setInterval(() => {
-      taglineIdx = (taglineIdx + 1) % taglines.length;
-      taglineEl.textContent = taglines[taglineIdx];
-      taglineEl.style.color = taglineIdx % 2 === 0 ? '#a06c2b' : '#7c4f1d';
-    }, 2200);
+    let taglineInterval;
+    function setTaglines(lang) {
+      taglines = langData[lang].taglines || [
+        "Empowering Artisans",
+        "Preserving Stories",
+        "Connecting Communities",
+        "Celebrating Oromo Heritage",
+        "Fair-Trade, Real Impact"
+      ];
+      taglineIdx = 0;
+      taglineEl.textContent = taglines[0];
+      if (taglineInterval) clearInterval(taglineInterval);
+      taglineInterval = setInterval(() => {
+        taglineIdx = (taglineIdx + 1) % taglines.length;
+        taglineEl.textContent = taglines[taglineIdx];
+        taglineEl.style.color = taglineIdx % 2 === 0 ? '#a06c2b' : '#7c4f1d';
+      }, 2200);
+    }
+    // Initialize taglines on load
+    window.addEventListener('load', function() {
+      setTaglines(currentLang);
+    });
 
     // Showcase card scroll-in animation
     function revealShowcaseCards() {
