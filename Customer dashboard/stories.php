@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oral Story Library | Oromo Artisan Marketplace</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    body { background: linear-gradient(120deg, #f8f8f8 60%, #e0c3a3 100%); }
+    .stories-hero {
+      background: #fff4e6; border-radius: 1em; box-shadow: 0 4px 24px #0001; padding: 2em 1em 1em 1em; margin-bottom: 2em; text-align: center;
+    }
+    .stories-hero h2 { color: #7c4f1d; font-size: 2em; margin-bottom: 0.2em; }
+    .stories-hero p { color: #4d2e00; font-size: 1.1em; }
+    .filters {
+      display: flex; flex-wrap: wrap; gap: 1em; justify-content: center; margin-bottom: 2em;
+    }
+    .filters input, .filters select {
+      padding: 0.7em; border-radius: 1em; border: 1px solid #d1bfa3; font-size: 1em;
+    }
+    #storyList {
+      display: flex; flex-wrap: wrap; gap: 2em; justify-content: center;
+    }
+    .story-card {
+      background: #fff; border-radius: 1em; box-shadow: 0 2px 12px #0001; width: 340px; padding: 1.5em 1em 1em 1em; display: flex; flex-direction: column; align-items: center; transition: box-shadow 0.2s;
+    }
+    .story-card:hover { box-shadow: 0 6px 24px #7c4f1d22; }
+    .story-title { font-size: 1.2em; color: #7c4f1d; font-weight: bold; margin-bottom: 0.2em; text-align: center; }
+    .story-meta { color: #4d2e00; font-size: 0.98em; margin-bottom: 0.5em; text-align: center; }
+    .story-media { margin: 0.7em 0 1em 0; }
+    .story-media audio, .story-media video { width: 100%; border-radius: 0.7em; box-shadow: 0 2px 8px #0002; }
+    .story-actions button {
+      background: #7c4f1d; color: #fff; border: none; border-radius: 2em; padding: 0.6em 1.5em; margin: 0.2em 0.3em; font-size: 1em; font-weight: bold; cursor: pointer; box-shadow: 0 2px 8px #0002; transition: background 0.2s;
+    }
+    .story-actions button:hover { background: #a06c2b; }
+    .story-impact {
+      background: #f7e7d3; border-radius: 1em; padding: 1em; margin: 2em auto 0 auto; color: #4d2e00; font-size: 1.1em; max-width: 700px; text-align: center;
+    }
+    footer {
+      margin-top: 3em;
+      background: #7c4f1d;
+      color: #fff;
+      text-align: center;
+      padding: 1.5em 1em;
+      border-radius: 1em 1em 0 0;
+    }
+    footer div {
+      margin: 0.5em 0;
+    }
+    footer .footer-title {
+      font-size: 1.1em;
+      font-weight: bold;
+    }
+    footer .footer-subtitle {
+      font-size: 0.95em;
+    }
+  </style>
+  <script defer src="assets/stories.js"></script>
+</head>
+<body>
+  <header style="background: linear-gradient(90deg,#7c4f1d 60%,#e0c3a3 100%);padding:2em 1em 1.5em 1em;border-radius:0 0 2em 2em;box-shadow:0 4px 24px #0001;margin-bottom:2em;position:relative;">
+    <div style="display:flex;align-items:center;justify-content:center;gap:1em;flex-wrap:wrap;text-align:center;width:100%;">
+      <div style="width:100%;">
+        <div style="font-size:2.2em;font-weight:bold;color:#fff;letter-spacing:1px;">Oromo Artisan & Storyteller</div>
+        <div style="font-size:1.1em;color:#ffe7c2;">Marketplace</div>
+      </div>
+    </div>
+    <nav style="margin-top:1.5em;text-align:center;">
+      <a href="index.html" style="color:#fff;font-weight:bold;margin:0 1.2em;text-decoration:none;font-size:1.1em;">Dashboard</a>
+      <a href="products.html" style="color:#fff;font-weight:bold;margin:0 1.2em;text-decoration:none;font-size:1.1em;">Products</a>
+      <a href="stories.html" style="color:#fff;font-weight:bold;margin:0 1.2em;text-decoration:none;font-size:1.1em;">Stories</a>
+      <a href="cart.html" style="color:#fff;font-weight:bold;margin:0 1.2em;text-decoration:none;font-size:1.1em;">Cart</a>
+    </nav>
+  </header>
+  <main>
+    <section class="stories-hero">
+      <h2>Oral Story Library</h2>
+      <p>Experience the living heritage of the Oromo people through captivating oral stories, legends, and folktales—preserved and shared for generations.</p>
+    </section>
+    <div class="filters">
+      <input type="text" id="storySearch" placeholder="Search stories...">
+      <select id="storyCategory"><option value="">All Categories</option></select>
+    </div>
+    <div id="storyList"></div>
+    <div class="story-impact">
+      <strong>Cultural Impact:</strong> Listening to these stories helps preserve Oromo language, wisdom, and tradition. Your engagement supports storytellers and keeps our culture alive!
+    </div>
+  </main>
+  <footer>
+    <div class="footer-title">Oromo Artisan & Storyteller Marketplace</div>
+    <div class="footer-subtitle">Empowering Oromo artisans, storytellers, and communities</div>
+    <div style="font-size:0.95em;">&copy; 2025 Oromo Marketplace. All rights reserved.</div>
+  </footer>
+</body>
+</html>
