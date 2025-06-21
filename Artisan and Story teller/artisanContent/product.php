@@ -1,11 +1,5 @@
 <?php
 include '../dbConnection/dbConnection.php';
-session_start();
-
-if (!isset($_SESSION['artisan_id'])) {
-    header("Location: ../artisanLogin.php");
-    exit();
-}
 
 $artisan_id = $_SESSION['artisan_id'];
 
@@ -27,70 +21,7 @@ $result = mysqli_query($con, $sql);
   <title>My Products</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-  .dashboard-header {
-    background: linear-gradient(135deg, #1e3a8a 0%, #7c2d12 100%);
-  }
-
-  .product-card:hover .product-actions {
-    opacity: 1;
-  }
-
-  .product-actions {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  .modal-container {
-    max-height: 90vh;
-  }
-
-  .modal-content {
-    scrollbar-width: thin;
-    scrollbar-color: #c1c1c1 #f1f1f1;
-  }
-
-  .modal-content::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  .modal-content::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 4px;
-  }
-
-  .modal-content::-webkit-scrollbar-thumb {
-    background: #c1c1c1;
-    border-radius: 4px;
-  }
-
-  .sticky-modal-header {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-
-  .sticky-modal-footer {
-    position: sticky;
-    bottom: 0;
-  }
-
-  .video-container {
-    position: relative;
-    padding-bottom: 56.25%;
-    /* 16:9 aspect ratio */
-    height: 0;
-    overflow: hidden;
-  }
-
-  .video-container video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-  </style>
+  <link rel="stylesheet" href="./CSS/products.css">
 </head>
 
 <body class="bg-gray-100">
