@@ -11,7 +11,7 @@ include './db/dbConnection.php';
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
   .form-box {
-    max-width: 400px;
+    max-width: 500px;
     margin: 40px auto;
     padding: 20px;
     border: 1px solid #ccc;
@@ -68,8 +68,8 @@ include './db/dbConnection.php';
   </style>
 </head>
 
-<body class="bg-light">
-  <div class="form-box shadow">
+<body class="bg-light ">
+  <div class="form-box shadow ">
     <form id="registrationForm" method="POST" action="./db/signupdb.php" enctype="multipart/form-data" novalidate>
       <?php 
       if (isset($_SESSION['registered'])) {
@@ -119,7 +119,7 @@ include './db/dbConnection.php';
         <select name="role" class="form-select" id="roleSelect" required>
           <option value="" disabled selected>Select Role</option>
           <option value="customer">Customer</option>
-          <option value="artisan">Artisan/Storyteller</option>
+          <option value="artisan">Artisan</option>
           <option value="storyteller">Storyteller</option>
         </select>
         <div class="invalid-feedback">Please select a role</div>
@@ -132,13 +132,39 @@ include './db/dbConnection.php';
         <div class="invalid-feedback">Please enter a valid country name</div>
       </div>
 
-      <!-- Artisan/Storyteller fields -->
+      <!-- Artisan  fields -->
       <div id="artisanFields" style="display:none;">
         <div class="mb-3">
           <input type="text" name="specialization" class="form-control" placeholder="Specialization"
             pattern="[A-Za-z ]{3,}" title="Specialization must be at least 3 characters">
           <div class="invalid-feedback">Please enter a valid specialization</div>
         </div>
+        <!-- business_name -->
+        <div class="mb-3">
+          <input type="text" name="business_name" class="form-control" placeholder="Business name"
+            pattern="[A-Za-z ]{3,}" title="Business name must be at least 3 characters">
+          <div class="invalid-feedback">Please enter a valid Business name</div>
+        </div>
+
+        <!-- location  -->
+        <div class="mb-3">
+          <input type="text" name="location" class="form-control" placeholder="Enter your bio" pattern="[A-Za-z ]{3,}"
+            title="your location must be at least 3 characters">
+          <div class="invalid-feedback">Please enter a valid location</div>
+        </div>
+
+        <!-- bio -->
+        <div class="mb-3">
+          <input type="text" name="bio" class="form-control" placeholder="Enter your bio" pattern="[A-Za-z ]{3,}"
+            title="your bio must be at least 3 characters">
+          <div class="invalid-feedback">Please enter a valid bio</div>
+        </div>
+
+        <!-- years_exprience -->
+        <div class="mb-3">
+          <input type="number" name="years_of_ex" class="form-control" placeholder="Enter your Year of Exprience">
+        </div>
+
         <div class="mb-3">
           <input type="text" name="region" class="form-control" placeholder="Region in Oromia" pattern="[A-Za-z ]{3,}"
             title="Region must be at least 3 characters">
@@ -162,9 +188,43 @@ include './db/dbConnection.php';
     </form>
   </div>
 
-  <script src="./js/signupValidation.js">
+  <script>
+  // Role selection handler
+  document.getElementById('roleSelect').addEventListener('change', function() {
+    const role = this.value;
+    document.getElementById('customerFields').style.display = 'none';
+    document.getElementById('artisanFields').style.display = 'none';
 
+    if (role === 'customer') {
+      document.getElementById('customerFields').style.display = 'block';
+    } else if (role === 'artisan' || role === 'storyteller') {
+      document.getElementById('artisanFields').style.display = 'block';
+    }
+  });
+
+  // Profile image preview
+  document.getElementById('profileInput').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        document.getElementById('profilePreview').src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // Form validation
+  document.getElementById('registrationForm').addEventListener('submit', function(e) {
+    const form = e.target;
+    if (!form.checkValidity()) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    form.classList.add('was-validated');
+  });
   </script>
+  <script src="./js/signupValidation.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
