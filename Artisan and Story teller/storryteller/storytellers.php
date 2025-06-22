@@ -1,5 +1,5 @@
 <?php
-// Database connection
+
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -13,10 +13,9 @@ try {
     die("Connection failed: " . $e->getMessage());
 }
 
-// Assume logged-in user (replace with proper authentication)
-$user_id = 1; // Jirenya Dhugaa for testing
 
-// Fetch storyteller data
+$user_id = 1; 
+
 $stmt = $conn->prepare("
     SELECT s.*, u.username 
     FROM storytellers s 
@@ -26,15 +25,12 @@ $stmt = $conn->prepare("
 $stmt->execute(['user_id' => $user_id]);
 $storyteller = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// Handle case where storyteller is not found
 if (!$storyteller) {
     die("Storyteller not found for user ID: $user_id");
 }
 
-// Fetch storyteller specializations
 $specializations = $storyteller['specialization'] ? explode(',', $storyteller['specialization']) : [];
 
-// Fetch stories with listen counts and themes
 $stmt = $conn->prepare("
     SELECT s.*, COALESCE(sl.listen_count, 0) as listen_count,
            GROUP_CONCAT(st.theme) as themes

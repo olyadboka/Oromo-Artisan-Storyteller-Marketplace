@@ -157,4 +157,3 @@ if (isset($con) && $con && $con instanceof mysqli && $con->connect_errno === 0) 
       text-align: left;
     }
   }
-</style>

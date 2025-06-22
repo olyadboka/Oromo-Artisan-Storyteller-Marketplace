@@ -1,4 +1,6 @@
 <?php
+// Make sure this is the VERY FIRST LINE with no whitespace before
+ob_start(); // Start output buffering
 session_start();
 include "dbConnection.php";
 
@@ -16,29 +18,29 @@ $password = $_POST['password'] ?? '';
 // Validate inputs
 if (empty($email)) {
     $_SESSION['login_error'] = "Email is required";
-    header("Location: ../login.php");
+    header("Location: ../../../login.php"); 
     exit();
 }
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     $_SESSION['login_error'] = "Invalid email format";
-    header("Location: ../login.php");
+    header("Location: ../../../login.php");
     exit();
 }
 
 if (empty($password)) {
     $_SESSION['login_error'] = "Password is required";
-    header("Location: ../login.php");
+    header("Location: ../../../login.php");
     exit();
 }
 
 // Prepare SQL statement to get user
-$sql = "SELECT id, username, email, password, role, status FROM users WHERE email = ?";
+$sql = "SELECT id, username, email, password, role, status, specialization FROM users WHERE email = ?";
 $stmt = $con->prepare($sql);
 
 if (!$stmt) {
     $_SESSION['login_error'] = "Database error";
-    header("Location: ../login.php");
+    header("Location: ../../../login.php");
     exit();
 }
 
@@ -48,7 +50,7 @@ $result = $stmt->get_result();
 
 if ($result->num_rows === 0) {
     $_SESSION['login_error'] = "Invalid email or password";
-    header("Location: ../login.php");
+    header("Location: ../../../login.php");
     exit();
 }
 
@@ -57,16 +59,13 @@ $user = $result->fetch_assoc();
 // Verify password
 if (!password_verify($password, $user['password'])) {
     $_SESSION['login_error'] = "Invalid email or password";
-    header("Location: ../login.php");
+    header("Location: ../../../login.php");
     exit();
 }
 
-
-
-  
-
+// Set session variables
 $_SESSION['user_id'] = $user['id'];
-$_SESSION['specialization'] =$user['specialization'];
+$_SESSION['specialization'] = $user['specialization'];
 $_SESSION['username'] = $user['username'];
 $_SESSION['email'] = $user['email'];
 $_SESSION['role'] = $user['role'];
@@ -77,15 +76,18 @@ session_regenerate_id(true);
 // Redirect based on role
 switch ($user['role']) {
     case 'admin':
-        header("Location: ../admin/dashboard.php");
+        header("Location: ../../../../Admin Panel/adminDashboard.php");
         break;
     case 'artisan':
+        header("Location: ../../../../Artisan and Story teller/artisan.php");
+        break;
     case 'storyteller':
-        header("Location: ../artisan/dashboard.php");
+        header("Location: ../../../../Artisan and Story teller/storryteller/storytellers.php");
         break;
     case 'customer':
-        header("Location: ../customer/dashboard.php");
+        header("Location: ../../../../Customer dashboard/customer.php");
         break;
     default:
-        header("Location: ../index.php");
+        header("Location: ../../../../index.php");
 }
+exit(); 
