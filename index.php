@@ -475,11 +475,11 @@
   let langData = {};
   let currentLang = 'en';
   const showcaseImages = [
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMZGYbSKSQoi7nVCcmPgnh_8adNDLuC10BfaZ-gibOgEHzZloqh_KD6_oaq88PjXB9NXs&usqp=CAU",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMZGYbSKSQoi7nVCcmPgnh_8adNDLuC10BfaZ-gibOgEHzZloqh_KD6_oaq88PjXB9NXs&usqp=CAU",
-    "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80",
-    "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
-    "https://images.unsplash.com/photo-1511367461989-f85a21fda167?auto=format&fit=crop&w=400&q=80",
+    "images/tools.jpg",
+    "images/story.jpg",
+    "images/cart.png",
+    "images/dashboard.png",
+    "images/art.jpg",
     "https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=400&q=80"
   ];
   const showcaseLinks = [
