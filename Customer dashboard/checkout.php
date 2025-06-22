@@ -232,11 +232,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pay'])) {
               <span class="text-xs text-gray-500">x<?= $item['qty'] ?? $item['quantity'] ?></span>
               <div class="text-xs text-gray-400">
                 <?php if ($item['type'] === 'product'): ?>
-                <?= htmlspecialchars($item['category'] ?? $item['item_category']) ?> |
-                <?= htmlspecialchars($item['location'] ?? $item['item_secondary']) ?>
+                  <?= htmlspecialchars($item['category'] ?? $item['item_category'] ?? '') ?> |
+                  <?= htmlspecialchars($item['location'] ?? $item['item_secondary'] ?? '') ?>
                 <?php else: ?>
-                <?= htmlspecialchars($item['category'] ?? $item['item_category']) ?> |
-                <?= htmlspecialchars($item['storyteller'] ?? $item['item_secondary']) ?>
+                  <?= htmlspecialchars($item['category'] ?? $item['item_category'] ?? '') ?> |
+                  <?= htmlspecialchars($item['storyteller'] ?? $item['item_secondary'] ?? '') ?>
                 <?php endif; ?>
               </div>
               <span
