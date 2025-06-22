@@ -181,12 +181,17 @@ foreach ($engagement as $eng) {
                     </div>
                 </div>
                 <div class="flex space-x-4">
-                    <button class="px-5 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg transition">
-                        <i class="fas fa-bell mr-2"></i> Notifications
-                    </button>
-                    <button class="px-5 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg transition">
-                        <i class="fas fa-cog mr-2"></i> Settings
-                    </button>
+                    <a href="#">
+                        <button class="px-5 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg transition">
+                            <i class="fas fa-cog mr-2"></i> as Customer
+                        </button>
+                    </a>
+                    <a href="#">
+                        <button class="px-5 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg transition">
+                            <i
+                                class="fas fa-sign-out-alt mr-2"></i> Logout
+                        </button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -211,7 +216,7 @@ foreach ($engagement as $eng) {
                 <a href="analytics.php" class="px-6 py-4 font-medium text-gray-600 hover:text-blue-800">
                     <i class="fas fa-chart-line mr-2"></i> Analytics
                 </a>
-                <a href="#" class="px-6 py-4 font-medium text-gray-600 hover:text-blue-800">
+                <a href="earning.php" class="px-6 py-4 font-medium text-gray-600 hover:text-blue-800">
                     <i class="fas fa-wallet mr-2"></i> Earnings
                 </a>
             </div>
@@ -317,7 +322,8 @@ foreach ($engagement as $eng) {
                                     </div>
                                     <div class="story-actions flex space-x-2 ml-4">
                                         <button class="p-2 text-blue-600 hover:bg-blue-50 rounded-full">
-                                            <i class="fas fa-edit"></i>
+                                            <a href="edit_story.php">
+                                                <i class="fas fa-edit"></i></a>
                                         </button>
                                         <button class="p-2 text-red-600 hover:bg-red-50 rounded-full">
                                             <i class="fas fa-trash"></i>

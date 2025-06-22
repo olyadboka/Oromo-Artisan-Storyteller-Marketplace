@@ -300,7 +300,7 @@ $current_themes = $story['themes'] ? explode(',', $story['themes']) : [];
         <a href="analytics.php" class="px-6 py-4 font-medium text-gray-600 hover:text-blue-800">
           <i class="fas fa-chart-line mr-2"></i> Analytics
         </a>
-        <a href="#" class="px-6 py-4 font-medium text-gray-600 hover:text-blue-800">
+        <a href="earning.php" class="px-6 py-4 font-medium text-gray-600 hover:text-blue-800">
           <i class="fas fa-wallet mr-2"></i> Earnings
         </a>
       </div>
