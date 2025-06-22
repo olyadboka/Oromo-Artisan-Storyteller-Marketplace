@@ -66,6 +66,7 @@ if (!password_verify($password, $user['password'])) {
   
 
 $_SESSION['user_id'] = $user['id'];
+$_SESSION['specialization'] =$user['specialization'];
 $_SESSION['username'] = $user['username'];
 $_SESSION['email'] = $user['email'];
 $_SESSION['role'] = $user['role'];

@@ -1,3 +1,17 @@
+<?php
+
+// session_start();
+// include './dbConnection.php';
+$_SESSION['user_id'] = 8;
+$user_id= $_SESSION['user_id'];
+$sql = "SELECT profileImage from users where id = $user_id";
+$result = mysqli_query($con, $sql);
+while($row = mysqli_fetch_assoc($result)){
+  $profileData = $row['profileImage'];
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -81,9 +95,6 @@
             <a class="nav-link fw-medium" href="stories.php"><i class="fa-solid fa-book-open me-1"></i>Oromo Stories</a>
           </li>
 
-          <li class="nav-item">
-            <a class="nav-link fw-medium" href="about.php"><i class="fa-solid fa-info-circle me-1"></i>About</a>
-          </li>
 
           <li class="nav-item ms-lg-3">
             <form class="d-flex" role="search">
@@ -93,7 +104,12 @@
           </li>
           <li class="nav-item ms-lg-3 position-relative">
             <a class="nav-link" href="account.php" aria-label="Account">
-              <i class="fa-solid fa-user-circle fs-5"></i>
+              <?php if (!empty($profileData)): ?>
+              <img src="data:image/jpeg;base64,<?php echo base64_encode($profileData); ?>" alt="Profile"
+                style="width:32px; height:32px; border-radius:50%;">
+              <?php else: ?>
+              <i class="fa-solid fa-user-circle fa-2x text-secondary"></i>
+              <?php endif; ?>
             </a>
           </li>
           <li class="nav-item ms-lg-2 position-relative">

@@ -86,7 +86,7 @@ include './db/dbConnection.php';
 
       <button type="submit" class="btn btn-success w-100">Login</button>
       <div class="register-link">
-        <p>Don't have an account? <a href="signup.php">Sign Up</a></p>
+        <p>Don't have an account? <a href="./singup.php">Sign Up</a></p>
       </div>
     </form>
   </div>
