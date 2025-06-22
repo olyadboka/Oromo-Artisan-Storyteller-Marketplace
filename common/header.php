@@ -1,6 +1,8 @@
 <?php
 // Always start session and include dbConnection
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 include_once __DIR__ . '/dbConnection.php';
 
 if (!isset($_SESSION['user_id'])) {
