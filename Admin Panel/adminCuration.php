@@ -1,7 +1,9 @@
 <?php
-// This page is for homepage curation in the admin panel
-include '../common/header.php';
+// Include the modular admin header
+include 'common/adminHeader.php';
 ?>
+<!-- End Admin Dashboard Custom Header -->
+
 <style>
 @media (max-width: 900px) {
   .admin-curation-flex { flex-direction: column !important; }
@@ -26,7 +28,7 @@ include '../common/header.php';
       echo '<div class="alert alert-success mt-3">Homepage curation updated!</div>';
     }
     ?>
-    <div class="my-5">
+    <div class="mt-2 mb-5" style="margin-top:0.5em;">
       <h1 class="mb-4 text-center">Homepage Curation</h1>
       <div class="card">
         <div class="card-header bg-success text-white">Feature Artisans, Products, Stories</div>
