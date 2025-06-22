@@ -106,11 +106,13 @@ if ($result) {
       <div class="collapse navbar-collapse" id="mainNavbar">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
           <li class="nav-item">
-            <a class="nav-link fw-medium" href="artisans.php"><i class="fa-solid fa-hands-helping me-1"></i>Artisans'
+            <a class="nav-link fw-medium" href="../Customer dashboard/products.php"><i
+                class="fa-solid fa-hands-helping me-1"></i>Artisans'
               Product</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link fw-medium" href="stories.php"><i class="fa-solid fa-book-open me-1"></i>Oromo Stories</a>
+            <a class="nav-link fw-medium" href="../Customer dashboard/storyLibrary.php"><i
+                class="fa-solid fa-book-open me-1"></i>Oromo Stories</a>
           </li>
 
 

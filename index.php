@@ -323,8 +323,10 @@
     display: block;
     text-align: right;
     max-width: 420px;
-    margin: 0 0 0 auto !important; /* align right, no bottom margin */
-    padding: 0 !important; /* no padding */
+    margin: 0 0 0 auto !important;
+    /* align right, no bottom margin */
+    padding: 0 !important;
+    /* no padding */
     position: relative;
     top: 0;
   }
@@ -402,9 +404,12 @@
       text-align: right;
       display: block;
     }
+
     .landing-hero {
-      margin-top: 0.3 !important; /* Remove all top margin */
-      padding-top: 0 !important; /* Remove all top padding */
+      margin-top: 0.3 !important;
+      /* Remove all top margin */
+      padding-top: 0 !important;
+      /* Remove all top padding */
       max-width: 540px !important;
       margin-left: auto !important;
       margin-right: auto !important;
@@ -412,7 +417,6 @@
   }
   </style>
 
-  </link>
 </head>
 
 <body>

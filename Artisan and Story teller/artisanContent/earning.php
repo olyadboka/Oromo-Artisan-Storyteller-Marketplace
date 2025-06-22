@@ -96,21 +96,20 @@ try {
   die("Error fetching earnings data: " . $e->getMessage());
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Earnings - Oromo Storyteller Network</title>
+  <title>My Products</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
+  <link rel="stylesheet" href="./CSS/products.css">
 </head>
 
-<body class="bg-gray-50">
-  <!-- Dashboard Header -->
+<body class="bg-gray-100">
+  <!-- Header and navigation content -->
   <header class="dashboard-header text-white">
     <div class="container mx-auto px-4 py-6">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
@@ -121,16 +120,11 @@ try {
             <h1 class="text-2xl font-bold">My Artisan Dashboard</h1>
             <p class="text-white text-opacity-80">
               <i class="fas fa-map-marker-alt"></i> Oromia, Ethiopia
-              <span class="ml-3 px-2 py-1 bg-white bg-opacity-20 rounded-full text-xs">
-                <i class="fas fa-check-circle"></i> Verified
-              </span>
             </p>
           </div>
         </div>
         <nav>
           <ul class="flex space-x-4">
-            <li><a href="#" class="px-3 py-2 bg-white bg-opacity-20 rounded-lg"><i class="fas fa-cog mr-2"></i>as
-                Custormer</a></li>
             <li><a href="#" class="px-3 py-2 bg-white bg-opacity-20 rounded-lg"><i
                   class="fas fa-sign-out-alt mr-2"></i>Logout</a></li>
           </ul>
@@ -138,21 +132,6 @@ try {
       </div>
     </div>
   </header>
-
-  <!-- Dashboard Navigation -->
-  <div class="bg-white shadow-sm">
-    <div class="container mx-auto px-4">
-      <nav class="flex overflow-x-auto">
-        <a href="#" class="px-6 py-4 font-medium ">Overview</a>
-        <a href="./product.php" class="px-6 py-4 font-medium text-gray-600 hover:text-red-600">Products</a>
-
-        <a href="./orders.php" class="px-6 py-4 font-medium text-gray-600 hover:text-red-600">Orders</a>
-        <a href="#"
-          class="px-6 py-4 font-medium text-gray-600 hover:text-red-600 text-red-600 border-b-2 border-red-600">Earnings</a>
-
-
-    </div>
-  </div>
 
   <!-- Main Content -->
   <main class="container mx-auto px-4 py-8">
@@ -173,7 +152,8 @@ try {
         <div class="flex items-center justify-between">
           <div>
             <p class="text-gray-500">Current Period Earnings</p>
-            <h3 class="text-3xl font-bold text-gray-800 mt-1">ETB <?php echo number_format($current_period_earnings, 2); ?></h3>
+            <h3 class="text-3xl font-bold text-gray-800 mt-1">ETB
+              <?php echo number_format($current_period_earnings, 2); ?></h3>
             <p class="text-sm text-gray-500 mt-2">Last 30 days</p>
           </div>
           <div class="p-3 bg-blue-100 rounded-lg text-blue-800">
@@ -211,32 +191,33 @@ try {
       </div>
       <div class="divide-y divide-gray-200">
         <?php if (empty($transactions)): ?>
-          <div class="p-8 text-center">
-            <i class="fas fa-exchange-alt text-4xl text-gray-300 mb-4"></i>
-            <h3 class="text-lg font-medium text-gray-700">No earnings recorded yet</h3>
-            <p class="text-gray-500 mt-2">Your earnings will appear here after your first payment period</p>
-          </div>
+        <div class="p-8 text-center">
+          <i class="fas fa-exchange-alt text-4xl text-gray-300 mb-4"></i>
+          <h3 class="text-lg font-medium text-gray-700">No earnings recorded yet</h3>
+          <p class="text-gray-500 mt-2">Your earnings will appear here after your first payment period</p>
+        </div>
         <?php else: ?>
-          <?php foreach ($transactions as $transaction): ?>
-            <div class="p-4 hover:bg-gray-50">
-              <div class="flex justify-between items-center">
-                <div>
-                  <h3 class="font-medium"><?php echo htmlspecialchars($transaction['period_name']); ?></h3>
-                  <p class="text-sm text-gray-600">
-                    Recorded on <?php echo date('M j, Y', strtotime($transaction['created_at'])); ?>
-                  </p>
-                </div>
-                <div class="text-right">
-                  <p class="font-medium text-green-600">
-                    + ETB <?php echo number_format($transaction['amount'], 2); ?>
-                  </p>
-                  <p class="text-sm text-gray-500">
-                    <?php echo date('M j', strtotime($transaction['period_start'])); ?> - <?php echo date('M j, Y', strtotime($transaction['period_end'])); ?>
-                  </p>
-                </div>
-              </div>
+        <?php foreach ($transactions as $transaction): ?>
+        <div class="p-4 hover:bg-gray-50">
+          <div class="flex justify-between items-center">
+            <div>
+              <h3 class="font-medium"><?php echo htmlspecialchars($transaction['period_name']); ?></h3>
+              <p class="text-sm text-gray-600">
+                Recorded on <?php echo date('M j, Y', strtotime($transaction['created_at'])); ?>
+              </p>
             </div>
-          <?php endforeach; ?>
+            <div class="text-right">
+              <p class="font-medium text-green-600">
+                + ETB <?php echo number_format($transaction['amount'], 2); ?>
+              </p>
+              <p class="text-sm text-gray-500">
+                <?php echo date('M j', strtotime($transaction['period_start'])); ?> -
+                <?php echo date('M j, Y', strtotime($transaction['period_end'])); ?>
+              </p>
+            </div>
+          </div>
+        </div>
+        <?php endforeach; ?>
         <?php endif; ?>
       </div>
       <div class="px-6 py-4 border-t border-gray-200 text-center">
@@ -289,40 +270,40 @@ try {
   </footer>
 
   <script>
-    // Earnings Chart
-    const earningsCtx = document.getElementById('earningsChart').getContext('2d');
-    new Chart(earningsCtx, {
-      type: 'bar',
-      data: {
-        labels: <?php echo json_encode(array_keys($earnings_data)); ?>,
-        datasets: [{
-          label: 'Earnings (ETB)',
-          data: <?php echo json_encode(array_values($earnings_data)); ?>,
-          backgroundColor: 'rgba(59, 130, 246, 0.7)',
-          borderColor: 'rgba(59, 130, 246, 1)',
-          borderWidth: 1
-        }]
+  // Earnings Chart
+  const earningsCtx = document.getElementById('earningsChart').getContext('2d');
+  new Chart(earningsCtx, {
+    type: 'bar',
+    data: {
+      labels: <?php echo json_encode(array_keys($earnings_data)); ?>,
+      datasets: [{
+        label: 'Earnings (ETB)',
+        data: <?php echo json_encode(array_values($earnings_data)); ?>,
+        backgroundColor: 'rgba(59, 130, 246, 0.7)',
+        borderColor: 'rgba(59, 130, 246, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: false
+        }
       },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false
-          }
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            ticks: {
-              callback: function(value) {
-                return 'ETB ' + value;
-              }
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: function(value) {
+              return 'ETB ' + value;
             }
           }
         }
       }
-    });
+    }
+  });
   </script>
 </body>
 
