@@ -1,4 +1,5 @@
 <?php
+// This page is for content monitoring in the admin panel
 include '../common/header.php';
 ?>
 <style>
@@ -11,27 +12,32 @@ include '../common/header.php';
   <?php include 'adminSidebar.php'; ?>
   <div class="admin-content-main" style="flex:1; padding:30px; min-width:0;">
     <?php
+    // Connect to the database
     include '../common/dbConnection.php';
-    // Handle flag/unflag actions
+    // Handle flag/unflag actions for products and stories
     if (isset($_GET['flag_product'])) {
-      $id = intval($_GET['flag_product']);
-      $conn->query("UPDATE products SET is_flagged=1 WHERE id=$id");
-      header('Location: adminContent.php'); exit;
+      $productId = intval($_GET['flag_product']);
+      $flagProduct = $conn->query("UPDATE products SET is_flagged=1 WHERE id=" . $productId);
+      header('Location: adminContent.php');
+      exit;
     }
     if (isset($_GET['unflag_product'])) {
-      $id = intval($_GET['unflag_product']);
-      $conn->query("UPDATE products SET is_flagged=0 WHERE id=$id");
-      header('Location: adminContent.php'); exit;
+      $productId = intval($_GET['unflag_product']);
+      $unflagProduct = $conn->query("UPDATE products SET is_flagged=0 WHERE id=" . $productId);
+      header('Location: adminContent.php');
+      exit;
     }
     if (isset($_GET['flag_story'])) {
-      $id = intval($_GET['flag_story']);
-      $conn->query("UPDATE stories SET is_flagged=1 WHERE id=$id");
-      header('Location: adminContent.php'); exit;
+      $storyId = intval($_GET['flag_story']);
+      $flagStory = $conn->query("UPDATE stories SET is_flagged=1 WHERE id=" . $storyId);
+      header('Location: adminContent.php');
+      exit;
     }
     if (isset($_GET['unflag_story'])) {
-      $id = intval($_GET['unflag_story']);
-      $conn->query("UPDATE stories SET is_flagged=0 WHERE id=$id");
-      header('Location: adminContent.php'); exit;
+      $storyId = intval($_GET['unflag_story']);
+      $unflagStory = $conn->query("UPDATE stories SET is_flagged=0 WHERE id=" . $storyId);
+      header('Location: adminContent.php');
+      exit;
     }
     ?>
     <div class="my-5">
@@ -43,14 +49,20 @@ include '../common/header.php';
             <thead><tr><th>Product</th><th>Artisan</th><th>Description</th><th>Category</th><th>Status</th><th>Flag</th></tr></thead>
             <tbody>
             <?php
-            $res = $conn->query("SELECT p.*, a.business_name FROM products p LEFT JOIN artisans a ON p.artisan_id=a.id");
-            while ($row = $res->fetch_assoc()) {
+            // Get all products and their artisans
+            $getProducts = $conn->query("SELECT p.*, a.business_name FROM products p LEFT JOIN artisans a ON p.artisan_id=a.id");
+            while ($row = $getProducts->fetch_assoc()) {
               echo '<tr>';
               echo '<td>' . htmlspecialchars($row['name']) . '</td>';
               echo '<td>' . htmlspecialchars($row['business_name']) . '</td>';
               echo '<td style="max-width:200px;">' . htmlspecialchars(substr($row['description'],0,120)) . '...</td>';
               echo '<td>' . htmlspecialchars($row['category']) . '</td>';
-              echo '<td>' . ($row['is_featured'] ? 'Featured' : 'Normal');
+              echo '<td>';
+              if (!empty($row['is_featured'])) {
+                echo 'Featured';
+              } else {
+                echo 'Normal';
+              }
               if (!empty($row['is_flagged'])) echo ' <span class="badge bg-danger">Flagged</span>';
               echo '</td>';
               echo '<td>';
@@ -74,13 +86,19 @@ include '../common/header.php';
             <thead><tr><th>Title</th><th>Storyteller</th><th>Description</th><th>Status</th><th>Flag</th></tr></thead>
             <tbody>
             <?php
-            $res = $conn->query("SELECT s.*, st.artistic_name FROM stories s LEFT JOIN storytellers st ON s.storyteller_id=st.id");
-            while ($row = $res->fetch_assoc()) {
+            // Get all stories and their storytellers
+            $getStories = $conn->query("SELECT s.*, st.artistic_name FROM stories s LEFT JOIN storytellers st ON s.storyteller_id=st.id");
+            while ($row = $getStories->fetch_assoc()) {
               echo '<tr>';
               echo '<td>' . htmlspecialchars($row['title']) . '</td>';
               echo '<td>' . htmlspecialchars($row['artistic_name']) . '</td>';
               echo '<td style="max-width:200px;">' . htmlspecialchars(substr($row['description'],0,120)) . '...</td>';
-              echo '<td>' . ($row['is_featured'] ? 'Featured' : 'Normal');
+              echo '<td>';
+              if (!empty($row['is_featured'])) {
+                echo 'Featured';
+              } else {
+                echo 'Normal';
+              }
               if (!empty($row['is_flagged'])) echo ' <span class="badge bg-danger">Flagged</span>';
               echo '</td>';
               echo '<td>';

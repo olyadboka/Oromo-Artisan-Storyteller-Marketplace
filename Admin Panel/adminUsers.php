@@ -1,4 +1,5 @@
 <?php
+// This page is for user verification and moderation in the admin panel
 include '../common/header.php';
 ?>
 <style>
@@ -150,31 +151,36 @@ include '../common/header.php';
       <span class="banner-icon"><i class="fa fa-user-shield"></i></span>
       <div>
         <h1>User Verification & Moderation</h1>
-        <p>Approve, suspend, and manage artisans and storytellers.</p>
+        <p>Approve, suspend, and manage artisans and storytellers. All actions are live and instantly reflected.</p>
       </div>
     </div>
     <?php
+    // Connect to the database
     include '../common/dbConnection.php';
-    // Approve/suspend logic
+    // Approve or suspend logic for artisans and storytellers
     if (isset($_GET['verify_artisan'])) {
-      $id = intval($_GET['verify_artisan']);
-      $conn->query("UPDATE artisans SET verification_status='verified' WHERE id=$id");
-      header('Location: adminUsers.php'); exit;
+      $artisanId = intval($_GET['verify_artisan']);
+      $updateArtisan = $conn->query("UPDATE artisans SET verification_status='verified' WHERE id=" . $artisanId);
+      header('Location: adminUsers.php');
+      exit;
     }
     if (isset($_GET['reject_artisan'])) {
-      $id = intval($_GET['reject_artisan']);
-      $conn->query("UPDATE artisans SET verification_status='rejected' WHERE id=$id");
-      header('Location: adminUsers.php'); exit;
+      $artisanId = intval($_GET['reject_artisan']);
+      $updateArtisan = $conn->query("UPDATE artisans SET verification_status='rejected' WHERE id=" . $artisanId);
+      header('Location: adminUsers.php');
+      exit;
     }
     if (isset($_GET['verify_storyteller'])) {
-      $id = intval($_GET['verify_storyteller']);
-      $conn->query("UPDATE storytellers SET verification_status='verified' WHERE id=$id");
-      header('Location: adminUsers.php'); exit;
+      $storytellerId = intval($_GET['verify_storyteller']);
+      $updateStoryteller = $conn->query("UPDATE storytellers SET verification_status='verified' WHERE id=" . $storytellerId);
+      header('Location: adminUsers.php');
+      exit;
     }
     if (isset($_GET['reject_storyteller'])) {
-      $id = intval($_GET['reject_storyteller']);
-      $conn->query("UPDATE storytellers SET verification_status='rejected' WHERE id=$id");
-      header('Location: adminUsers.php'); exit;
+      $storytellerId = intval($_GET['reject_storyteller']);
+      $updateStoryteller = $conn->query("UPDATE storytellers SET verification_status='rejected' WHERE id=" . $storytellerId);
+      header('Location: adminUsers.php');
+      exit;
     }
     ?>
     <div class="container my-5">
@@ -191,11 +197,18 @@ include '../common/header.php';
           <div class="card">
             <div class="card-body table-responsive">
               <?php
-              $res = $conn->query("SELECT a.*, u.username FROM artisans a JOIN users u ON a.user_id = u.id");
+              // Get all artisans and their usernames
+              $getArtisans = $conn->query("SELECT a.*, u.username FROM artisans a JOIN users u ON a.user_id = u.id");
               echo '<table class="table table-bordered table-sm"><thead><tr><th>Name</th><th>Business</th><th>Status</th><th>Action</th></tr></thead><tbody>';
-              while ($row = $res->fetch_assoc()) {
+              while ($row = $getArtisans->fetch_assoc()) {
                 $status = $row['verification_status'];
-                $badgeClass = $status === 'verified' ? 'status-badge status-verified' : ($status === 'rejected' ? 'status-badge status-rejected' : 'status-badge status-pending');
+                if ($status === 'verified') {
+                  $badgeClass = 'status-badge status-verified';
+                } else if ($status === 'rejected') {
+                  $badgeClass = 'status-badge status-rejected';
+                } else {
+                  $badgeClass = 'status-badge status-pending';
+                }
                 echo '<tr><td>' . htmlspecialchars($row['username']) . '</td><td>' . htmlspecialchars($row['business_name']) . '</td><td><span class="' . $badgeClass . '">' . ucfirst($status) . '</span></td>';
                 echo '<td>';
                 if ($row['verification_status'] !== 'verified') {
@@ -215,11 +228,18 @@ include '../common/header.php';
           <div class="card">
             <div class="card-body table-responsive">
               <?php
-              $res = $conn->query("SELECT s.*, u.username FROM storytellers s JOIN users u ON s.user_id = u.id");
+              // Get all storytellers and their usernames
+              $getStorytellers = $conn->query("SELECT s.*, u.username FROM storytellers s JOIN users u ON s.user_id = u.id");
               echo '<table class="table table-bordered table-sm"><thead><tr><th>Name</th><th>Specialization</th><th>Status</th><th>Action</th></tr></thead><tbody>';
-              while ($row = $res->fetch_assoc()) {
+              while ($row = $getStorytellers->fetch_assoc()) {
                 $status = $row['verification_status'];
-                $badgeClass = $status === 'verified' ? 'status-badge status-verified' : ($status === 'rejected' ? 'status-badge status-rejected' : 'status-badge status-pending');
+                if ($status === 'verified') {
+                  $badgeClass = 'status-badge status-verified';
+                } else if ($status === 'rejected') {
+                  $badgeClass = 'status-badge status-rejected';
+                } else {
+                  $badgeClass = 'status-badge status-pending';
+                }
                 echo '<tr><td>' . htmlspecialchars($row['username']) . '</td><td>' . htmlspecialchars($row['specialization']) . '</td><td><span class="' . $badgeClass . '">' . ucfirst($status) . '</span></td>';
                 echo '<td>';
                 if ($row['verification_status'] !== 'verified') {
