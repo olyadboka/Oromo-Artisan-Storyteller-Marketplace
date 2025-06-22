@@ -1,6 +1,100 @@
 <?php
-include '../dbConnection/dbConnection.php';
+// Database connection
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "oromo_artisan_and_storyteller";
 
+try {
+  $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  $conn->exec("SET time_zone = '+03:00'");
+} catch (PDOException $e) {
+  die("Connection failed: " . $e->getMessage());
+}
+
+// Assume logged-in user (replace with proper authentication)
+$user_id = 7; // Jirenya Dhugaa for testing
+
+// Fetch storyteller data
+$stmt = $conn->prepare("
+    SELECT s.*, u.username 
+    FROM storytellers s 
+    JOIN users u ON s.user_id = u.id 
+    WHERE s.user_id = :user_id
+");
+$stmt->execute(['user_id' => $user_id]);
+$storyteller = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$storyteller) {
+  die("Storyteller not found for user ID: $user_id");
+}
+
+// Fetch earnings data
+$total_earnings = 0;
+$current_period_earnings = 0;
+$earnings_data = [];
+$transactions = [];
+
+try {
+  // Total earnings
+  $stmt = $conn->prepare("
+        SELECT COALESCE(SUM(amount), 0) as total 
+        FROM earnings 
+        WHERE storyteller_id = :storyteller_id
+    ");
+  $stmt->execute(['storyteller_id' => $storyteller['id']]);
+  $total_earnings = $stmt->fetchColumn();
+
+  // Current period earnings (last 30 days)
+  $current_period_start = date('Y-m-d', strtotime('-30 days'));
+  $stmt = $conn->prepare("
+        SELECT COALESCE(SUM(amount), 0) as current 
+        FROM earnings 
+        WHERE storyteller_id = :storyteller_id
+        AND period_end >= :period_start
+    ");
+  $stmt->execute([
+    'storyteller_id' => $storyteller['id'],
+    'period_start' => $current_period_start
+  ]);
+  $current_period_earnings = $stmt->fetchColumn();
+
+  // Earnings for last 6 months for chart
+  for ($i = 5; $i >= 0; $i--) {
+    $month_start = date('Y-m-01', strtotime("-$i months"));
+    $month_end = date('Y-m-t', strtotime("-$i months"));
+    $month_name = date('M Y', strtotime($month_start));
+
+    $stmt = $conn->prepare("
+            SELECT COALESCE(SUM(amount), 0) as total
+            FROM earnings
+            WHERE storyteller_id = :storyteller_id
+            AND period_start >= :month_start
+            AND period_end <= :month_end
+        ");
+    $stmt->execute([
+      'storyteller_id' => $storyteller['id'],
+      'month_start' => $month_start,
+      'month_end' => $month_end
+    ]);
+    $earnings_data[$month_name] = $stmt->fetchColumn();
+  }
+
+  // Recent transactions (last 5)
+  $stmt = $conn->prepare("
+        SELECT e.*, 
+               CONCAT('Period: ', DATE_FORMAT(period_start, '%b %d'), ' - ', DATE_FORMAT(period_end, '%b %d')) as period_name
+        FROM earnings e
+        WHERE e.storyteller_id = :storyteller_id
+        ORDER BY e.period_end DESC
+        LIMIT 5
+    ");
+  $stmt->execute(['storyteller_id' => $storyteller['id']]);
+  $transactions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+  die("Error fetching earnings data: " . $e->getMessage());
+}
 ?>
 
 <!DOCTYPE html>
@@ -9,13 +103,13 @@ include '../dbConnection/dbConnection.php';
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Earnings Dashboard</title>
+  <title>Earnings - Oromo Storyteller Network</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link rel="stylesheet" href="./CSS/earning.css">
+
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-gray-50">
   <!-- Dashboard Header -->
   <header class="dashboard-header text-white">
     <div class="container mx-auto px-4 py-6">
@@ -59,55 +153,43 @@ include '../dbConnection/dbConnection.php';
 
     </div>
   </div>
+
   <!-- Main Content -->
   <main class="container mx-auto px-4 py-8">
     <div class="flex justify-between items-center mb-8">
       <h1 class="text-2xl font-bold text-gray-800">
-        <i class="fas fa-wallet text-red-600 mr-2"></i> Earnings Dashboard
+        <i class="fas fa-wallet text-blue-600 mr-2"></i> Earnings Dashboard
       </h1>
       <div class="flex items-center space-x-4">
-        <button class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-medium">
+        <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium">
           <i class="fas fa-download mr-2"></i> Download Report
-        </button>
-        <button class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-medium">
-          <i class="fas fa-money-bill-wave mr-2"></i> Request Payout
         </button>
       </div>
     </div>
 
     <!-- Earnings Summary -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-      <div class="bg-white rounded-lg shadow p-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <div class="bg-white rounded-lg shadow p-6 earning-card">
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-gray-500">Available Balance</p>
-            <h3 class="text-3xl font-bold text-gray-800 mt-1">ETB 8,950</h3>
-          </div>
-          <div class="p-3 bg-green-100 rounded-lg text-green-800">
-            <i class="fas fa-coins text-2xl"></i>
-          </div>
-        </div>
-      </div>
-
-      <div class="bg-white rounded-lg shadow p-6">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-gray-500">Pending Clearance</p>
-            <h3 class="text-3xl font-bold text-gray-800 mt-1">ETB 3,500</h3>
-          </div>
-          <div class="p-3 bg-yellow-100 rounded-lg text-yellow-800">
-            <i class="fas fa-clock text-2xl"></i>
-          </div>
-        </div>
-      </div>
-
-      <div class="bg-white rounded-lg shadow p-6">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-gray-500">Total Earned</p>
-            <h3 class="text-3xl font-bold text-gray-800 mt-1">ETB 42,150</h3>
+            <p class="text-gray-500">Current Period Earnings</p>
+            <h3 class="text-3xl font-bold text-gray-800 mt-1">ETB <?php echo number_format($current_period_earnings, 2); ?></h3>
+            <p class="text-sm text-gray-500 mt-2">Last 30 days</p>
           </div>
           <div class="p-3 bg-blue-100 rounded-lg text-blue-800">
+            <i class="fas fa-calendar-week text-2xl"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow p-6 earning-card">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-500">Total Earnings</p>
+            <h3 class="text-3xl font-bold text-gray-800 mt-1">ETB <?php echo number_format($total_earnings, 2); ?></h3>
+            <p class="text-sm text-gray-500 mt-2">All time</p>
+          </div>
+          <div class="p-3 bg-green-100 rounded-lg text-green-800">
             <i class="fas fa-chart-line text-2xl"></i>
           </div>
         </div>
@@ -115,98 +197,132 @@ include '../dbConnection/dbConnection.php';
     </div>
 
     <!-- Earnings Chart -->
-    <div class="bg-white rounded-lg shadow p-4 mb-8 max-w-2xl mx-auto">
-      <h2 class="text-lg font-medium text-gray-800 mb-4">Earnings Overview</h2>
-      <div class="w-full overflow-x-auto">
-        <canvas id="earningsChart" height="200" width="400" style="max-width:100%;"></canvas>
+    <div class="bg-white rounded-lg shadow p-6 mb-8">
+      <h2 class="text-lg font-medium text-gray-800 mb-4">Earnings Overview (Last 6 Months)</h2>
+      <div class="w-full" style="height: 300px;">
+        <canvas id="earningsChart"></canvas>
       </div>
     </div>
 
     <!-- Recent Transactions -->
     <div class="bg-white rounded-lg shadow overflow-hidden">
       <div class="px-6 py-4 border-b border-gray-200">
-        <h2 class="text-lg font-medium text-gray-800">Recent Transactions</h2>
+        <h2 class="text-lg font-medium text-gray-800">Recent Earnings Periods</h2>
       </div>
       <div class="divide-y divide-gray-200">
-        <div class="p-4 hover:bg-gray-50">
-          <div class="flex justify-between items-center">
-            <div>
-              <h3 class="font-medium">Order #ORD-1245</h3>
-              <p class="text-sm text-gray-600">Jun 15, 2023 • 3 items</p>
-            </div>
-            <div class="text-right">
-              <p class="font-medium text-green-600">+ ETB 1,250</p>
-              <p class="text-sm text-gray-500">Completed</p>
-            </div>
+        <?php if (empty($transactions)): ?>
+          <div class="p-8 text-center">
+            <i class="fas fa-exchange-alt text-4xl text-gray-300 mb-4"></i>
+            <h3 class="text-lg font-medium text-gray-700">No earnings recorded yet</h3>
+            <p class="text-gray-500 mt-2">Your earnings will appear here after your first payment period</p>
           </div>
-        </div>
-        <div class="p-4 hover:bg-gray-50">
-          <div class="flex justify-between items-center">
-            <div>
-              <h3 class="font-medium">Order #ORD-1244</h3>
-              <p class="text-sm text-gray-600">Jun 14, 2023 • 2 items</p>
+        <?php else: ?>
+          <?php foreach ($transactions as $transaction): ?>
+            <div class="p-4 hover:bg-gray-50">
+              <div class="flex justify-between items-center">
+                <div>
+                  <h3 class="font-medium"><?php echo htmlspecialchars($transaction['period_name']); ?></h3>
+                  <p class="text-sm text-gray-600">
+                    Recorded on <?php echo date('M j, Y', strtotime($transaction['created_at'])); ?>
+                  </p>
+                </div>
+                <div class="text-right">
+                  <p class="font-medium text-green-600">
+                    + ETB <?php echo number_format($transaction['amount'], 2); ?>
+                  </p>
+                  <p class="text-sm text-gray-500">
+                    <?php echo date('M j', strtotime($transaction['period_start'])); ?> - <?php echo date('M j, Y', strtotime($transaction['period_end'])); ?>
+                  </p>
+                </div>
+              </div>
             </div>
-            <div class="text-right">
-              <p class="font-medium text-green-600">+ ETB 850</p>
-              <p class="text-sm text-gray-500">Completed</p>
-            </div>
-          </div>
-        </div>
-        <div class="p-4 hover:bg-gray-50">
-          <div class="flex justify-between items-center">
-            <div>
-              <h3 class="font-medium">Payout to Bank</h3>
-              <p class="text-sm text-gray-600">Jun 10, 2023 • Transfer</p>
-            </div>
-            <div class="text-right">
-              <p class="font-medium text-red-600">- ETB 5,000</p>
-              <p class="text-sm text-gray-500">Processed</p>
-            </div>
-          </div>
-        </div>
+          <?php endforeach; ?>
+        <?php endif; ?>
       </div>
       <div class="px-6 py-4 border-t border-gray-200 text-center">
-        <a href="#" class="text-red-600 hover:text-red-700 font-medium">
-          View All Transactions <i class="fas fa-arrow-right ml-1"></i>
+        <a href="#" class="text-blue-600 hover:text-blue-700 font-medium">
+          View All Earnings Periods <i class="fas fa-arrow-right ml-1"></i>
         </a>
       </div>
     </div>
   </main>
 
-  <?php
-include '../common/footer.php';
- ?>
-
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-8 mt-12">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row justify-between">
+        <div class="mb-6 md:mb-0">
+          <h3 class="text-xl font-bold mb-4">Oromo Storyteller Network</h3>
+          <p class="text-gray-400">Preserving oral traditions for future generations</p>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-8">
+          <div>
+            <h4 class="font-semibold mb-3">Resources</h4>
+            <ul class="space-y-2">
+              <li><a href="#" class="text-gray-400 hover:text-white">Recording Guide</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white">Storytelling Tips</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white">Cultural Database</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-semibold mb-3">Support</h4>
+            <ul class="space-y-2">
+              <li><a href="#" class="text-gray-400 hover:text-white">Help Center</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white">Community</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white">Contact Us</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-semibold mb-3">Connect</h4>
+            <div class="flex space-x-4">
+              <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+              <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-400 text-sm">
+        © 2025 Oromo Artisan & Storyteller Marketplace. All rights reserved.
+      </div>
+    </div>
+  </footer>
 
   <script>
-  // Earnings Chart
-  const earningsCtx = document.getElementById('earningsChart').getContext('2d');
-  const earningsChart = new Chart(earningsCtx, {
-    type: 'bar',
-    data: {
-      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-      datasets: [{
-        label: 'Earnings (ETB)',
-        data: [6500, 5900, 8000, 8100, 10500, 12450],
-        backgroundColor: 'rgba(220, 38, 38, 0.7)',
-        borderColor: 'rgb(220, 38, 38)',
-        borderWidth: 1
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: {
-          display: false
-        }
+    // Earnings Chart
+    const earningsCtx = document.getElementById('earningsChart').getContext('2d');
+    new Chart(earningsCtx, {
+      type: 'bar',
+      data: {
+        labels: <?php echo json_encode(array_keys($earnings_data)); ?>,
+        datasets: [{
+          label: 'Earnings (ETB)',
+          data: <?php echo json_encode(array_values($earnings_data)); ?>,
+          backgroundColor: 'rgba(59, 130, 246, 0.7)',
+          borderColor: 'rgba(59, 130, 246, 1)',
+          borderWidth: 1
+        }]
       },
-      scales: {
-        y: {
-          beginAtZero: true
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: function(value) {
+                return 'ETB ' + value;
+              }
+            }
+          }
         }
       }
-    }
-  });
+    });
   </script>
 </body>
 
