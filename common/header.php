@@ -1,4 +1,9 @@
 <?php
+// Always start session and include dbConnection
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+include_once __DIR__ . '/dbConnection.php';
 
 // session_start();
 // include './dbConnection.php';
@@ -10,6 +15,19 @@
 //   $profileData = $row['profileImage'];
 // }
 
+if (!isset($_SESSION['user_id'])) {
+  // Set a default user id for testing if not set
+  $_SESSION['user_id'] = 8;
+}
+$user_id = $_SESSION['user_id'];
+$sql = "SELECT profileImage from users where id = $user_id";
+$result = mysqli_query($con, $sql);
+$profileData = null;
+if ($result) {
+  while($row = mysqli_fetch_assoc($result)){
+    $profileData = $row['profileImage'];
+  }
+}
 ?>
 
 <!DOCTYPE html>

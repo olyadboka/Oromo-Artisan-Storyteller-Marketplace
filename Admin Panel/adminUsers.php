@@ -1,7 +1,102 @@
-<?php
-// This page is for user verification and moderation in the admin panel
-include '../common/header.php';
-?>
+<?php include 'common/adminHeader.php'; ?>
+<!-- Admin Dashboard Custom Header (Consistent with Main Site) -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  .admin-header {
+    background: linear-gradient(90deg, #1a4a7a 0%, #2d7a2d 100%);
+    color: #fff;
+    font-family: 'Montserrat', Arial, sans-serif;
+    box-shadow: 0 4px 24px rgba(26,74,122,0.10);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .admin-header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 32px;
+    height: 74px;
+  }
+  .admin-header-logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .admin-header-logo-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1cb933;
+    border-radius: 50%;
+    padding: 10px 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  .admin-header-logo-icon img {
+    width: 32px; height: 32px;
+  }
+  .admin-header-logo-text {
+    font-size: 1.5em;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    font-family: 'Montserrat', Arial, sans-serif;
+  }
+  .admin-header-nav {
+    display: flex;
+    gap: 24px;
+  }
+  .admin-header-nav a {
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 1.08em;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: background 0.18s, color 0.18s;
+  }
+  .admin-header-nav a.active, .admin-header-nav a:hover {
+    background: rgba(255,255,255,0.13);
+    color: #f7b731;
+  }
+  .admin-header-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .admin-header-user span {
+    font-size: 1em;
+    font-weight: 500;
+    opacity: 0.85;
+  }
+  .admin-header-avatar {
+    background: #fff;
+    color: #1a4a7a;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.1em;
+    box-shadow: 0 2px 8px rgba(26,74,122,0.10);
+  }
+  @media (max-width: 900px) {
+    .admin-header-inner { flex-direction: column; height: auto; padding: 12px 8px; gap: 8px; }
+    .admin-header-nav { flex-wrap: wrap; gap: 10px; justify-content: center; }
+    .admin-header-logo-text { font-size: 1.1em; }
+  }
+</style>
+
+<!-- End Admin Dashboard Custom Header -->
+
+<!-- Add Bootstrap CSS/JS for tabs and responsive tables -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap');
 @media (max-width: 900px) {
@@ -145,7 +240,7 @@ include '../common/header.php';
 .btn-action-suspend:hover { background: #e17055; color: #fff; }
 </style>
 <div class="admin-users-flex d-flex" style="min-height:100vh;">
-  <?php include 'adminSidebar.php'; ?>
+  <?php if (file_exists('adminSidebar.php')) { include 'adminSidebar.php'; } ?>
   <div class="admin-users-content" style="flex:1; padding:30px; min-width:0;">
     <div class="admin-users-banner mb-4">
       <span class="banner-icon"><i class="fa fa-user-shield"></i></span>
@@ -186,20 +281,20 @@ include '../common/header.php';
     <div class="container my-5">
       <ul class="nav nav-tabs" id="adminTab" role="tablist">
         <li class="nav-item" role="presentation">
-          <button class="nav-link active" id="artisans-tab" data-bs-toggle="tab" data-bs-target="#artisans" type="button" role="tab">Artisans</button>
+          <button class="nav-link active" id="artisans-tab" data-bs-toggle="tab" data-bs-target="#artisans" type="button" role="tab" aria-controls="artisans" aria-selected="true">Artisans</button>
         </li>
         <li class="nav-item" role="presentation">
-          <button class="nav-link" id="storytellers-tab" data-bs-toggle="tab" data-bs-target="#storytellers" type="button" role="tab">Storytellers</button>
+          <button class="nav-link" id="storytellers-tab" data-bs-toggle="tab" data-bs-target="#storytellers" type="button" role="tab" aria-controls="storytellers" aria-selected="false">Storytellers</button>
         </li>
       </ul>
       <div class="tab-content mt-3" id="adminTabContent">
-        <div class="tab-pane fade show active" id="artisans" role="tabpanel">
+        <div class="tab-pane fade show active" id="artisans" role="tabpanel" aria-labelledby="artisans-tab">
           <div class="card">
             <div class="card-body table-responsive">
               <?php
               // Get all artisans and their usernames
               $getArtisans = $conn->query("SELECT a.*, u.username FROM artisans a JOIN users u ON a.user_id = u.id");
-              echo '<table class="table table-bordered table-sm"><thead><tr><th>Name</th><th>Business</th><th>Status</th><th>Action</th></tr></thead><tbody>';
+              echo '<table class="table table-bordered table-hover table-sm align-middle mb-0"><thead><tr><th>Name</th><th>Business</th><th>Status</th><th>Action</th></tr></thead><tbody>';
               while ($row = $getArtisans->fetch_assoc()) {
                 $status = $row['verification_status'];
                 if ($status === 'verified') {
@@ -224,13 +319,13 @@ include '../common/header.php';
             </div>
           </div>
         </div>
-        <div class="tab-pane fade" id="storytellers" role="tabpanel">
+        <div class="tab-pane fade" id="storytellers" role="tabpanel" aria-labelledby="storytellers-tab">
           <div class="card">
             <div class="card-body table-responsive">
               <?php
               // Get all storytellers and their usernames
               $getStorytellers = $conn->query("SELECT s.*, u.username FROM storytellers s JOIN users u ON s.user_id = u.id");
-              echo '<table class="table table-bordered table-sm"><thead><tr><th>Name</th><th>Specialization</th><th>Status</th><th>Action</th></tr></thead><tbody>';
+              echo '<table class="table table-bordered table-hover table-sm align-middle mb-0"><thead><tr><th>Name</th><th>Specialization</th><th>Status</th><th>Action</th></tr></thead><tbody>';
               while ($row = $getStorytellers->fetch_assoc()) {
                 $status = $row['verification_status'];
                 if ($status === 'verified') {
@@ -259,4 +354,17 @@ include '../common/header.php';
     </div>
   </div>
 </div>
+<script>
+// Ensure correct tab is shown on reload (if using hash)
+document.addEventListener('DOMContentLoaded', function() {
+  var hash = window.location.hash;
+  if (hash) {
+    var tabTrigger = document.querySelector('button[data-bs-target="' + hash + '"]');
+    if (tabTrigger) {
+      var tab = new bootstrap.Tab(tabTrigger);
+      tab.show();
+    }
+  }
+});
+</script>
 <?php include '../common/footer.php'; ?>
