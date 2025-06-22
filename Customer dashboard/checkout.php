@@ -1,4 +1,4 @@
-<?php include '../common/commonHeader.php'; ?>
+<?php include '../common/header.php'; ?>
 <?php
 session_start();
 include '../common/dbConnection.php';
@@ -182,144 +182,157 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pay'])) {
 ?>
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Checkout</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <title>Checkout</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
+
 <body class="bg-gradient-to-br from-blue-50 to-yellow-50 min-h-screen">
-    <div class="container mx-auto px-4 py-10">
-        <h1 class="text-3xl font-extrabold text-center text-blue-900 mb-8 tracking-tight">
-            <?= $is_complete_payment ? 'Complete Payment' : 'Checkout' ?>
-        </h1>
-        <?php if ($orderSuccess): ?>
-            <div class="bg-green-100 border border-green-300 text-green-800 px-6 py-4 rounded-lg text-center mb-8">
-                <i class="fas fa-check-circle"></i> Thank you! Your order has been placed.
-            </div>
-            <div class="text-center">
-                <a href="products.php" class="text-blue-700 underline">Continue Shopping</a>
-            </div>
-        <?php elseif (!$all_items): ?>
-            <div class="text-center text-gray-500 text-lg">Your cart is empty. 
-                <a href="products.php" class="text-blue-700 underline">Browse products</a> or 
-                <a href="storyLibrary.php" class="text-blue-700 underline">explore stories</a>
-            </div>
-        <?php else: ?>
-        <div class="grid md:grid-cols-2 gap-8">
-            <!-- Order Summary -->
-            <div class="bg-white rounded-xl shadow-lg p-6">
-                <h2 class="text-xl font-bold mb-4 text-blue-900">
-                    <?= $is_complete_payment ? 'Order Summary (Complete Payment)' : 'Order Summary' ?>
-                </h2>
-                <?php if ($is_complete_payment): ?>
-                    <div class="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                        <div class="flex items-center">
-                            <i class="fas fa-exclamation-triangle text-yellow-600 mr-2"></i>
-                            <span class="text-yellow-800 font-medium">Order #<?= htmlspecialchars($complete_payment_order['order_number']) ?></span>
-                        </div>
-                        <p class="text-sm text-yellow-700 mt-1">Payment Status: Pending</p>
-                    </div>
-                <?php endif; ?>
-                <ul>
-                    <?php foreach ($all_items as $item): ?>
-                    <li class="flex justify-between items-center border-b py-2">
-                        <div>
-                            <span class="font-medium"><?= htmlspecialchars($item['name'] ?? $item['title'] ?? $item['item_name']) ?></span>
-                            <span class="text-xs text-gray-500">x<?= $item['qty'] ?? $item['quantity'] ?></span>
-                            <div class="text-xs text-gray-400">
-                                <?php if ($item['type'] === 'product'): ?>
-                                    <?= htmlspecialchars($item['category'] ?? $item['item_category']) ?> | <?= htmlspecialchars($item['location'] ?? $item['item_secondary']) ?>
-                                <?php else: ?>
-                                    <?= htmlspecialchars($item['category'] ?? $item['item_category']) ?> | <?= htmlspecialchars($item['storyteller'] ?? $item['item_secondary']) ?>
-                                <?php endif; ?>
-                            </div>
-                            <span class="text-xs px-2 py-1 rounded <?= $item['type'] === 'story' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800' ?>">
-                                <?= ucfirst($item['type']) ?>
-                            </span>
-                        </div>
-                        <span class="font-semibold">ETB <?= number_format($item['subtotal'] ?? $item['total_price'], 2) ?></span>
-                    </li>
-                    <?php endforeach; ?>
-                </ul>
-                <div class="flex justify-between items-center mt-4 text-lg font-bold">
-                    <span>Total:</span>
-                    <span class="text-green-700">ETB <?= number_format($total, 2) ?></span>
-                </div>
-            </div>
-            <!-- Customer Info & Payment -->
-            <form method="post" class="bg-white rounded-xl shadow-lg p-6 flex flex-col gap-4" id="checkoutForm" novalidate>
-                <h2 class="text-xl font-bold mb-4 text-blue-900">Customer Information</h2>
-                <?php if ($errors): ?>
-                    <div class="bg-red-100 border border-red-300 text-red-800 px-4 py-2 rounded mb-2">
-                        <ul class="list-disc pl-5">
-                            <?php foreach ($errors as $err): ?>
-                                <li><?= htmlspecialchars($err) ?></li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </div>
-                <?php endif; ?>
-                <input type="text" name="name" id="name" placeholder="Full Name" required class="border rounded px-4 py-2" value="<?= htmlspecialchars($_POST['name'] ?? '') ?>">
-                <input type="email" name="email" id="email" placeholder="Email" required class="border rounded px-4 py-2" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
-                <input type="text" name="phone" id="phone" placeholder="Phone Number" required class="border rounded px-4 py-2" value="<?= htmlspecialchars($_POST['phone'] ?? $existing_phone) ?>">
-                <input type="text" name="address" id="address" placeholder="Shipping Address" required class="border rounded px-4 py-2" value="<?= htmlspecialchars($_POST['address'] ?? $existing_address) ?>">
-                <button type="submit" name="pay" class="bg-gradient-to-r from-yellow-400 to-red-500 hover:from-yellow-500 hover:to-red-600 text-white px-8 py-3 rounded-lg font-bold shadow transition flex items-center gap-2 justify-center">
-                    <i class="fas fa-credit-card"></i> <?= $is_complete_payment ? 'Complete Payment' : 'Pay Now' ?>
-                </button>
-                <div class="text-xs text-gray-500 text-center mt-2">
-                    <i class="fas fa-lock"></i> Secure payment powered by Chapa, Telebirr, HelloCash, Amole
-                </div>
-                <?php if ($is_complete_payment): ?>
-                    <div class="text-center mt-4">
-                        <a href="orderHistory.php" class="text-blue-600 hover:text-blue-700 underline">
-                            <i class="fas fa-arrow-left mr-1"></i>Back to Order History
-                        </a>
-                    </div>
-                <?php endif; ?>
-            </form>
+  <div class="container mx-auto px-4 py-10">
+    <h1 class="text-3xl font-extrabold text-center text-blue-900 mb-8 tracking-tight">
+      <?= $is_complete_payment ? 'Complete Payment' : 'Checkout' ?>
+    </h1>
+    <?php if ($orderSuccess): ?>
+    <div class="bg-green-100 border border-green-300 text-green-800 px-6 py-4 rounded-lg text-center mb-8">
+      <i class="fas fa-check-circle"></i> Thank you! Your order has been placed.
+    </div>
+    <div class="text-center">
+      <a href="products.php" class="text-blue-700 underline">Continue Shopping</a>
+    </div>
+    <?php elseif (!$all_items): ?>
+    <div class="text-center text-gray-500 text-lg">Your cart is empty.
+      <a href="products.php" class="text-blue-700 underline">Browse products</a> or
+      <a href="storyLibrary.php" class="text-blue-700 underline">explore stories</a>
+    </div>
+    <?php else: ?>
+    <div class="grid md:grid-cols-2 gap-8">
+      <!-- Order Summary -->
+      <div class="bg-white rounded-xl shadow-lg p-6">
+        <h2 class="text-xl font-bold mb-4 text-blue-900">
+          <?= $is_complete_payment ? 'Order Summary (Complete Payment)' : 'Order Summary' ?>
+        </h2>
+        <?php if ($is_complete_payment): ?>
+        <div class="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+          <div class="flex items-center">
+            <i class="fas fa-exclamation-triangle text-yellow-600 mr-2"></i>
+            <span class="text-yellow-800 font-medium">Order
+              #<?= htmlspecialchars($complete_payment_order['order_number']) ?></span>
+          </div>
+          <p class="text-sm text-yellow-700 mt-1">Payment Status: Pending</p>
         </div>
         <?php endif; ?>
+        <ul>
+          <?php foreach ($all_items as $item): ?>
+          <li class="flex justify-between items-center border-b py-2">
+            <div>
+              <span
+                class="font-medium"><?= htmlspecialchars($item['name'] ?? $item['title'] ?? $item['item_name']) ?></span>
+              <span class="text-xs text-gray-500">x<?= $item['qty'] ?? $item['quantity'] ?></span>
+              <div class="text-xs text-gray-400">
+                <?php if ($item['type'] === 'product'): ?>
+                <?= htmlspecialchars($item['category'] ?? $item['item_category']) ?> |
+                <?= htmlspecialchars($item['location'] ?? $item['item_secondary']) ?>
+                <?php else: ?>
+                <?= htmlspecialchars($item['category'] ?? $item['item_category']) ?> |
+                <?= htmlspecialchars($item['storyteller'] ?? $item['item_secondary']) ?>
+                <?php endif; ?>
+              </div>
+              <span
+                class="text-xs px-2 py-1 rounded <?= $item['type'] === 'story' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800' ?>">
+                <?= ucfirst($item['type']) ?>
+              </span>
+            </div>
+            <span class="font-semibold">ETB <?= number_format($item['subtotal'] ?? $item['total_price'], 2) ?></span>
+          </li>
+          <?php endforeach; ?>
+        </ul>
+        <div class="flex justify-between items-center mt-4 text-lg font-bold">
+          <span>Total:</span>
+          <span class="text-green-700">ETB <?= number_format($total, 2) ?></span>
+        </div>
+      </div>
+      <!-- Customer Info & Payment -->
+      <form method="post" class="bg-white rounded-xl shadow-lg p-6 flex flex-col gap-4" id="checkoutForm" novalidate>
+        <h2 class="text-xl font-bold mb-4 text-blue-900">Customer Information</h2>
+        <?php if ($errors): ?>
+        <div class="bg-red-100 border border-red-300 text-red-800 px-4 py-2 rounded mb-2">
+          <ul class="list-disc pl-5">
+            <?php foreach ($errors as $err): ?>
+            <li><?= htmlspecialchars($err) ?></li>
+            <?php endforeach; ?>
+          </ul>
+        </div>
+        <?php endif; ?>
+        <input type="text" name="name" id="name" placeholder="Full Name" required class="border rounded px-4 py-2"
+          value="<?= htmlspecialchars($_POST['name'] ?? '') ?>">
+        <input type="email" name="email" id="email" placeholder="Email" required class="border rounded px-4 py-2"
+          value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
+        <input type="text" name="phone" id="phone" placeholder="Phone Number" required class="border rounded px-4 py-2"
+          value="<?= htmlspecialchars($_POST['phone'] ?? $existing_phone) ?>">
+        <input type="text" name="address" id="address" placeholder="Shipping Address" required
+          class="border rounded px-4 py-2" value="<?= htmlspecialchars($_POST['address'] ?? $existing_address) ?>">
+        <button type="submit" name="pay"
+          class="bg-gradient-to-r from-yellow-400 to-red-500 hover:from-yellow-500 hover:to-red-600 text-white px-8 py-3 rounded-lg font-bold shadow transition flex items-center gap-2 justify-center">
+          <i class="fas fa-credit-card"></i> <?= $is_complete_payment ? 'Complete Payment' : 'Pay Now' ?>
+        </button>
+        <div class="text-xs text-gray-500 text-center mt-2">
+          <i class="fas fa-lock"></i> Secure payment powered by Chapa, Telebirr, HelloCash, Amole
+        </div>
+        <?php if ($is_complete_payment): ?>
+        <div class="text-center mt-4">
+          <a href="orderHistory.php" class="text-blue-600 hover:text-blue-700 underline">
+            <i class="fas fa-arrow-left mr-1"></i>Back to Order History
+          </a>
+        </div>
+        <?php endif; ?>
+      </form>
     </div>
-    <script>
-    // Client-side validation
-    document.getElementById('checkoutForm').addEventListener('submit', function(e) {
-        let valid = true;
-        let messages = [];
+    <?php endif; ?>
+  </div>
+  <script>
+  // Client-side validation
+  document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+    let valid = true;
+    let messages = [];
 
-        // Name validation
-        const name = document.getElementById('name').value.trim();
-        if (name === '') {
-            messages.push('Full Name is required.');
-            valid = false;
-        }
+    // Name validation
+    const name = document.getElementById('name').value.trim();
+    if (name === '') {
+      messages.push('Full Name is required.');
+      valid = false;
+    }
 
-        // Email validation
-        const email = document.getElementById('email').value.trim();
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            messages.push('A valid Email is required.');
-            valid = false;
-        }
+    // Email validation
+    const email = document.getElementById('email').value.trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      messages.push('A valid Email is required.');
+      valid = false;
+    }
 
-        // Phone validation
-        const phone = document.getElementById('phone').value.trim();
-        const phoneRegex = /^[0-9+\- ]{7,20}$/;
-        if (!phoneRegex.test(phone)) {
-            messages.push('A valid Phone Number is required.');
-            valid = false;
-        }
+    // Phone validation
+    const phone = document.getElementById('phone').value.trim();
+    const phoneRegex = /^[0-9+\- ]{7,20}$/;
+    if (!phoneRegex.test(phone)) {
+      messages.push('A valid Phone Number is required.');
+      valid = false;
+    }
 
-        // Address validation
-        const address = document.getElementById('address').value.trim();
-        if (address === '') {
-            messages.push('Shipping Address is required.');
-            valid = false;
-        }
+    // Address validation
+    const address = document.getElementById('address').value.trim();
+    if (address === '') {
+      messages.push('Shipping Address is required.');
+      valid = false;
+    }
 
-        if (!valid) {
-            e.preventDefault();
-            alert('Please fix the following errors:\n' + messages.join('\n'));
-        }
-    });
-    </script>
+    if (!valid) {
+      e.preventDefault();
+      alert('Please fix the following errors:\n' + messages.join('\n'));
+    }
+  });
+  </script>
 </body>
+
 </html>

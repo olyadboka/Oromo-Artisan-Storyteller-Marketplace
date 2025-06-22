@@ -62,4 +62,3 @@ $_SESSION['complete_payment_order'] = [
 // Redirect to checkout
 header('Location: checkout.php?complete_payment=1');
 exit;
-?> 

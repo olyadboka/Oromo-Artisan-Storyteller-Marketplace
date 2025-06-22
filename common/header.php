@@ -11,7 +11,7 @@
   .navbar-brand-logo {
     width: 44px;
     height: 44px;
-    background: #b91c1c;
+    background: rgb(28, 185, 51);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -23,7 +23,7 @@
     position: absolute;
     top: 0;
     right: -8px;
-    background: #b91c1c;
+    background: rgb(28, 185, 51);
     color: #fff;
     font-size: 0.75rem;
     border-radius: 50%;
@@ -35,7 +35,7 @@
   }
 
   .announcement-bar {
-    background: #7f1d1d;
+    background: rgb(28, 185, 51);
     color: #fff;
     font-size: 0.95rem;
     padding: 0.4rem 0;
@@ -51,8 +51,8 @@
 <body>
   <!-- Announcement Bar -->
   <div class="announcement-bar">
-    <i class="fa-solid fa-gift me-2"></i>
-    Free shipping on orders over 1500 ETB | Support Oromo artisans
+    <i class="fa-solid fa-compass me-2"></i>
+    Discover Oromia: Experience Culture, Nature & Hospitality
   </div>
 
   <!-- Navbar -->
@@ -60,14 +60,11 @@
     <div class="container">
       <a class="navbar-brand d-flex align-items-center" href="index.php">
         <span class="navbar-brand-logo">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" width="28" height="28">
-            <!-- Oak tree SVG path -->
-            <path
-              d="M12 2C9.243 2 7 4.243 7 7c0 .34.03.674.09 1.001C5.276 8.165 4 9.582 4 11.25c0 1.657 1.343 3 3 3h1v2.5c0 .276.224.5.5.5h1.5V20c0 .552.448 1 1 1s1-.448 1-1v-3.75h1.5c.276 0 .5-.224.5-.5V14.25h1c1.657 0 3-1.343 3-3 0-1.668-1.276-3.085-3.09-3.249A4.98 4.98 0 0 0 17 7c0-2.757-2.243-5-5-5zm-2 7c0-1.654 1.346-3 3-3s3 1.346 3 3c0 .552-.448 1-1 1h-4c-.552 0-1-.448-1-1zm-3 2.25c0-.69.56-1.25 1.25-1.25h11.5c.69 0 1.25.56 1.25 1.25s-.56 1.25-1.25 1.25h-11.5c-.69 0-1.25-.56-1.25-1.25z" />
+          <img src="https://www.svgrepo.com/show/475458/tree.svg" alt="Oromo Marketplace Logo" width="32" height="32" />
           </svg>
         </span>
         <span class="fw-bold fs-4 text-dark">
-          <span class="text-danger">Oromo</span> Marketplace
+          <span class="text-danger">Oromo</span> Atisan and stories
         </span>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
@@ -77,28 +74,17 @@
       <div class="collapse navbar-collapse" id="mainNavbar">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
           <li class="nav-item">
-            <a class="nav-link fw-medium" href="artisans.php"><i class="fa-solid fa-hands-helping me-1"></i>Artisans</a>
+            <a class="nav-link fw-medium" href="artisans.php"><i class="fa-solid fa-hands-helping me-1"></i>Artisans'
+              Product</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link fw-medium" href="stories.php"><i class="fa-solid fa-book-open me-1"></i>Stories</a>
+            <a class="nav-link fw-medium" href="stories.php"><i class="fa-solid fa-book-open me-1"></i>Oromo Stories</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link fw-medium" href="categories.php"><i class="fa-solid fa-th-large me-1"></i>Categories</a>
-          </li>
+
           <li class="nav-item">
             <a class="nav-link fw-medium" href="about.php"><i class="fa-solid fa-info-circle me-1"></i>About</a>
           </li>
-          <li class="nav-item dropdown ms-lg-3">
-            <a class="nav-link dropdown-toggle" href="#" id="langDropdown" role="button" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              <i class="fa-solid fa-language me-1"></i>EN
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="langDropdown">
-              <li><a class="dropdown-item" href="#">Afaan Oromo</a></li>
-              <li><a class="dropdown-item" href="#">English</a></li>
-              <li><a class="dropdown-item" href="#">Amharic</a></li>
-            </ul>
-          </li>
+
           <li class="nav-item ms-lg-3">
             <form class="d-flex" role="search">
               <input class="form-control form-control-sm me-2" type="search" placeholder="Search" aria-label="Search">
