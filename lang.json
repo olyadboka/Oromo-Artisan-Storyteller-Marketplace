@@ -1,6 +1,6 @@
 {
   "en": {
-    "heroTitle": "Welcome to Oromo Artisan & Storyteller Marketplace",
+    "heroTitle": "Oromo Artisan & Storyteller Anaa Dhufuu!!",
     "heroDesc": "Discover, support, and celebrate Oromo culture through artisan crafts and oral storytelling. This platform connects artisans, storytellers, and customers in a vibrant, fair-trade community.",
     "showcase": [
       {
@@ -31,12 +31,42 @@
     ],
     "guidesTitle": "How to Get the Most Out of This Marketplace",
     "guides": [
-      {"icon": "🔑", "text": "Sign up or log in to personalize your experience and support your favorite artisans."},
-      {"icon": "🔎", "text": "Use filters on the ", "link": "Customer dashboard/products.php", "linkText": "Products", "textAfter": " page to find crafts by category, location, or artisan."},
-      {"icon": "🎧", "text": "Listen to stories on the ", "link": "Customer dashboard/stories.php", "linkText": "Stories", "textAfter": " page and share your favorites with friends."},
-      {"icon": "🛒", "text": "Add products to your ", "link": "Customer dashboard/cart.php", "linkText": "cart", "textAfter": " and check out securely with local payment options."},
-      {"icon": "👤", "text": "Visit your ", "link": "Customer dashboard/index.php", "linkText": "dashboard", "textAfter": " to manage your profile and see your order history."},
-      {"icon": "🌱", "text": "Every purchase and story you enjoy helps preserve Oromo culture and supports local families."}
+      {
+        "icon": "🔑",
+        "text": "Sign up or log in to personalize your experience and support your favorite artisans."
+      },
+      {
+        "icon": "🔎",
+        "text": "Use filters on the ",
+        "link": "Customer dashboard/products.php",
+        "linkText": "Products",
+        "textAfter": " page to find crafts by category, location, or artisan."
+      },
+      {
+        "icon": "🎧",
+        "text": "Listen to stories on the ",
+        "link": "Customer dashboard/stories.php",
+        "linkText": "Stories",
+        "textAfter": " page and share your favorites with friends."
+      },
+      {
+        "icon": "🛒",
+        "text": "Add products to your ",
+        "link": "Customer dashboard/cart.php",
+        "linkText": "cart",
+        "textAfter": " and check out securely with local payment options."
+      },
+      {
+        "icon": "👤",
+        "text": "Visit your ",
+        "link": "Customer dashboard/index.php",
+        "linkText": "dashboard",
+        "textAfter": " to manage your profile and see your order history."
+      },
+      {
+        "icon": "🌱",
+        "text": "Every purchase and story you enjoy helps preserve Oromo culture and supports local families."
+      }
     ],
     "steps": [
       {
@@ -69,20 +99,70 @@
     "heroTitle": "Baga Nagaan Dhuftan Suuqii Ogeeyyii fi Oduu Guddifachaa Oromoo",
     "heroDesc": "Aadaa Oromoo suphaa, deeggaraa, fi kabajaa! Suuqichi ogeeyyii, oduu-guddattoota, fi maamiltoota walitti fiduun hawaasa wal-qixxummaa fi wal-deeggarsa qabu ijaaruu irratti fuulleffata.",
     "showcase": [
-      { "title": "Meeshaalee Filatamoo", "desc": "Meeshaalee Ogeeyyii Oromoo adda addaa fi kanneen beekamoo ilaalaa.", "link": "Meeshaalee Ilaali" },
-      { "title": "Galmee Oduu Afaani", "desc": "Oduuwwan, seenaa fi aadaa Oromoo sagalee fi viidiyoo ta’een dhaggeeffadhaa.", "link": "Oduuwwan Barbaadi" },
-      { "title": "Kaartii Kee", "desc": "Meeshaalee filattee ilaali, kaffaltii nageenyaan raawwadhu.", "link": "Kaartii Ilaali" },
-      { "title": "Daayirektarii Maamilaa", "desc": "Piroofaayilii kee too’achi, ajaja kee ilaali, fi gumaacha kee hordofi.", "link": "Daayirektarii Keetti Galchi" },
-      { "title": "Bu’uura Ogeeyyii fi Oduu-Guddattoota", "desc": "Ogeeyyii fi oduu-guddattoota Oromoo beekamoo waliin wal-baradhaa, hojii isaanii ilaalaa, fi aadaa isaanii addunyaa waliin qoodaa.", "link": "Bu’uura Daawwadhu" }
+      {
+        "title": "Meeshaalee Filatamoo",
+        "desc": "Meeshaalee Ogeeyyii Oromoo adda addaa fi kanneen beekamoo ilaalaa.",
+        "link": "Meeshaalee Ilaali"
+      },
+      {
+        "title": "Galmee Oduu Afaani",
+        "desc": "Oduuwwan, seenaa fi aadaa Oromoo sagalee fi viidiyoo ta’een dhaggeeffadhaa.",
+        "link": "Oduuwwan Barbaadi"
+      },
+      {
+        "title": "Kaartii Kee",
+        "desc": "Meeshaalee filattee ilaali, kaffaltii nageenyaan raawwadhu.",
+        "link": "Kaartii Ilaali"
+      },
+      {
+        "title": "Daayirektarii Maamilaa",
+        "desc": "Piroofaayilii kee too’achi, ajaja kee ilaali, fi gumaacha kee hordofi.",
+        "link": "Daayirektarii Keetti Galchi"
+      },
+      {
+        "title": "Bu’uura Ogeeyyii fi Oduu-Guddattoota",
+        "desc": "Ogeeyyii fi oduu-guddattoota Oromoo beekamoo waliin wal-baradhaa, hojii isaanii ilaalaa, fi aadaa isaanii addunyaa waliin qoodaa.",
+        "link": "Bu’uura Daawwadhu"
+      }
     ],
     "guidesTitle": "Suuqii Kana Irraa Faayidaa Argachuuf Akkaataa",
     "guides": [
-      {"icon": "🔑", "text": "Galmaa’i ykn seeni, muuxannoo keetiif ogeeyyii jaallatamoo deeggari."},
-      {"icon": "🔎", "text": "Meeshaalee filadhu ", "link": "Customer dashboard/products.php", "linkText": "Meeshaalee", "textAfter": " gosa, bakka, ykn ogeessaatiin filadhu."},
-      {"icon": "🎧", "text": "Oduuwwan dhaggeeffadhu ", "link": "Customer dashboard/stories.php", "linkText": "Oduuwwan", "textAfter": " fi hiriyyoota kee waliin qoodi."},
-      {"icon": "🛒", "text": "Meeshaalee ", "link": "Customer dashboard/cart.php", "linkText": "kaartii kee", "textAfter": " irratti dabali, kaffaltii nageenyaan raawwadhu."},
-      {"icon": "👤", "text": "Daayirektarii kee ", "link": "Customer dashboard/index.php", "linkText": "daawwadhu", "textAfter": ", seenaa ajajaa ilaali."},
-      {"icon": "🌱", "text": "Bittaa fi oduuwwan kee aadaa Oromoo tiksu, maatii deeggaru."}
+      {
+        "icon": "🔑",
+        "text": "Galmaa’i ykn seeni, muuxannoo keetiif ogeeyyii jaallatamoo deeggari."
+      },
+      {
+        "icon": "🔎",
+        "text": "Meeshaalee filadhu ",
+        "link": "Customer dashboard/products.php",
+        "linkText": "Meeshaalee",
+        "textAfter": " gosa, bakka, ykn ogeessaatiin filadhu."
+      },
+      {
+        "icon": "🎧",
+        "text": "Oduuwwan dhaggeeffadhu ",
+        "link": "Customer dashboard/stories.php",
+        "linkText": "Oduuwwan",
+        "textAfter": " fi hiriyyoota kee waliin qoodi."
+      },
+      {
+        "icon": "🛒",
+        "text": "Meeshaalee ",
+        "link": "Customer dashboard/cart.php",
+        "linkText": "kaartii kee",
+        "textAfter": " irratti dabali, kaffaltii nageenyaan raawwadhu."
+      },
+      {
+        "icon": "👤",
+        "text": "Daayirektarii kee ",
+        "link": "Customer dashboard/index.php",
+        "linkText": "daawwadhu",
+        "textAfter": ", seenaa ajajaa ilaali."
+      },
+      {
+        "icon": "🌱",
+        "text": "Bittaa fi oduuwwan kee aadaa Oromoo tiksu, maatii deeggaru."
+      }
     ],
     "steps": [
       {
@@ -115,26 +195,88 @@
     "heroTitle": "እንኳን ደህና መጡ ወደ ኦሮሞ አርቲሳን እና ተናጋሪ ገበያ",
     "heroDesc": "የኦሮሞ ባህልን ያግኙ፣ ደግፉ፣ አከብሩ! ይህ መድረክ አርቲሳኖችን፣ ተናጋሪዎችን እና ደንበኞችን በአንድነት የሚያገናኝ ነው።",
     "showcase": [
-      { "title": "ተለያዩ ምርቶች", "desc": "የኦሮሞ አርቲሳኖች የተለያዩ የተሰሩ ምርቶችን ይመልከቱ።", "link": "ምርቶችን ይመልከቱ" },
-      { "title": "የቃል ቤት ቤት ቤት", "desc": "የባህላዊ ኦሮሞ ታሪኮችን በድምፅና ቪዲዮ ይስማዉ።", "link": "ታሪኮችን ይመልከቱ" },
-      { "title": "ጋሪዎትን", "desc": "የመረጡትን እቃዎች ይመልከቱ፣ በደህና ይከፍሉ።", "link": "ጋሪዎትን ይመልከቱ" },
-      { "title": "የደንበኛ ፕሮፋይል", "desc": "ፕሮፋይልዎን ያስተካክሉ፣ ትዕዛዞትን ይመልከቱ፣ አስተዋፅኦዎን ይከታተሉ።", "link": "ወደ ፕሮፋይል ይግቡ" },
-      { "title": "የአርቲሳን እና ተናጋሪ ማዕከል", "desc": "የተባበሩ ኦሮሞ አርቲሳኖችን እና ተናጋሪዎችን ያግኙ፣ ስራቸውን ይመልከቱ፣ ባህላቸውን ያጋሩ።", "link": "ማዕከሉን ይመልከቱ" }
+      {
+        "title": "ተለያዩ ምርቶች",
+        "desc": "የኦሮሞ አርቲሳኖች የተለያዩ የተሰሩ ምርቶችን ይመልከቱ።",
+        "link": "ምርቶችን ይመልከቱ"
+      },
+      {
+        "title": "የቃል ቤት ቤት ቤት",
+        "desc": "የባህላዊ ኦሮሞ ታሪኮችን በድምፅና ቪዲዮ ይስማዉ።",
+        "link": "ታሪኮችን ይመልከቱ"
+      },
+      {
+        "title": "ጋሪዎትን",
+        "desc": "የመረጡትን እቃዎች ይመልከቱ፣ በደህና ይከፍሉ።",
+        "link": "ጋሪዎትን ይመልከቱ"
+      },
+      {
+        "title": "የደንበኛ ፕሮፋይል",
+        "desc": "ፕሮፋይልዎን ያስተካክሉ፣ ትዕዛዞትን ይመልከቱ፣ አስተዋፅኦዎን ይከታተሉ።",
+        "link": "ወደ ፕሮፋይል ይግቡ"
+      },
+      {
+        "title": "የአርቲሳን እና ተናጋሪ ማዕከል",
+        "desc": "የተባበሩ ኦሮሞ አርቲሳኖችን እና ተናጋሪዎችን ያግኙ፣ ስራቸውን ይመልከቱ፣ ባህላቸውን ያጋሩ።",
+        "link": "ማዕከሉን ይመልከቱ"
+      }
     ],
     "guidesTitle": "ከዚህ ገበያ የሚጠቀሙበት መንገድ",
     "guides": [
-      {"icon": "🔑", "text": "ይመዝገቡ ወይም ይግቡ፣ ልምድዎን ያበረታቱ እና የሚወዱትን አርቲሳኖች ደግፉ።"},
-      {"icon": "🔎", "text": "በ", "link": "Customer dashboard/products.php", "linkText": "ምርቶች ገፅ", "textAfter": " ላይ በክፍል፣ ቦታ ወይም በአርቲሳን ይፈልጉ።"},
-      {"icon": "🎧", "text": "በ", "link": "Customer dashboard/stories.php", "linkText": "ታሪኮች ገፅ", "textAfter": " ላይ ታሪኮችን ይስማዉ እና ከጓደኞቻችሁ ጋር ይካፈሉ።"},
-      {"icon": "🛒", "text": "እቃዎችን ወደ ", "link": "Customer dashboard/cart.php", "linkText": "ጋሪዎት", "textAfter": " ያክሉ እና በደህና ይከፍሉ።"},
-      {"icon": "👤", "text": "ወደ ", "link": "Customer dashboard/index.php", "linkText": "ፕሮፋይልዎ", "textAfter": " ይግቡ እና ታሪክ ትዕዛዞትን ይመልከቱ።"},
-      {"icon": "🌱", "text": "የሚገዙትና የሚያደርጉት ታሪኮች የኦሮሞ ባህልን ያጠብቃሉ እና ቤተሰቦችን ይደግፋሉ።"}
+      {
+        "icon": "🔑",
+        "text": "ይመዝገቡ ወይም ይግቡ፣ ልምድዎን ያበረታቱ እና የሚወዱትን አርቲሳኖች ደግፉ።"
+      },
+      {
+        "icon": "🔎",
+        "text": "በ",
+        "link": "Customer dashboard/products.php",
+        "linkText": "ምርቶች ገፅ",
+        "textAfter": " ላይ በክፍል፣ ቦታ ወይም በአርቲሳን ይፈልጉ።"
+      },
+      {
+        "icon": "🎧",
+        "text": "በ",
+        "link": "Customer dashboard/stories.php",
+        "linkText": "ታሪኮች ገፅ",
+        "textAfter": " ላይ ታሪኮችን ይስማዉ እና ከጓደኞቻችሁ ጋር ይካፈሉ።"
+      },
+      {
+        "icon": "🛒",
+        "text": "እቃዎችን ወደ ",
+        "link": "Customer dashboard/cart.php",
+        "linkText": "ጋሪዎት",
+        "textAfter": " ያክሉ እና በደህና ይከፍሉ።"
+      },
+      {
+        "icon": "👤",
+        "text": "ወደ ",
+        "link": "Customer dashboard/index.php",
+        "linkText": "ፕሮፋይልዎ",
+        "textAfter": " ይግቡ እና ታሪክ ትዕዛዞትን ይመልከቱ።"
+      },
+      {
+        "icon": "🌱",
+        "text": "የሚገዙትና የሚያደርጉት ታሪኮች የኦሮሞ ባህልን ያጠብቃሉ እና ቤተሰቦችን ይደግፋሉ።"
+      }
     ],
     "steps": [
-      { "title": "ተለያዩ ምርቶችን ይመልከቱ", "desc": "በእጅ የተሰሩ የኦሮሞ ምርቶችን ይመልከቱ። በክፍል፣ ቦታ ወይም በአርቲሳን ይፈልጉ።" },
-      { "title": "ታሪኮችን ይስማዉ", "desc": "ባህላዊ ኦሮሞ ታሪኮችን በድምፅና ቪዲዮ ይስማዉ። ከጓደኞቻችሁ ጋር ይካፈሉ።" },
-      { "title": "ቀላል ግዢ እና ደህና ክፍያ", "desc": "እቃዎችን ወደ ጋሪዎት ያክሉ እና በደህና ይከፍሉ። ቀላል እና ደህና!" },
-      { "title": "ማህበረሰቡን ደግፉ", "desc": "የሚገዙትና የሚያደርጉት ታሪኮች ኦሮሞ አርቲሳኖችን ደግፈዋል፣ ባህልን ያጠብቃሉ!" }
+      {
+        "title": "ተለያዩ ምርቶችን ይመልከቱ",
+        "desc": "በእጅ የተሰሩ የኦሮሞ ምርቶችን ይመልከቱ። በክፍል፣ ቦታ ወይም በአርቲሳን ይፈልጉ።"
+      },
+      {
+        "title": "ታሪኮችን ይስማዉ",
+        "desc": "ባህላዊ ኦሮሞ ታሪኮችን በድምፅና ቪዲዮ ይስማዉ። ከጓደኞቻችሁ ጋር ይካፈሉ።"
+      },
+      {
+        "title": "ቀላል ግዢ እና ደህና ክፍያ",
+        "desc": "እቃዎችን ወደ ጋሪዎት ያክሉ እና በደህና ይከፍሉ። ቀላል እና ደህና!"
+      },
+      {
+        "title": "ማህበረሰቡን ደግፉ",
+        "desc": "የሚገዙትና የሚያደርጉት ታሪኮች ኦሮሞ አርቲሳኖችን ደግፈዋል፣ ባህልን ያጠብቃሉ!"
+      }
     ],
     "cta": "ገበያውን ያስገቡ",
     "taglines": [

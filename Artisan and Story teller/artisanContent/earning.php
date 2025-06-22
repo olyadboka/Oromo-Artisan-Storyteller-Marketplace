@@ -106,20 +106,7 @@ try {
   <title>Earnings - Oromo Storyteller Network</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
-  <style>
-    .storyteller-header {
-      background: linear-gradient(135deg, #1e3a8a 0%, #7c2d12 100%);
-    }
 
-    .earning-card {
-      transition: transform 0.2s;
-    }
-
-    .earning-card:hover {
-      transform: translateY(-5px);
-    }
-  </style>
 </head>
 
 <body class="bg-gray-50">

@@ -1,6 +1,15 @@
 <?php
 include '../dbConnection/dbConnection.php';
 
+$sql = "SELECT * FROM orders ORDER BY date DESC";
+$result = $con->query($sql);
+$orders = [];
+if ($result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+        $orders[] = $row;
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -51,14 +60,12 @@ include '../dbConnection/dbConnection.php';
       <nav class="flex overflow-x-auto">
         <a href="#" class="px-6 py-4 font-medium text-red-600 border-b-2 border-red-600">Overview</a>
         <a href="./product.php" class="px-6 py-4 font-medium text-gray-600 hover:text-red-600">Products</a>
-
         <a href="#" class="px-6 py-4 font-medium text-gray-600 hover:text-red-600">Orders</a>
         <a href="./earning.php" class="px-6 py-4 font-medium text-gray-600 hover:text-red-600">Earnings</a>
-
-        <a href="#" class="px-6 py-4 font-medium text-gray-600 hover:text-red-600">Messages</a>
       </nav>
     </div>
   </div>
+
   <!-- Main Content -->
   <main class="container mx-auto px-4 py-8">
     <div class="flex justify-between items-center mb-8">
@@ -80,9 +87,7 @@ include '../dbConnection/dbConnection.php';
             <i class="fas fa-chevron-down"></i>
           </div>
         </div>
-        <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
-          <i class="fas fa-download mr-2"></i> Export
-        </button>
+
       </div>
     </div>
 
@@ -101,62 +106,51 @@ include '../dbConnection/dbConnection.php';
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
-            <!-- Order 1 -->
+            <?php foreach ($orders as $order): ?>
             <tr class="hover:bg-gray-50">
-              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#ORD-1245</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">John D.</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Jun 15, 2023</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">3</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">ETB 1,250</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                #ORD-<?php echo $order['order_id']; ?></td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Customer
+                #<?php echo $order['customer_id']; ?></td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <?php echo date('M j, Y', strtotime($order['date'])); ?></td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?php echo $order['items']; ?></td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">ETB
+                <?php echo number_format($order['total']); ?></td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
+                <?php 
+                $statusClasses = [
+                    'Pending' => 'bg-yellow-100 text-yellow-800',
+                    'Processing' => 'bg-blue-100 text-blue-800',
+                    'Shipped' => 'bg-green-100 text-green-800',
+                    'Completed' => 'bg-purple-100 text-purple-800',
+                    'Cancelled' => 'bg-red-100 text-red-800'
+                ];
+                $statusClass = $statusClasses[$order['status']] ?? 'bg-gray-100 text-gray-800';
+                ?>
+                <span class="px-2 py-1 text-xs font-semibold rounded-full <?php echo $statusClass; ?>">
+                  <?php echo $order['status']; ?>
+                </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                <button class="text-red-600 hover:text-red-900 mr-3">
+                <?php if ($order['status'] == 'Pending'): ?>
+                <button class="text-red-600 hover:text-red-900 mr-3 process-btn"
+                  data-order-id="<?php echo $order['order_id']; ?>">
                   <i class="fas fa-check"></i> Process
                 </button>
-                <button class="text-gray-600 hover:text-gray-900">
-                  <i class="fas fa-eye"></i> View
-                </button>
-              </td>
-            </tr>
-
-            <!-- Order 2 -->
-            <tr class="hover:bg-gray-50">
-              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#ORD-1244</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Sarah M.</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Jun 14, 2023</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">ETB 850</td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">Processing</span>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                <button class="text-red-600 hover:text-red-900 mr-3">
+                <?php elseif ($order['status'] == 'Processing'): ?>
+                <button class="text-red-600 hover:text-red-900 mr-3 ship-btn"
+                  data-order-id="<?php echo $order['order_id']; ?>">
                   <i class="fas fa-truck"></i> Ship
                 </button>
-                <button class="text-gray-600 hover:text-gray-900">
+                <?php endif; ?>
+                <button class="text-gray-600 hover:text-gray-900 view-btn"
+                  data-order-id="<?php echo $order['order_id']; ?>">
                   <i class="fas fa-eye"></i> View
                 </button>
               </td>
             </tr>
-
-            <!-- Order 3 -->
-            <tr class="hover:bg-gray-50">
-              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#ORD-1243</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Michael T.</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Jun 12, 2023</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">1</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">ETB 350</td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Shipped</span>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                <button class="text-gray-600 hover:text-gray-900">
-                  <i class="fas fa-eye"></i> View
-                </button>
-              </td>
-            </tr>
+            <?php endforeach; ?>
           </tbody>
         </table>
       </div>
@@ -176,8 +170,9 @@ include '../dbConnection/dbConnection.php';
         <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
           <div>
             <p class="text-sm text-gray-700">
-              Showing <span class="font-medium">1</span> to <span class="font-medium">3</span> of <span
-                class="font-medium">8</span> orders
+              Showing <span class="font-medium">1</span> to <span
+                class="font-medium"><?php echo count($orders); ?></span> of <span
+                class="font-medium"><?php echo count($orders); ?></span> orders
             </p>
           </div>
           <div>
@@ -210,6 +205,33 @@ include '../dbConnection/dbConnection.php';
       </div>
     </div>
   </main>
+
+  <!-- Order Details Modal -->
+  <div id="orderModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
+    <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-2/3 lg:w-1/2 shadow-lg rounded-md bg-white">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="text-lg font-semibold text-gray-800">Order Details</h3>
+        <button id="closeModal" class="text-gray-500 hover:text-gray-700">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="py-4">
+        <div id="orderDetailsContent">
+
+        </div>
+      </div>
+      <div class="flex justify-end pt-2 border-t">
+        <button id="saveStatusBtn" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+          Save Changes
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="./js/orders.js">
+
+  </script>
 
   <?php
 include '../common/footer.php';
