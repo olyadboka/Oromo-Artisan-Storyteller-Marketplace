@@ -2,13 +2,13 @@
 
 // session_start();
 // include './dbConnection.php';
-$_SESSION['user_id'] = 8;
-$user_id= $_SESSION['user_id'];
-$sql = "SELECT profileImage from users where id = $user_id";
-$result = mysqli_query($con, $sql);
-while($row = mysqli_fetch_assoc($result)){
-  $profileData = $row['profileImage'];
-}
+// $_SESSION['user_id'] = 8;
+// $user_id= $_SESSION['user_id'];
+// $sql = "SELECT profileImage from users where id = $user_id";
+// $result = mysqli_query($con, $sql);
+// while($row = mysqli_fetch_assoc($result)){
+//   $profileData = $row['profileImage'];
+// }
 
 ?>
 
