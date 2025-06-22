@@ -158,31 +158,7 @@ foreach ($engagement as $eng) {
 </head>
 
 <body class="bg-gray-50">
-  <!-- Dashboard Header -->
-  <header class="storyteller-header text-white">
-    <div class="container mx-auto px-4 py-8">
-      <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
-        <div class="flex items-center space-x-6 mb-6 md:mb-0">
-          <img
-            src="<?php echo htmlspecialchars($storyteller['profile_image_url'] ?? 'uploads/profiles/default-profile.jpg'); ?>"
-            alt="Storyteller"
-            class="w-20 h-20 rounded-full border-4 border-white border-opacity-30 object-cover shadow-lg">
-          <div>
-            <h1 class="text-3xl font-bold">
-              <?php echo htmlspecialchars($storyteller['artistic_name'] ?? 'Unknown Storyteller'); ?></h1>
-            <p class="text-white text-opacity-80 flex items-center">
-              <i class="fas fa-map-marker-alt mr-2"></i>
-              <?php echo htmlspecialchars($storyteller['location'] ?? 'Unknown Location'); ?>
-              <span class="ml-4 px-3 py-1 bg-white bg-opacity-20 rounded-full text-sm">
-                <i class="fas fa-certificate mr-1"></i>
-                <?php echo ucfirst($storyteller['verification_status'] ?? 'Pending') ?> Storykeeper
-              </span>
-            </p>
-            <div class="flex mt-2 space-x-2">
-              <?php foreach ($specializations as $spec): ?>
-              <span
-                class="px-2 py-1 bg-white bg-opacity-10 rounded text-xs"><?php echo htmlspecialchars(trim($spec)); ?></span>
-              <?php endforeach; ?>
+
             </div>
           </div>
         </div>
@@ -198,73 +174,7 @@ foreach ($engagement as $eng) {
     </div>
   </header>
 
-  <!-- Dashboard Navigation -->
-  <nav class="bg-white shadow-sm sticky top-0 z-10">
-    <div class="container mx-auto px-4">
-      <div class="flex overflow-x-auto">
-        <a href="#" class="px-6 py-4 font-medium text-blue-800 border-b-2 border-blue-800">
-          <i class="fas fa-home mr-2"></i> Dashboard
-        </a>
-        <a href="mystory.php" class="px-6 py-4 font-medium text-gray-600 hover:text-blue-800">
-          <i class="fas fa-book-open mr-2"></i> My Stories
-        </a>
-        <a href="events.php" class="px-6 py-4 font-medium text-gray-600 hover:text-blue-800">
-          <i class="fas fa-calendar-alt mr-2"></i> Events
-        </a>
-        <a href="community.php" class="px-6 py-4 font-medium text-gray-600 hover:text-blue-800">
-          <i class="fas fa-comments mr-2"></i> Community
-        </a>
-        <a href="analytics.php" class="px-6 py-4 font-medium text-gray-600 hover:text-blue-800">
-          <i class="fas fa-chart-line mr-2"></i> Analytics
-        </a>
-        <a href="#" class="px-6 py-4 font-medium text-gray-600 hover:text-blue-800">
-          <i class="fas fa-wallet mr-2"></i> Earnings
-        </a>
-      </div>
-    </div>
-  </nav>
 
-  <!-- Main Content -->
-  <main class="container mx-auto px-4 py-8">
-    <!-- Stats Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-      <div class="bg-white rounded-xl shadow p-6">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-gray-500">Total Stories</p>
-            <h3 class="text-3xl font-bold text-gray-800 mt-1"><?php echo $total_stories; ?></h3>
-          </div>
-          <div class="p-3 bg-blue-100 rounded-lg text-blue-800">
-            <i class="fas fa-book-open text-2xl"></i>
-          </div>
-        </div>
-        <a href="mystory.php" class="mt-4 inline-block text-blue-600 hover:text-blue-800 text-sm font-medium">
-          View all stories <i class="fas fa-arrow-right ml-1"></i>
-        </a>
-      </div>
-      <div class="bg-white rounded-xl shadow p-6">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-gray-500">Monthly Listeners</p>
-            <h3 class="text-3xl font-bold text-gray-800 mt-1"><?php echo number_format($monthly_listeners); ?></h3>
-          </div>
-          <div class="p-3 bg-red-100 rounded-lg text-red-800">
-            <i class="fas fa-headphones text-2xl"></i>
-          </div>
-        </div>
-        <a href="analytics.php" class="mt-4 inline-block text-blue-600 hover:text-blue-800 text-sm font-medium">
-          See analytics <i class="fas fa-arrow-right ml-1"></i>
-        </a>
-      </div>
-      <div class="bg-white rounded-xl shadow p-6">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-gray-500">Earnings (Last 30d)</p>
-            <h3 class="text-3xl font-bold text-gray-800 mt-1">ETB <?php echo number_format($earnings, 2); ?></h3>
-          </div>
-          <div class="p-3 bg-green-100 rounded-lg text-green-800">
-            <i class="fas fa-coins text-2xl"></i>
-          </div>
         </div>
         <a href="#" class="mt-4 inline-block text-blue-600 hover:text-blue-800 text-sm font-medium">
           Withdraw funds <i class="fas fa-arrow-right ml-1"></i>
@@ -399,18 +309,7 @@ foreach ($engagement as $eng) {
           </div>
         </div>
 
-        <!-- Quick Translation Tool -->
-        <div class="bg-white rounded-xl shadow p-6">
-          <h2 class="text-xl font-bold text-gray-800 mb-4">Translate Story</h2>
-          <div class="space-y-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Select Story</label>
-              <select
-                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">
-                <?php foreach ($stories as $story): ?>
-                <option><?php echo htmlspecialchars($story['title']); ?></option>
-                <?php endforeach; ?>
-              </select>
+
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Translate to</label>

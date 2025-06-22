@@ -12,10 +12,8 @@
 
   .landing-hero {
     margin-top: -1rem;
-    background:
-      url("https://media.licdn.com/dms/image/v2/D4E12AQHQteOqo9FyOQ/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1695207472629?e=2147483647&v=beta&t=rE19TLABHKh6-VcwvjTRJqln9mQgTUTAM0orhTBgEyg") center/cover no-repeat,
-      linear-gradient(rgba(255, 244, 230, 0), rgba(255, 244, 230, 0));
-    filter: blur(8px);
+    /* Remove background image here, keep only gradient if desired */
+    background: linear-gradient(rgba(255, 244, 230, 0), rgba(255, 244, 230, 0));
     background-blend-mode: lighten;
     border-radius: 1.5em;
     box-shadow: 0 8px 40px #7c4f1d22;
@@ -59,20 +57,6 @@
       opacity: 1;
       transform: translateY(0);
     }
-  }
-
-  .landing-hero::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(120deg,
-        rgba(224, 195, 163, 0.18) 60%,
-        rgba(124, 79, 29, 0.1) 100%);
-    z-index: 0;
-    border-radius: 1.5em;
   }
 
   .landing-hero h1 {
@@ -415,6 +399,7 @@
   </div>
   <main>
     <div class="landing-hero">
+     
       <h1 id="heroTitle">Oromo Artisan & Storyteller Anaadhufuu!!</h1>
       <p id="heroDesc">Discover, support, and celebrate Oromo culture through artisan crafts and oral storytelling. This
         platform connects artisans, storytellers, and Tourists in a vibrant, fair-trade community.</p>
@@ -436,15 +421,65 @@
       <a id="ctaBtn" href="Customer dashboard/index.php">Enter Marketplace</a>
     </div>
   </main>
+  <style>
+  body {
+    background: linear-gradient(120deg, #f8f8f8 60%, #e0c3a3 100%);
+  }
+
+  .landing-hero {
+    margin-top: -1rem;
+    /* Only gradient here, no background image */
+    background: linear-gradient(rgba(255, 244, 230, 0), rgba(255, 244, 230, 0));
+    background-blend-mode: lighten;
+    border-radius: 1.5em;
+    box-shadow: 0 8px 40px #7c4f1d22;
+    padding: 3.5em 1.5em 2.7em 1.5em;
+    margin: 2.5em auto 2em auto;
+    max-width: 100vw;
+    height: 80vh;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    animation: heroFadeIn 1.2s ease;
+  }
+
+  .landing-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      url("https://media.licdn.com/dms/image/v2/D4E12AQHQteOqo9FyOQ/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1695207472629?e=2147483647&v=beta&t=rE19TLABHKh6-VcwvjTRJqln9mQgTUTAM0orhTBgEyg") center/cover no-repeat,
+      linear-gradient(rgba(255, 244, 230, 0.7), rgba(255, 244, 230, 0.7));
+    filter: blur(12px);
+    z-index: -1;
+    border-radius: 1.5em;
+    opacity: 0.85;
+  }
+
+  .showcase-card {
+    /* existing styles */
+  }
+
+  .guide-icon {
+    /* existing styles */
+  }
+
+  .step {
+    /* existing styles */
+  }
+
+  /* Add any other existing styles here */
+  </style>
   <script>
   // Language integration
   let langData = {};
   let currentLang = 'en';
   const showcaseImages = [
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMZGYbSKSQoi7nVCcmPgnh_8adNDLuC10BfaZ-gibOgEHzZloqh_KD6_oaq88PjXB9NXs&usqp=CAU",
-    "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80",
-    "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
-    "https://images.unsplash.com/photo-1511367461989-f85a21fda167?auto=format&fit=crop&w=400&q=80",
+    "images/tools.jpg",
+    "images/story.jpg",
+    "images/cart.png",
+    "images/dashboard.png",
+    "images/art.jpg",
     "https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=400&q=80"
   ];
   const showcaseLinks = [

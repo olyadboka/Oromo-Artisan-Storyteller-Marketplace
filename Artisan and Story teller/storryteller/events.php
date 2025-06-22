@@ -261,10 +261,10 @@ if (isset($_GET['edit_event_id'])) {
         </div>
         <div class="flex space-x-4">
           <button class="px-5 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg transition">
-            <i class="fas fa-bell mr-2"></i> Notifications
+            <i class="fas fa-cog mr-2"></i> as customer
           </button>
           <button class="px-5 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg transition">
-            <i class="fas fa-cog mr-2"></i> Settings
+            <i class="fas fa-sign-out-alt mr-2"></i> Logout
           </button>
         </div>
       </div>
