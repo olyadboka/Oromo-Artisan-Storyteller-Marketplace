@@ -132,13 +132,13 @@ if (isset($con) && $con && $con instanceof mysqli && $con->connect_errno === 0) 
   .dropdown-menu-end[aria-labelledby="langDropdown"] {
     min-width: 8rem;
   }
-  /* Force navbar and nav links to be visible for debugging */
-  .navbar-collapse, .navbar-nav {
+  /* Remove forced debug CSS for production */
+  /* .navbar-collapse, .navbar-nav {
     display: flex !important;
     opacity: 1 !important;
     visibility: visible !important;
     height: auto !important;
-  }
+  } */
   @media (max-width: 991.98px) {
     .navbar-collapse {
       display: none !important;
@@ -157,3 +157,4 @@ if (isset($con) && $con && $con instanceof mysqli && $con->connect_errno === 0) 
       text-align: left;
     }
   }
+</style>

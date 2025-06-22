@@ -1,18 +1,10 @@
-<?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-?>
-<!DOCTYPE html>
-<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Welcome | Oromo Artisan & Storyteller Marketplace</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
   <style>
   body {
     background: linear-gradient(120deg, #f8f8f8 60%, #e0c3a3 100%);
@@ -331,10 +323,8 @@ if (session_status() === PHP_SESSION_NONE) {
     display: block;
     text-align: right;
     max-width: 420px;
-    margin: 0 0 0 auto !important;
-    /* align right, no bottom margin */
-    padding: 0 !important;
-    /* no padding */
+    margin: 0 0 0 auto !important; /* align right, no bottom margin */
+    padding: 0 !important; /* no padding */
     position: relative;
     top: 0;
   }
@@ -412,12 +402,9 @@ if (session_status() === PHP_SESSION_NONE) {
       text-align: right;
       display: block;
     }
-
     .landing-hero {
-      margin-top: 0.3 !important;
-      /* Remove all top margin */
-      padding-top: 0 !important;
-      /* Remove all top padding */
+      margin-top: 0.3 !important; /* Remove all top margin */
+      padding-top: 0 !important; /* Remove all top padding */
       max-width: 540px !important;
       margin-left: auto !important;
       margin-right: auto !important;
@@ -425,43 +412,94 @@ if (session_status() === PHP_SESSION_NONE) {
   }
   </style>
 
+  </link>
 </head>
+
 <body>
-<?php include 'common/header.php'; ?>
-<!-- Main Content Start -->
-<main style="margin-top: 7.2rem;">
-  <div class="lang-select-bar">
-    <select id="langSelect"
-      style="padding:0.4em 1em;border-radius:1.2em;border:1px solid #e0c3a3;font-size:1em;background:#fffbe6;color:#7c4f1d;font-weight:bold;">
-      <option value="en">English</option>
-      <option value="om">Afaan Oromo</option>
-      <option value="am">Amharic</option>
-    </select>
-  </div>
-  <div class="landing-hero">
-    <h1 id="heroTitle">Oromo Artisan & Storyteller Anaadhufuu!!</h1>
-    <p id="heroDesc">Discover, support, and celebrate Oromo culture through artisan crafts and oral storytelling. This
-      platform connects artisans, storytellers, and Tourists in a vibrant, fair-trade community.</p>
-  </div>
-  <div class="showcase-animated-tagline" id="animatedTagline">Empowering Artisans</div>
-  <div class="landing-showcase" id="showcaseCards">
-    <!-- Showcase cards will be rendered by JS -->
-  </div>
-  <div class="landing-guides">
-    <h2 id="guidesTitle">How to Get the Most Out of This Marketplace</h2>
-    <ul id="guidesList">
-      <!-- Guide items will be rendered by JS -->
-    </ul>
-  </div>
-  <div class="landing-steps" id="stepsList">
-    <!-- Steps will be rendered by JS -->
-  </div>
-  <div class="landing-cta">
-    <a id="ctaBtn" href="Customer dashboard/index.php">Enter Marketplace</a>
-  </div>
-</main>
-<!-- Main Content End -->
-<script>
+  <?php include './common/header.php'; ?>
+  <!-- Main Content Start -->
+  <main style="padding-top: 7.5rem;">
+    <div class="lang-select-bar">
+      <select id="langSelect"
+        style="padding:0.4em 1em;border-radius:1.2em;border:1px solid #e0c3a3;font-size:1em;background:#fffbe6;color:#7c4f1d;font-weight:bold;">
+        <option value="en">English</option>
+        <option value="om">Afaan Oromo</option>
+        <option value="am">Amharic</option>
+      </select>
+    </div>
+    <div class="landing-hero">
+      <h1 id="heroTitle">Oromo Artisan & Storyteller Anaadhufuu!!</h1>
+      <p id="heroDesc">Discover, support, and celebrate Oromo culture through artisan crafts and oral storytelling. This
+        platform connects artisans, storytellers, and Tourists in a vibrant, fair-trade community.</p>
+    </div>
+    <div class="showcase-animated-tagline" id="animatedTagline">Empowering Artisans</div>
+    <div class="landing-showcase" id="showcaseCards">
+      <!-- Showcase cards will be rendered by JS -->
+    </div>
+    <div class="landing-guides">
+      <h2 id="guidesTitle">How to Get the Most Out of This Marketplace</h2>
+      <ul id="guidesList">
+        <!-- Guide items will be rendered by JS -->
+      </ul>
+    </div>
+    <div class="landing-steps" id="stepsList">
+      <!-- Steps will be rendered by JS -->
+    </div>
+    <div class="landing-cta">
+      <a id="ctaBtn" href="Customer dashboard/index.php">Enter Marketplace</a>
+    </div>
+  </main>
+  <!-- Main Content End -->
+  <style>
+  body {
+    background: linear-gradient(120deg, #f8f8f8 60%, #e0c3a3 100%);
+  }
+
+  .landing-hero {
+    margin-top: -1rem;
+    /* Only gradient here, no background image */
+    background: linear-gradient(rgba(255, 244, 230, 0), rgba(255, 244, 230, 0));
+    background-blend-mode: lighten;
+    border-radius: 1.5em;
+    box-shadow: 0 8px 40px #7c4f1d22;
+    padding: 3.5em 1.5em 2.7em 1.5em;
+    margin: 2.5em auto 2em auto;
+    max-width: 100vw;
+    height: 80vh;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    animation: heroFadeIn 1.2s ease;
+  }
+
+  .landing-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      url("https://media.licdn.com/dms/image/v2/D4E12AQHQteOqo9FyOQ/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1695207472629?e=2147483647&v=beta&t=rE19TLABHKh6-VcwvjTRJqln9mQgTUTAM0orhTBgEyg") center/cover no-repeat,
+      linear-gradient(rgba(255, 244, 230, 0.7), rgba(255, 244, 230, 0.7));
+    filter: blur(12px);
+    z-index: -1;
+    border-radius: 1.5em;
+    opacity: 0.85;
+  }
+
+  .showcase-card {
+    /* existing styles */
+  }
+
+  .guide-icon {
+    /* existing styles */
+  }
+
+  .step {
+    /* existing styles */
+  }
+
+  /* Add any other existing styles here */
+  </style>
+  <script>
   // Language integration
   let langData = {};
   let currentLang = 'en';
@@ -580,6 +618,5 @@ if (session_status() === PHP_SESSION_NONE) {
   window.addEventListener('scroll', revealShowcaseCards);
   window.addEventListener('load', revealShowcaseCards);
   </script>
-<?php include './common/footer.php'; ?>
+  <?php include './common/footer.php'; ?>
 </body>
-</html>
