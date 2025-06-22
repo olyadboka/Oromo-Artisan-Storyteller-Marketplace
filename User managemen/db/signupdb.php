@@ -1,6 +1,6 @@
 <?php
 session_start();
-include "./db/dbConnection.php";
+include "dbConnection.php";
 
 $fullname = filter_input(INPUT_POST, 'fullname', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $userName = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS);

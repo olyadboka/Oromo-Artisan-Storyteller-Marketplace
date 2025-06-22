@@ -1,6 +1,6 @@
 <?php
 session_start();
-include "./db/dbConnection.php";
+include "dbConnection.php";
 
 function cleanInput($data) {
     $data = trim($data);
