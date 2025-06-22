@@ -1,4 +1,5 @@
 <?php
+// This page is for commission settings in the admin panel
 include '../common/header.php';
 ?>
 <style>
@@ -27,7 +28,7 @@ include '../common/header.php';
   <div class="admin-commission-main" style="flex:1; padding:30px; min-width:0;">
     <?php
     // Use a static commission rate (change here if needed)
-    $currentRate = 10;
+    $currentCommissionRate = 10;
     ?>
     <div class="my-5">
       <h1 class="mb-4 text-center">Commission Settings</h1>
@@ -35,7 +36,7 @@ include '../common/header.php';
         <span class="icon"><i class="fa fa-percent"></i></span>
         <div>
           <div style="font-size:1.1em; color:#e6a100;">Current Platform Commission Rate</div>
-          <div style="font-size:2em; font-weight:bold; color:#2d7a2d;"> <?= htmlspecialchars($currentRate) ?>% </div>
+          <div style="font-size:2em; font-weight:bold; color:#2d7a2d;"> <?php echo htmlspecialchars($currentCommissionRate); ?>% </div>
         </div>
       </div>
       <div class="card">
@@ -44,7 +45,7 @@ include '../common/header.php';
           <form class="row g-3">
             <div class="col-md-6">
               <label for="commission" class="form-label">Platform Commission Rate (%)</label>
-              <input type="number" min="0" max="100" step="0.1" class="form-control" id="commission" name="commission" value="<?= htmlspecialchars($currentRate) ?>" disabled>
+              <input type="number" min="0" max="100" step="0.1" class="form-control" id="commission" name="commission" value="<?php echo htmlspecialchars($currentCommissionRate); ?>" disabled>
             </div>
             <div class="col-md-6 d-flex align-items-end">
               <button type="button" class="btn btn-primary" disabled>Update</button>

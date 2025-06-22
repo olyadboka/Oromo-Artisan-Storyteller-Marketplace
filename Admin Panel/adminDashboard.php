@@ -1,17 +1,48 @@
 <?php
+// Include the header and database connection files
 include '../common/header.php';
 include '../common/dbConnection.php';
 
 // --- Analytics Queries ---
-$userCount = $conn->query("SELECT COUNT(*) as cnt FROM users")->fetch_assoc()['cnt'] ?? 0;
-$orderCount = $conn->query("SELECT COUNT(*) as cnt FROM orders")->fetch_assoc()['cnt'] ?? 0;
-$bestProduct = $conn->query("SELECT p.name, SUM(oi.quantity) as sold FROM order_items oi JOIN products p ON oi.item_id=p.id WHERE oi.type='product' GROUP BY oi.item_id ORDER BY sold DESC LIMIT 1")->fetch_assoc()['name'] ?? '-';
-$topStory = $conn->query("SELECT s.title, SUM(oi.quantity) as sold FROM order_items oi JOIN stories s ON oi.item_id=s.id WHERE oi.type='story' GROUP BY oi.item_id ORDER BY sold DESC LIMIT 1")->fetch_assoc()['title'] ?? '-';
+// Get total users
+$userCountResult = $conn->query("SELECT COUNT(*) as cnt FROM users");
+if ($userCountResult) {
+    $userCountRow = $userCountResult->fetch_assoc();
+    $userCount = $userCountRow['cnt'];
+} else {
+    $userCount = 0;
+}
+// Get total orders
+$orderCountResult = $conn->query("SELECT COUNT(*) as cnt FROM orders");
+if ($orderCountResult) {
+    $orderCountRow = $orderCountResult->fetch_assoc();
+    $orderCount = $orderCountRow['cnt'];
+} else {
+    $orderCount = 0;
+}
+// Get best selling product
+$bestProductResult = $conn->query("SELECT p.name, SUM(oi.quantity) as sold FROM order_items oi JOIN products p ON oi.item_id=p.id WHERE oi.type='product' GROUP BY oi.item_id ORDER BY sold DESC LIMIT 1");
+if ($bestProductResult && $bestProductResult->num_rows > 0) {
+    $bestProductRow = $bestProductResult->fetch_assoc();
+    $bestProduct = $bestProductRow['name'];
+} else {
+    $bestProduct = '-';
+}
+// Get top story
+$topStoryResult = $conn->query("SELECT s.title, SUM(oi.quantity) as sold FROM order_items oi JOIN stories s ON oi.item_id=s.id WHERE oi.type='story' GROUP BY oi.item_id ORDER BY sold DESC LIMIT 1");
+if ($topStoryResult && $topStoryResult->num_rows > 0) {
+    $topStoryRow = $topStoryResult->fetch_assoc();
+    $topStory = $topStoryRow['title'];
+} else {
+    $topStory = '-';
+}
 // User growth by month (last 6 months)
-$userGrowth = $conn->query("SELECT DATE_FORMAT(created_at, '%Y-%m') as month, COUNT(*) as count FROM users GROUP BY month ORDER BY month DESC LIMIT 6");
-$userGrowthData = [];
-while ($row = $userGrowth->fetch_assoc()) {
-    $userGrowthData[] = $row;
+$userGrowthResult = $conn->query("SELECT DATE_FORMAT(created_at, '%Y-%m') as month, COUNT(*) as count FROM users GROUP BY month ORDER BY month DESC LIMIT 6");
+$userGrowthData = array();
+if ($userGrowthResult) {
+    while ($row = $userGrowthResult->fetch_assoc()) {
+        $userGrowthData[] = $row;
+    }
 }
 $userGrowthData = array_reverse($userGrowthData);
 ?>
@@ -141,6 +172,7 @@ $userGrowthData = array_reverse($userGrowthData);
 }
 </style>
 <script>
+// This function toggles the sidebar for mobile view
 function toggleSidebar(open) {
   var sidebar = document.getElementById('adminSidebarMobile');
   var backdrop = document.getElementById('adminSidebarBackdrop');
@@ -155,6 +187,7 @@ function toggleSidebar(open) {
 </script>
 <div class="admin-dashboard-flex d-flex" style="min-height:100vh; position:relative;">
 
+  <!-- Sidebar toggle button for mobile -->
   <button class="btn btn-outline-secondary d-md-none mb-3 mt-2" style="position:fixed; top:10px; left:10px; z-index:1100;" onclick="toggleSidebar(true)">
     <i class="fa fa-bars"></i> Menu
   </button>
@@ -184,28 +217,28 @@ function toggleSidebar(open) {
             <span class="icon" style="background:linear-gradient(135deg,#1a4a7a 60%,#2d7a2d 100%);"><i class="fa fa-users"></i></span>
             <div>
               <h6 class="mb-1">Total Users</h6>
-              <div class="stat"> <?= $userCount ?> </div>
+              <div class="stat"> <?php echo $userCount; ?> </div>
             </div>
         </div>
         <div class="admin-dashboard-card col-12 col-sm-6 col-md-3">
             <span class="icon" style="background:linear-gradient(135deg,#2d7a2d 60%,#1a4a7a 100%);"><i class="fa fa-shopping-cart"></i></span>
             <div>
               <h6 class="mb-1">Total Orders</h6>
-              <div class="stat"> <?= $orderCount ?> </div>
+              <div class="stat"> <?php echo $orderCount; ?> </div>
             </div>
         </div>
         <div class="admin-dashboard-card col-12 col-sm-6 col-md-3">
             <span class="icon" style="background:linear-gradient(135deg,#f7b731 60%,#1a4a7a 100%);"><i class="fa fa-cube"></i></span>
             <div>
               <h6 class="mb-1">Best-Selling Product</h6>
-              <div class="stat-secondary"> <?= htmlspecialchars($bestProduct) ?> </div>
+              <div class="stat-secondary"> <?php echo htmlspecialchars($bestProduct); ?> </div>
             </div>
         </div>
         <div class="admin-dashboard-card col-12 col-sm-6 col-md-3">
             <span class="icon" style="background:linear-gradient(135deg,#e17055 60%,#1a4a7a 100%);"><i class="fa fa-book-open"></i></span>
             <div>
               <h6 class="mb-1">Top Story</h6>
-              <div class="stat-secondary"> <?= htmlspecialchars($topStory) ?> </div>
+              <div class="stat-secondary"> <?php echo htmlspecialchars($topStory); ?> </div>
             </div>
         </div>
     </div>
@@ -214,22 +247,30 @@ function toggleSidebar(open) {
         <svg class="growth-chart" viewBox="0 0 320 120" preserveAspectRatio="none">
         <?php
         $maxGrowth = 1;
-        foreach($userGrowthData as $row) { if($row['count'] > $maxGrowth) $maxGrowth = $row['count']; }
+        foreach($userGrowthData as $row) {
+          if($row['count'] > $maxGrowth) {
+            $maxGrowth = $row['count'];
+          }
+        }
         $barW = 36;
         $gap = 16;
         $n = count($userGrowthData);
         $chartW = $n * $barW + ($n-1)*$gap;
         $chartH = 100;
         $x = 0;
-        foreach($userGrowthData as $i=>$row):
-          $barH = $maxGrowth ? ($row['count']/$maxGrowth)*$chartH : 0;
+        foreach($userGrowthData as $i=>$row) {
+          if ($maxGrowth > 0) {
+            $barH = ($row['count']/$maxGrowth)*$chartH;
+          } else {
+            $barH = 0;
+          }
           $y = $chartH - $barH;
           $color = "#1a4a7a";
         ?>
-          <rect x="<?= $x ?>" y="<?= $y ?>" width="<?= $barW ?>" height="<?= $barH ?>" rx="7" fill="url(#barGrad)"/>
-          <text x="<?= $x+$barW/2 ?>" y="<?= $chartH+16 ?>" text-anchor="middle" font-size="12" fill="#1a4a7a"><?= htmlspecialchars(substr($row['month'],2)) ?></text>
-          <text x="<?= $x+$barW/2 ?>" y="<?= $y-6 ?>" text-anchor="middle" font-size="12" fill="#2d7a2d" font-weight="bold"><?= $row['count'] ?></text>
-        <?php $x += $barW + $gap; endforeach; ?>
+          <rect x="<?php echo $x; ?>" y="<?php echo $y; ?>" width="<?php echo $barW; ?>" height="<?php echo $barH; ?>" rx="7" fill="url(#barGrad)"/>
+          <text x="<?php echo $x+$barW/2; ?>" y="<?php echo $chartH+16; ?>" text-anchor="middle" font-size="12" fill="#1a4a7a"><?php echo htmlspecialchars(substr($row['month'],2)); ?></text>
+          <text x="<?php echo $x+$barW/2; ?>" y="<?php echo $y-6; ?>" text-anchor="middle" font-size="12" fill="#2d7a2d" font-weight="bold"><?php echo $row['count']; ?></text>
+        <?php $x += $barW + $gap; } ?>
         <defs>
           <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stop-color="#2d7a2d"/>
@@ -240,9 +281,9 @@ function toggleSidebar(open) {
         <div class="table-responsive">
         <table class="table table-bordered table-sm" style="width:100%; border-collapse:collapse;">
             <tr style="background:#f0f0f0;"><th>Month</th><th>New Users</th></tr>
-            <?php foreach($userGrowthData as $row): ?>
-                <tr><td><?= htmlspecialchars($row['month']) ?></td><td><?= $row['count'] ?></td></tr>
-            <?php endforeach; ?>
+            <?php foreach($userGrowthData as $row) { ?>
+                <tr><td><?php echo htmlspecialchars($row['month']); ?></td><td><?php echo $row['count']; ?></td></tr>
+            <?php } ?>
         </table>
         </div>
     </div>

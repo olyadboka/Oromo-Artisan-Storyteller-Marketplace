@@ -1,4 +1,5 @@
 <?php
+// This page is for homepage curation in the admin panel
 include '../common/header.php';
 ?>
 <style>
@@ -11,14 +12,17 @@ include '../common/header.php';
   <?php include 'adminSidebar.php'; ?>
   <div class="admin-curation-main" style="flex:1; padding:30px; min-width:0;">
     <?php
+    // Connect to the database
     include '../common/dbConnection.php';
+    // Handle homepage curation form submission
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['featured_artisan'], $_POST['featured_product'], $_POST['featured_story'])) {
-      $conn->query("UPDATE artisans SET is_featured=0");
-      $conn->query("UPDATE artisans SET is_featured=1 WHERE id=".intval($_POST['featured_artisan']));
-      $conn->query("UPDATE products SET is_featured=0");
-      $conn->query("UPDATE products SET is_featured=1 WHERE id=".intval($_POST['featured_product']));
-      $conn->query("UPDATE stories SET is_featured=0");
-      $conn->query("UPDATE stories SET is_featured=1 WHERE id=".intval($_POST['featured_story']));
+      // Unfeature all, then feature selected
+      $resetArtisans = $conn->query("UPDATE artisans SET is_featured=0");
+      $featureArtisan = $conn->query("UPDATE artisans SET is_featured=1 WHERE id=" . intval($_POST['featured_artisan']));
+      $resetProducts = $conn->query("UPDATE products SET is_featured=0");
+      $featureProduct = $conn->query("UPDATE products SET is_featured=1 WHERE id=" . intval($_POST['featured_product']));
+      $resetStories = $conn->query("UPDATE stories SET is_featured=0");
+      $featureStory = $conn->query("UPDATE stories SET is_featured=1 WHERE id=" . intval($_POST['featured_story']));
       echo '<div class="alert alert-success mt-3">Homepage curation updated!</div>';
     }
     ?>
@@ -32,8 +36,9 @@ include '../common/header.php';
               <label for="featured_artisan" class="form-label">Feature Artisan</label>
               <select class="form-select" id="featured_artisan" name="featured_artisan">
                 <?php
-                $res = $conn->query("SELECT id, business_name FROM artisans WHERE verification_status='verified'");
-                while ($row = $res->fetch_assoc()) {
+                // Get all verified artisans
+                $getArtisans = $conn->query("SELECT id, business_name FROM artisans WHERE verification_status='verified'");
+                while ($row = $getArtisans->fetch_assoc()) {
                   echo '<option value="' . $row['id'] . '">' . htmlspecialchars($row['business_name']) . '</option>';
                 }
                 ?>
@@ -43,8 +48,9 @@ include '../common/header.php';
               <label for="featured_product" class="form-label">Feature Product</label>
               <select class="form-select" id="featured_product" name="featured_product">
                 <?php
-                $res = $conn->query("SELECT id, name FROM products");
-                while ($row = $res->fetch_assoc()) {
+                // Get all products
+                $getProducts = $conn->query("SELECT id, name FROM products");
+                while ($row = $getProducts->fetch_assoc()) {
                   echo '<option value="' . $row['id'] . '">' . htmlspecialchars($row['name']) . '</option>';
                 }
                 ?>
@@ -54,8 +60,9 @@ include '../common/header.php';
               <label for="featured_story" class="form-label">Feature Story</label>
               <select class="form-select" id="featured_story" name="featured_story">
                 <?php
-                $res = $conn->query("SELECT id, title FROM stories");
-                while ($row = $res->fetch_assoc()) {
+                // Get all stories
+                $getStories = $conn->query("SELECT id, title FROM stories");
+                while ($row = $getStories->fetch_assoc()) {
                   echo '<option value="' . $row['id'] . '">' . htmlspecialchars($row['title']) . '</option>';
                 }
                 ?>
