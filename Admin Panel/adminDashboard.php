@@ -16,6 +16,113 @@ while ($row = $userGrowth->fetch_assoc()) {
 $userGrowthData = array_reverse($userGrowthData);
 ?>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap');
+.admin-dashboard-banner {
+  background: linear-gradient(90deg, #1a4a7a 0%, #2d7a2d 100%);
+  color: #fff;
+  border-radius: 16px;
+  padding: 32px 28px 24px 28px;
+  margin-bottom: 32px;
+  box-shadow: 0 4px 24px rgba(26,74,122,0.10);
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.admin-dashboard-banner .banner-icon {
+  font-size: 2.8em;
+  background: rgba(255,255,255,0.13);
+  border-radius: 50%;
+  padding: 18px 22px;
+  margin-right: 18px;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.admin-dashboard-banner h1 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2.1em;
+  font-weight: 700;
+  margin: 0 0 6px 0;
+}
+.admin-dashboard-banner p {
+  font-size: 1.1em;
+  margin: 0;
+  opacity: 0.93;
+}
+.admin-dashboard-cards {
+  gap: 30px !important;
+  margin-bottom: 30px;
+}
+.admin-dashboard-card {
+  background: linear-gradient(120deg, #f5f5f5 60%, #eaf6f0 100%);
+  padding: 22px 18px;
+  border-radius: 14px;
+  min-width: 180px;
+  box-shadow: 0 2px 12px rgba(26,74,122,0.07);
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  transition: box-shadow 0.2s, transform 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.admin-dashboard-card:hover {
+  box-shadow: 0 6px 24px rgba(26,74,122,0.13);
+  transform: translateY(-2px) scale(1.03);
+  z-index: 2;
+}
+.admin-dashboard-card .icon {
+  font-size: 2.2em;
+  color: #fff;
+  background: linear-gradient(135deg, #1a4a7a 60%, #2d7a2d 100%);
+  border-radius: 50%;
+  padding: 14px 16px;
+  box-shadow: 0 2px 8px rgba(26,74,122,0.10);
+  margin-right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.admin-dashboard-card h6 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  margin-bottom: 2px;
+  color: #1a4a7a;
+  letter-spacing: 0.01em;
+}
+.admin-dashboard-card .stat {
+  font-size: 1.7em;
+  color: #2d7a2d;
+  font-weight: bold;
+}
+.admin-dashboard-card .stat-secondary {
+  font-size: 1.1em;
+  color: #1a4a7a;
+  font-weight: 600;
+}
+.admin-dashboard-growth {
+  background: #fff;
+  padding: 24px 20px 18px 20px;
+  border-radius: 12px;
+  max-width: 600px;
+  overflow-x: auto;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  margin-top: 18px;
+}
+.admin-dashboard-growth h5 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  margin-bottom: 18px;
+  color: #1a4a7a;
+}
+.admin-dashboard-growth .growth-chart {
+  width: 100%;
+  min-width: 320px;
+  height: 120px;
+  margin-bottom: 10px;
+  display: block;
+}
 @media (max-width: 900px) {
   .admin-dashboard-flex { flex-direction: column !important; }
   .admin-dashboard { padding: 12px !important; }
@@ -26,26 +133,11 @@ $userGrowthData = array_reverse($userGrowthData);
   .admin-sidebar-mobile.open { transform: translateX(0); }
   .admin-sidebar-backdrop { display: block !important; position: fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.25); z-index:1049; }
   .admin-sidebar-desktop { display: none !important; }
+  .admin-dashboard-growth { max-width: 100vw; }
 }
 @media (min-width: 901px) {
   .sidebar-overlay, .admin-sidebar-mobile, .admin-sidebar-backdrop { display: none !important; }
   .admin-sidebar-desktop { display: block !important; }
-}
-.admin-dashboard-card {
-  background: #f5f5f5;
-  padding: 18px 16px;
-  border-radius: 10px;
-  min-width: 180px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-  margin-bottom: 0;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-.admin-dashboard-card .icon {
-  font-size: 2.2em;
-  color: #1a4a7a;
-  flex-shrink: 0;
 }
 </style>
 <script>
@@ -79,39 +171,72 @@ function toggleSidebar(open) {
   </div>
   <div id="adminSidebarBackdrop" class="admin-sidebar-backdrop" style="display:none;" onclick="toggleSidebar(false)"></div>
   <div class="admin-dashboard" style="flex:1; padding:30px; min-width:0;">
-    <h2 class="mb-4">Admin Analytics Dashboard</h2>
-    <div class="admin-dashboard-cards d-flex flex-wrap" style="gap:30px; margin-bottom:30px;">
+    <div class="admin-dashboard-banner mb-4">
+      <span class="banner-icon"><i class="fa fa-chart-line"></i></span>
+      <div>
+        <h1>Welcome, Admin!</h1>
+        <p>Monitor marketplace performance, user growth, and content at a glance. All analytics are live and up-to-date.</p>
+      </div>
+    </div>
+    <h2 class="mb-4" style="font-family:'Montserrat',sans-serif; font-weight:700; color:#1a4a7a;">Admin Analytics Dashboard</h2>
+    <div class="admin-dashboard-cards d-flex flex-wrap">
         <div class="admin-dashboard-card col-12 col-sm-6 col-md-3">
-            <span class="icon"><i class="fa fa-users"></i></span>
+            <span class="icon" style="background:linear-gradient(135deg,#1a4a7a 60%,#2d7a2d 100%);"><i class="fa fa-users"></i></span>
             <div>
               <h6 class="mb-1">Total Users</h6>
-              <div style="font-size:1.7em; color:#2d7a2d; font-weight:bold;"> <?= $userCount ?> </div>
+              <div class="stat"> <?= $userCount ?> </div>
             </div>
         </div>
         <div class="admin-dashboard-card col-12 col-sm-6 col-md-3">
-            <span class="icon"><i class="fa fa-shopping-cart"></i></span>
+            <span class="icon" style="background:linear-gradient(135deg,#2d7a2d 60%,#1a4a7a 100%);"><i class="fa fa-shopping-cart"></i></span>
             <div>
               <h6 class="mb-1">Total Orders</h6>
-              <div style="font-size:1.7em; color:#2d7a2d; font-weight:bold;"> <?= $orderCount ?> </div>
+              <div class="stat"> <?= $orderCount ?> </div>
             </div>
         </div>
         <div class="admin-dashboard-card col-12 col-sm-6 col-md-3">
-            <span class="icon"><i class="fa fa-cube"></i></span>
+            <span class="icon" style="background:linear-gradient(135deg,#f7b731 60%,#1a4a7a 100%);"><i class="fa fa-cube"></i></span>
             <div>
               <h6 class="mb-1">Best-Selling Product</h6>
-              <div style="font-size:1.1em; color:#1a4a7a;"> <?= htmlspecialchars($bestProduct) ?> </div>
+              <div class="stat-secondary"> <?= htmlspecialchars($bestProduct) ?> </div>
             </div>
         </div>
         <div class="admin-dashboard-card col-12 col-sm-6 col-md-3">
-            <span class="icon"><i class="fa fa-book-open"></i></span>
+            <span class="icon" style="background:linear-gradient(135deg,#e17055 60%,#1a4a7a 100%);"><i class="fa fa-book-open"></i></span>
             <div>
               <h6 class="mb-1">Top Story</h6>
-              <div style="font-size:1.1em; color:#1a4a7a;"> <?= htmlspecialchars($topStory) ?> </div>
+              <div class="stat-secondary"> <?= htmlspecialchars($topStory) ?> </div>
             </div>
         </div>
     </div>
-    <div style="background:#fff; padding:20px; border-radius:8px; max-width:500px; overflow-x:auto; box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+    <div class="admin-dashboard-growth mt-4">
         <h5 class="mb-3">User Growth (Last 6 Months)</h5>
+        <svg class="growth-chart" viewBox="0 0 320 120" preserveAspectRatio="none">
+        <?php
+        $maxGrowth = 1;
+        foreach($userGrowthData as $row) { if($row['count'] > $maxGrowth) $maxGrowth = $row['count']; }
+        $barW = 36;
+        $gap = 16;
+        $n = count($userGrowthData);
+        $chartW = $n * $barW + ($n-1)*$gap;
+        $chartH = 100;
+        $x = 0;
+        foreach($userGrowthData as $i=>$row):
+          $barH = $maxGrowth ? ($row['count']/$maxGrowth)*$chartH : 0;
+          $y = $chartH - $barH;
+          $color = "#1a4a7a";
+        ?>
+          <rect x="<?= $x ?>" y="<?= $y ?>" width="<?= $barW ?>" height="<?= $barH ?>" rx="7" fill="url(#barGrad)"/>
+          <text x="<?= $x+$barW/2 ?>" y="<?= $chartH+16 ?>" text-anchor="middle" font-size="12" fill="#1a4a7a"><?= htmlspecialchars(substr($row['month'],2)) ?></text>
+          <text x="<?= $x+$barW/2 ?>" y="<?= $y-6 ?>" text-anchor="middle" font-size="12" fill="#2d7a2d" font-weight="bold"><?= $row['count'] ?></text>
+        <?php $x += $barW + $gap; endforeach; ?>
+        <defs>
+          <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#2d7a2d"/>
+            <stop offset="100%" stop-color="#1a4a7a"/>
+          </linearGradient>
+        </defs>
+        </svg>
         <div class="table-responsive">
         <table class="table table-bordered table-sm" style="width:100%; border-collapse:collapse;">
             <tr style="background:#f0f0f0;"><th>Month</th><th>New Users</th></tr>
