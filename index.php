@@ -11,7 +11,7 @@
   }
 
   .landing-hero {
-    margin-top: -1rem;
+    margin-top: 0.7rem !important;
     /* Remove background image here, keep only gradient if desired */
     background: linear-gradient(rgba(255, 244, 230, 0), rgba(255, 244, 230, 0));
     background-blend-mode: lighten;
@@ -60,6 +60,7 @@
   }
 
   .landing-hero h1 {
+    margin-top: 1rem !important;
     font-size: 4rem;
     font-family: 'Poppins', 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     color: rgb(28, 185, 51);
@@ -73,6 +74,7 @@
   }
 
   .landing-hero p {
+    margin-top: 0.7rem !important;
     font-size: 1.3em;
     color: #f8f8ff;
     margin-bottom: 1.7em;
@@ -317,6 +319,16 @@
     margin-top: 0.1em;
   }
 
+  .lang-select-bar {
+    display: block;
+    text-align: right;
+    max-width: 420px;
+    margin: 0 0 0 auto !important; /* align right, no bottom margin */
+    padding: 0 !important; /* no padding */
+    position: relative;
+    top: 0;
+  }
+
   @media (max-width: 900px) {
     .landing-showcase {
       flex-direction: column;
@@ -382,6 +394,21 @@
       font-size: 1.5em;
       margin-bottom: 0.2em;
     }
+
+    .lang-select-bar {
+      max-width: 100vw;
+      margin: 0 0 0 auto !important;
+      padding: 0 !important;
+      text-align: right;
+      display: block;
+    }
+    .landing-hero {
+      margin-top: 0.3 !important; /* Remove all top margin */
+      padding-top: 0 !important; /* Remove all top padding */
+      max-width: 540px !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
   }
   </style>
 
@@ -389,7 +416,7 @@
 </head>
 
 <body>
-  <div style="text-align:right;max-width:900px;margin:0 auto 0.5em auto;">
+  <div class="lang-select-bar">
     <select id="langSelect"
       style="padding:0.4em 1em;border-radius:1.2em;border:1px solid #e0c3a3;font-size:1em;background:#fffbe6;color:#7c4f1d;font-weight:bold;">
       <option value="en">English</option>
@@ -399,7 +426,6 @@
   </div>
   <main>
     <div class="landing-hero">
-     
       <h1 id="heroTitle">Oromo Artisan & Storyteller Anaadhufuu!!</h1>
       <p id="heroDesc">Discover, support, and celebrate Oromo culture through artisan crafts and oral storytelling. This
         platform connects artisans, storytellers, and Tourists in a vibrant, fair-trade community.</p>
