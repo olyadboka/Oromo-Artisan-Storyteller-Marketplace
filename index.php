@@ -399,10 +399,9 @@
   </div>
   <main>
     <div class="landing-hero">
-      <h1 id="heroTitle">Oromo Artisan & Storyteller Anaadhufuu!!</h1>
+     
       <h1 id="heroTitle">Oromo Artisan & Storyteller Anaadhufuu!!</h1>
       <p id="heroDesc">Discover, support, and celebrate Oromo culture through artisan crafts and oral storytelling. This
-        platform connects artisans, storytellers, and Tourists in a vibrant, fair-trade community.</p>
         platform connects artisans, storytellers, and Tourists in a vibrant, fair-trade community.</p>
     </div>
     <div class="showcase-animated-tagline" id="animatedTagline">Empowering Artisans</div>
