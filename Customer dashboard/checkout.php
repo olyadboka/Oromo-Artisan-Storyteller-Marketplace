@@ -1,10 +1,10 @@
 <?php include '../common/header.php'; ?>
 <?php
-session_start();
+// session_start();
 include '../common/dbConnection.php';
 
 // Chapa API Key (replace with your real secret key)
-$chapa_api_key = 'CHASECK_TEST-u9j9K6wSnqLm9D3qm7VudPRLOoBaukE4'; // TODO: Replace with your Chapa secret key
+$chapa_api_key = 'CHASECK_TEST-khE3ePpSLfXh6vIghHq8f1yQdDyWHBB4'; // TODO: Replace with your Chapa secret key
 
 // Demo user ID (in real app, get from session)
 $user_id = 1;
@@ -71,11 +71,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pay'])) {
     if ($address === '') $errors[] = "Shipping Address is required.";
 
     if (!$errors) {
-        //prepare Chapa payment data
+        // Prepare Chapa payment data
         $tx_ref = 'TX-' . uniqid();
-        $callback_url = 'https://4598-196-189-123-37.ngrok-free.app/Customer%20dashboard/chapa_callback.php'; // TODO: Replace with your real callback URL
-
-         
+        $callback_url = 'https://yourdomain.com/Customer%20dashboard/chapa_callback.php'; // TODO: Replace with your real callback URL
 
         $data = [
             'amount' => $total,
@@ -92,6 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pay'])) {
             ]
         ];
 
+        // Initialize cURL with SSL verification disabled (for development only)
         $ch = curl_init('https://api.chapa.co/v1/transaction/initialize');
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Authorization: Bearer ' . $chapa_api_key,
@@ -100,16 +99,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pay'])) {
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        
+        // Disable SSL verification (development only)
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 
         $response = curl_exec($ch);
         $err = curl_error($ch);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
         if ($err) {
-            $errors[] = 'Payment initialization failed: ' . $err;
+            error_log('Chapa cURL Error: ' . $err);
+            $errors[] = 'Payment initialization failed. Please try again or contact support.';
         } else {
             $result = json_decode($response, true);
-            if (isset($result['status']) && $result['status'] == 'success') {
+            if (!$result) {
+                error_log('Chapa API Invalid Response: ' . $response);
+                $errors[] = 'Invalid response from payment gateway.';
+            } elseif (isset($result['status']) && $result['status'] == 'success') {
                 if ($is_complete_payment && $complete_payment_order) {
                     // Update existing order for complete payment
                     $order_id = $complete_payment_order['order_id'];
@@ -134,14 +142,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pay'])) {
                     // Insert order
                     $order_sql = "INSERT INTO orders (user_id, order_number, total_amount, status, shipping_address, shipping_city, shipping_phone, payment_method, payment_status) VALUES (?, ?, ?, 'pending', ?, ?, ?, ?, 'pending')";
                     $stmt = $conn->prepare($order_sql);
-                    $city = 'Addis Ababa'; // You can extract this from address or add a city field
+                    $city = 'Addis Ababa';
                     $payment_method = 'Chapa';
                     $stmt->bind_param("issssss", $user_id, $order_number, $total, $address, $city, $phone, $payment_method);
                     
                     if ($stmt->execute()) {
                         $order_id = $conn->insert_id;
                         
-                        // Insert order items (both products and stories)
+                        // Insert order items
                         foreach ($all_items as $item) {
                             $item_sql = "INSERT INTO order_items (order_id, item_id, quantity, unit_price, total_price, type) VALUES (?, ?, ?, ?, ?, ?)";
                             $item_stmt = $conn->prepare($item_sql);
@@ -156,7 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pay'])) {
                             'tx_ref' => $tx_ref
                         ];
                         
-                        // Clear both carts
+                        // Clear carts
                         $_SESSION['cart'] = [];
                         $_SESSION['story_cart'] = [];
                         
@@ -169,12 +177,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pay'])) {
                 }
             } else {
                 $msg = $result['message'] ?? 'Unknown error';
-                if (is_array($msg)) {
-                    $msg = implode(' ', array_map(function($item) {
-                        return is_array($item) ? implode(' ', $item) : $item;
-                    }, $msg));
-                }
-                $errors[] = 'Payment initialization failed: ' . $msg;
+                error_log('Chapa API Error: ' . print_r($result, true));
+                $errors[] = 'Payment failed: ' . (is_array($msg) ? implode(' ', $msg) : $msg);
             }
         }
     }
@@ -232,11 +236,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pay'])) {
               <span class="text-xs text-gray-500">x<?= $item['qty'] ?? $item['quantity'] ?></span>
               <div class="text-xs text-gray-400">
                 <?php if ($item['type'] === 'product'): ?>
-                <?= htmlspecialchars($item['category'] ?? $item['item_category']) ?> |
-                <?= htmlspecialchars($item['location'] ?? $item['item_secondary']) ?>
+                <?= htmlspecialchars($item['category'] ?? $item['item_category'] ?? '') ?> |
+                <?= htmlspecialchars($item['location'] ?? $item['item_secondary'] ?? '') ?>
                 <?php else: ?>
-                <?= htmlspecialchars($item['category'] ?? $item['item_category']) ?> |
-                <?= htmlspecialchars($item['storyteller'] ?? $item['item_secondary']) ?>
+                <?= htmlspecialchars($item['category'] ?? $item['item_category'] ?? '') ?> |
+                <?= htmlspecialchars($item['storyteller'] ?? $item['item_secondary'] ?? '') ?>
                 <?php endif; ?>
               </div>
               <span

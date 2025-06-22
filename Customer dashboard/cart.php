@@ -154,12 +154,11 @@ $grand_total = $total + $story_total;
                 <tr class="border-b">
                   <td class="py-3 px-4 flex items-center gap-4">
                     <img
-                      src="<?= htmlspecialchars($item['image'] ?: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80') ?>"
+                      src="<?= isset($item['image']) && $item['image'] ? htmlspecialchars($item['image']) : 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80' ?>"
                       alt="Product" class="w-16 h-16 object-cover rounded shadow">
                     <div>
                       <div class="font-bold text-blue-900"><?= htmlspecialchars($item['name']) ?></div>
-                      <div class="text-xs text-gray-500"><?= htmlspecialchars($item['category']) ?> |
-                        <?= htmlspecialchars($item['location']) ?></div>
+                      <div class="text-xs text-gray-500"><?php if(isset($item['category'])): ?><?= htmlspecialchars($item['category']) ?><?php endif; ?><?php if(isset($item['location'])): ?> | <?= htmlspecialchars($item['location']) ?><?php endif; ?></div>
                     </div>
                   </td>
                   <td class="py-3 px-4 font-semibold text-green-700">ETB <?= $item['price'] ?></td>

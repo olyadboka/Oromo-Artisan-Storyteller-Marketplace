@@ -1,5 +1,5 @@
 <?php
-// Database connection
+
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -13,11 +13,9 @@ try {
   die("Connection failed: " . $e->getMessage());
 }
 
-// Assume logged-in user (replace with proper authentication)
 
-$user_id = 8; // Jirenya Dhugaa for testing
+$user_id = 1;
 
-// Fetch storyteller data
 $stmt = $conn->prepare("
     SELECT s.*, u.username 
     FROM storytellers s 
@@ -27,15 +25,12 @@ $stmt = $conn->prepare("
 $stmt->execute(['user_id' => $user_id]);
 $storyteller = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// Handle case where storyteller is not found
 if (!$storyteller) {
   die("Storyteller not found for user ID: $user_id");
 }
 
-// Fetch storyteller specializations
 $specializations = $storyteller['specialization'] ? explode(',', $storyteller['specialization']) : [];
 
-// Fetch stories with listen counts and themes
 $stmt = $conn->prepare("
     SELECT s.*, COALESCE(sl.listen_count, 0) as listen_count,
            GROUP_CONCAT(st.theme) as themes
@@ -159,267 +154,286 @@ foreach ($engagement as $eng) {
 </head>
 
 <body class="bg-gray-50">
-
-  </div>
-  </div>
-  </div>
-  <div class="flex space-x-4">
-    <button class="px-5 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg transition">
-      <i class="fas fa-bell mr-2"></i> Notifications
-    </button>
-    <button class="px-5 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg transition">
-      <i class="fas fa-cog mr-2"></i> Settings
-    </button>
-  </div>
-  </div>
-  </div>
-  </header>
-
-
-  </div>
-  <a href="#" class="mt-4 inline-block text-blue-600 hover:text-blue-800 text-sm font-medium">
-    Withdraw funds <i class="fas fa-arrow-right ml-1"></i>
-  </a>
-  </div>
-  </div>
-
-  <!-- Quick Actions -->
-  <div class="bg-white rounded-xl shadow p-6 mb-8">
-    <h2 class="text-xl font-bold text-gray-800 mb-6">Quick Actions</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <a href="add_story.php"
-        class="border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-5 text-center transition-colors">
-        <div class="text-blue-600 mb-3"><i class="fas fa-microphone text-3xl"></i></div>
-        <h3 class="font-medium text-gray-800">Record New Story</h3>
-        <p class="text-sm text-gray-500 mt-1">Audio or video</p>
-      </a>
-      <a href="events.php"
-        class="border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-5 text-center transition-colors">
-        <div class="text-red-600 mb-3"><i class="fas fa-calendar-plus text-3xl"></i></div>
-        <h3 class="font-medium text-gray-800">Schedule Events</h3>
-        <p class="text-sm text-gray-500 mt-1">Live or virtual</p>
-      </a>
-      <a href="add_story.php"
-        class="border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-5 text-center transition-colors">
-        <div class="text-green-600 mb-3"><i class="fas fa-pen-fancy text-3xl"></i></div>
-        <h3 class="font-medium text-gray-800">Write Story</h3>
-        <p class="text-sm text-gray-500 mt-1">Text version</p>
-      </a>
-    </div>
-  </div>
-
-  <!-- Recent Stories & Activities -->
-  <div class="flex flex-col lg:flex-row gap-8">
-    <!-- Recent Stories -->
-    <div class="lg:w-2/3">
-      <div class="bg-white rounded-xl shadow overflow-hidden">
-        <div class="px-6 py-4 border-b border-gray-200">
-          <div class="flex items-center justify-between">
-            <h2 class="text-xl font-bold text-gray-800">Recent Stories</h2>
-            <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">View All</a>
+  <!-- Dashboard Header -->
+  <header class="storyteller-header text-white">
+    <div class="container mx-auto px-4 py-8">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+        <div class="flex items-center space-x-6 mb-6 md:mb-0">
+          <img src="<?php echo htmlspecialchars($storyteller['profile_image_url'] ?? 'uploads/profiles/default-profile.jpg'); ?>" alt="Storyteller" class="w-20 h-20 rounded-full border-4 border-white border-opacity-30 object-cover shadow-lg">
+          <div>
+            <h1 class="text-3xl font-bold"><?php echo htmlspecialchars($storyteller['artistic_name'] ?? 'Unknown Storyteller'); ?></h1>
+            <p class="text-white text-opacity-80 flex items-center">
+              <i class="fas fa-map-marker-alt mr-2"></i> <?php echo htmlspecialchars($storyteller['location'] ?? 'Unknown Location'); ?>
+              <span class="ml-4 px-3 py-1 bg-white bg-opacity-20 rounded-full text-sm">
+                <i class="fas fa-certificate mr-1"></i>
+                <?php echo ucfirst($storyteller['verification_status'] ?? 'Pending') ?> Storykeeper
+              </span>
+            </p>
+            <div class="flex mt-2 space-x-2">
+              <?php foreach ($specializations as $spec): ?>
+                <span class="px-2 py-1 bg-white bg-opacity-10 rounded text-xs"><?php echo htmlspecialchars(trim($spec)); ?></span>
+              <?php endforeach; ?>
+            </div>
           </div>
         </div>
-        <div class="divide-y divide-gray-200">
-          <?php foreach ($stories as $story): ?>
-            <div class="story-card p-6 hover:bg-gray-50 transition">
-              <div class="flex items-start">
-                <div
-                  class="media-icon <?php echo $story['media_type'] == 'audio' ? 'audio-icon' : ($story['media_type'] == 'video' ? 'video-icon' : 'text-icon'); ?> mr-4">
-                  <i
-                    class="fas fa-<?php echo $story['media_type'] == 'audio' ? 'music' : ($story['media_type'] == 'video' ? 'video' : 'file-alt'); ?>"></i>
-                </div>
-                <div class="flex-1">
-                  <h3 class="font-bold text-lg text-gray-800"><?php echo htmlspecialchars($story['title']); ?></h3>
-                  <p class="text-gray-600 mt-1"><?php echo htmlspecialchars($story['description']); ?></p>
-                  <div class="flex items-center mt-3 text-sm text-gray-500">
-                    <span class="mr-4"><i class="fas fa-tag mr-1"></i>
-                      <?php echo htmlspecialchars($story['themes'] ?? $storyteller['specialization']); ?></span>
-                    <span class="mr-4"><i class="fas fa-language mr-1"></i> <?php echo $story['language']; ?></span>
-                    <span><i class="fas fa-clock mr-1"></i>
-                      <?php echo $story['duration'] ? ($story['duration'] . ' min') : ($story['word_count'] . ' words'); ?></span>
-                  </div>
-                </div>
-                <div class="story-actions flex space-x-2 ml-4">
-                  <button class="p-2 text-blue-600 hover:bg-blue-50 rounded-full">
-                    <i class="fas fa-edit"></i>
-                  </button>
-                  <button class="p-2 text-red-600 hover:bg-red-50 rounded-full">
-                    <i class="fas fa-trash"></i>
-                  </button>
-                  <button class="p-2 text-green-600 hover:bg-green-50 rounded-full">
-                    <i class="fas fa-share-alt"></i>
-                  </button>
-                </div>
-              </div>
-              <div class="mt-4 flex items-center justify-between">
-                <div class="flex items-center">
-                  <div class="flex items-center text-yellow-400 mr-3">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star-half-alt"></i>
-                  </div>
-                  <span class="text-sm text-gray-500"><?php echo $story['listen_count']; ?>
-                    <?php echo $story['media_type'] == 'video' ? 'views' : 'listens'; ?></span>
-                </div>
-                <a href="mystory.php" class="text-sm text-blue-600 hover:text-blue-800">View details →</a>
-              </div>
-            </div>
-          <?php endforeach; ?>
-        </div>
-        <div class="px-6 py-4 border-t border-gray-200 text-center">
-          <a href="add_story.php" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
-            <i class="fas fa-plus-circle mr-2"></i> Add New Story
-          </a>
+        <div class="flex space-x-4">
+          <button class="px-5 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg transition">
+            <i class="fas fa-bell mr-2"></i> Notifications
+          </button>
+          <button class="px-5 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg transition">
+            <i class="fas fa-cog mr-2"></i> Settings
+          </button>
         </div>
       </div>
     </div>
+  </header>
 
-    <!-- Upcoming Events & Quick Tools -->
-    <div class="lg:w-1/3 space-y-6">
-      <!-- Upcoming Events -->
-      <div class="bg-white rounded-xl shadow overflow-hidden">
-        <div class="px-6 py-4 border-b border-gray-200">
-          <h2 class="text-xl font-bold text-gray-800">Upcoming Performances</h2>
+  <!-- Dashboard Navigation -->
+  <nav class="bg-white shadow-sm sticky top-0 z-10">
+    <div class="container mx-auto px-4">
+      <div class="flex overflow-x-auto">
+        <a href="storytellers.php" class="px-6 py-4 font-medium text-blue-800 border-b-2 border-blue-800">
+          <i class="fas fa-home mr-2"></i> Dashboard
+        </a>
+        <a href="mystory.php" class="px-6 py-4 font-medium text-gray-600 hover:text-blue-800">
+          <i class="fas fa-book-open mr-2"></i> My Stories
+        </a>
+        <a href="events.php" class="px-6 py-4 font-medium text-gray-600 hover:text-blue-800">
+          <i class="fas fa-calendar-alt mr-2"></i> Events
+        </a>
+        <a href="community.php" class="px-6 py-4 font-medium text-gray-600 hover:text-blue-800">
+          <i class="fas fa-comments mr-2"></i> Community
+        </a>
+        <a href="analytics.php" class="px-6 py-4 font-medium text-gray-600 hover:text-blue-800">
+          <i class="fas fa-chart-line mr-2"></i> Analytics
+        </a>
+        <a href="earning.php" class="px-6 py-4 font-medium text-gray-600 hover:text-blue-800">
+          <i class="fas fa-wallet mr-2"></i> Earnings
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 py-8">
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="bg-white rounded-xl shadow p-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-500">Total Stories</p>
+            <h3 class="text-3xl font-bold text-gray-800 mt-1"><?php echo $total_stories; ?></h3>
+          </div>
+          <div class="p-3 bg-blue-100 rounded-lg text-blue-800">
+            <i class="fas fa-book-open text-2xl"></i>
+          </div>
         </div>
-        <div class="p-6">
-          <div class="space-y-4">
-            <?php foreach ($events as $event): ?>
-              <div class="flex items-start">
-                <div class="bg-blue-100 text-blue-800 rounded-lg p-3 text-center mr-4">
-                  <div class="font-bold"><?php echo date('d', strtotime($event['event_date'])); ?></div>
-                  <div class="text-xs uppercase"><?php echo date('M', strtotime($event['event_date'])); ?></div>
-                </div>
-                <div>
-                  <h3 class="font-medium text-gray-800"><?php echo htmlspecialchars($event['title']); ?></h3>
-                  <p class="text-sm text-gray-600 mt-1"><?php echo htmlspecialchars($event['description']); ?></p>
-                  <div class="mt-2 flex items-center text-sm text-gray-500">
-                    <i class="fas fa-clock mr-1"></i>
-                    <?php echo date('h:i A', strtotime($event['start_time'])) . ' - ' . date('h:i A', strtotime($event['end_time'])); ?>
+        <a href="#" class="mt-4 inline-block text-blue-600 hover:text-blue-800 text-sm font-medium">
+          View all stories <i class="fas fa-arrow-right ml-1"></i>
+        </a>
+      </div>
+      <div class="bg-white rounded-xl shadow p-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-500">Monthly Listeners</p>
+            <h3 class="text-3xl font-bold text-gray-800 mt-1"><?php echo number_format($monthly_listeners); ?></h3>
+          </div>
+          <div class="p-3 bg-red-100 rounded-lg text-red-800">
+            <i class="fas fa-headphones text-2xl"></i>
+          </div>
+        </div>
+        <a href="analytics.php" class="mt-4 inline-block text-blue-600 hover:text-blue-800 text-sm font-medium">
+          See analytics <i class="fas fa-arrow-right ml-1"></i>
+        </a>
+      </div>
+      <div class="bg-white rounded-xl shadow p-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-500">Earnings (Last 30d)</p>
+            <h3 class="text-3xl font-bold text-gray-800 mt-1">ETB <?php echo number_format($earnings, 2); ?></h3>
+          </div>
+          <div class="p-3 bg-green-100 rounded-lg text-green-800">
+            <i class="fas fa-coins text-2xl"></i>
+          </div>
+        </div>
+        <a href="#" class="mt-4 inline-block text-blue-600 hover:text-blue-800 text-sm font-medium">
+          Withdraw funds <i class="fas fa-arrow-right ml-1"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="bg-white rounded-xl shadow p-6 mb-8">
+      <h2 class="text-xl font-bold text-gray-800 mb-6">Quick Actions</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <a href="#" class="border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-5 text-center transition-colors">
+          <div class="text-blue-600 mb-3"><i class="fas fa-microphone text-3xl"></i></div>
+          <h3 class="font-medium text-gray-800">Record New Story</h3>
+          <p class="text-sm text-gray-500 mt-1">Audio or video</p>
+        </a>
+        <a href="#" class="border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-5 text-center transition-colors">
+          <div class="text-red-600 mb-3"><i class="fas fa-calendar-plus text-3xl"></i></div>
+          <h3 class="font-medium text-gray-800">Schedule Performance</h3>
+          <p class="text-sm text-gray-500 mt-1">Live or virtual</p>
+        </a>
+        <a href="#" class="border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-5 text-center transition-colors">
+          <div class="text-green-600 mb-3"><i class="fas fa-pen-fancy text-3xl"></i></div>
+          <h3 class="font-medium text-gray-800">Write Story</h3>
+          <p class="text-sm text-gray-500 mt-1">Text version</p>
+        </a>
+      </div>
+    </div>
+
+    <!-- Recent Stories & Activities -->
+    <div class="flex flex-col lg:flex-row gap-8">
+      <!-- Recent Stories -->
+      <div class="lg:w-2/3">
+        <div class="bg-white rounded-xl shadow overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-200">
+            <div class="flex items-center justify-between">
+              <h2 class="text-xl font-bold text-gray-800">Recent Stories</h2>
+              <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">View All</a>
+            </div>
+          </div>
+          <div class="divide-y divide-gray-200">
+            <?php foreach ($stories as $story): ?>
+              <div class="story-card p-6 hover:bg-gray-50 transition">
+                <div class="flex items-start">
+                  <div class="media-icon <?php echo $story['media_type'] == 'audio' ? 'audio-icon' : ($story['media_type'] == 'video' ? 'video-icon' : 'text-icon'); ?> mr-4">
+                    <i class="fas fa-<?php echo $story['media_type'] == 'audio' ? 'music' : ($story['media_type'] == 'video' ? 'video' : 'file-alt'); ?>"></i>
                   </div>
+                  <div class="flex-1">
+                    <h3 class="font-bold text-lg text-gray-800"><?php echo htmlspecialchars($story['title']); ?></h3>
+                    <p class="text-gray-600 mt-1"><?php echo htmlspecialchars($story['description']); ?></p>
+                    <div class="flex items-center mt-3 text-sm text-gray-500">
+                      <span class="mr-4"><i class="fas fa-tag mr-1"></i> <?php echo htmlspecialchars($story['themes'] ?? $storyteller['specialization']); ?></span>
+                      <span class="mr-4"><i class="fas fa-language mr-1"></i> <?php echo $story['language']; ?></span>
+                      <span><i class="fas fa-clock mr-1"></i> <?php echo $story['duration'] ? ($story['duration'] . ' min') : ($story['word_count'] . ' words'); ?></span>
+                    </div>
+                  </div>
+                  <div class="story-actions flex space-x-2 ml-4">
+                    <button class="p-2 text-blue-600 hover:bg-blue-50 rounded-full">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="p-2 text-red-600 hover:bg-red-50 rounded-full">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                    <button class="p-2 text-green-600 hover:bg-green-50 rounded-full">
+                      <i class="fas fa-share-alt"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="mt-4 flex items-center justify-between">
+                  <div class="flex items-center">
+                    <div class="flex items-center text-yellow-400 mr-3">
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="text-sm text-gray-500"><?php echo $story['listen_count']; ?> <?php echo $story['media_type'] == 'video' ? 'views' : 'listens'; ?></span>
+                  </div>
+                  <a href="#" class="text-sm text-blue-600 hover:text-blue-800">View details →</a>
                 </div>
               </div>
             <?php endforeach; ?>
           </div>
-          <a href="events.php">
-            <button class="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-medium">
-              <i class="fas fa-plus mr-2"></i> Schedule New Events
-            </button>
-          </a>
+          <div class="px-6 py-4 border-t border-gray-200 text-center">
+            <a href="#" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
+              <i class="fas fa-plus-circle mr-2"></i> Add New Story
+            </a>
+          </div>
         </div>
       </div>
 
-
-    </div>
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Translate to</label>
-      <select
-        class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">
-        <option>Afaan Oromo</option>
-        <option>English</option>
-        <option>Amharic</option>
-      </select>
-    </div>
-    <button class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg font-medium">
-      <i class="fas fa-language mr-2"></i> Generate Translation
-    </button>
-  </div>
-  </div>
-
-
-  <!-- Community Engagement -->
-  <div class="bg-white rounded-xl shadow p-6">
-    <h2 class="text-xl font-bold text-gray-800 mb-4">Community</h2>
-    <div class="space-y-4">
-      <div class="flex items-center p-3 bg-blue-50 rounded-lg">
-        <div class="bg-blue-100 text-blue-800 p-2 rounded-full mr-3">
-          <i class="fas fa-comments"></i>
-        </div>
-        <div>
-          <h3 class="font-medium"><?php echo $story_requests; ?> New Story Requests</h3>
-          <p class="text-sm text-gray-600">From listeners worldwide</p>
-        </div>
-
-        <!-- Recent Stories & Activities -->
-        <div class="flex flex-col lg:flex-row gap-8">
-          <!-- Recent Stories -->
-          <div class="lg:w-2/3">
-            <div class="bg-white rounded-xl shadow overflow-hidden">
-              <div class="px-6 py-4 border-b border-gray-200">
-                <div class="flex items-center justify-between">
-                  <h2 class="text-xl font-bold text-gray-800">Recent Stories</h2>
-                  <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">View All</a>
-                </div>
-              </div>
-              <div class="divide-y divide-gray-200">
-                <?php foreach ($stories as $story): ?>
-                  <div class="story-card p-6 hover:bg-gray-50 transition">
-                    <div class="flex items-start">
-                      <div class="media-icon <?php echo $story['media_type'] == 'audio' ? 'audio-icon' : ($story['media_type'] == 'video' ? 'video-icon' : 'text-icon'); ?> mr-4">
-                        <i class="fas fa-<?php echo $story['media_type'] == 'audio' ? 'music' : ($story['media_type'] == 'video' ? 'video' : 'file-alt'); ?>"></i>
-                      </div>
-                      <div class="flex-1">
-                        <h3 class="font-bold text-lg text-gray-800"><?php echo htmlspecialchars($story['title']); ?></h3>
-                        <p class="text-gray-600 mt-1"><?php echo htmlspecialchars($story['description']); ?></p>
-                        <div class="flex items-center mt-3 text-sm text-gray-500">
-                          <span class="mr-4"><i class="fas fa-tag mr-1"></i> <?php echo htmlspecialchars($story['themes'] ?? $storyteller['specialization']); ?></span>
-                          <span class="mr-4"><i class="fas fa-language mr-1"></i> <?php echo $story['language']; ?></span>
-                          <span><i class="fas fa-clock mr-1"></i> <?php echo $story['duration'] ? ($story['duration'] . ' min') : ($story['word_count'] . ' words'); ?></span>
-                        </div>
-                      </div>
-                      <!-- <div class="story-actions flex space-x-2 ml-4">
-                                        <button class="p-2 text-blue-600 hover:bg-blue-50 rounded-full">
-                                            <a href="edit_story.php">
-                                                <i class="fas fa-edit"></i></a>
-                                        </button>
-                                        <button class="p-2 text-red-600 hover:bg-red-50 rounded-full">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                        <button class="p-2 text-green-600 hover:bg-green-50 rounded-full">
-                                            <i class="fas fa-share-alt"></i>
-                                        </button>
-                                    </div> -->
-                    </div>
-                    <div class="mt-4 flex items-center justify-between">
-                      <div class="flex items-center">
-                        <div class="flex items-center text-yellow-400 mr-3">
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star-half-alt"></i>
-                        </div>
-                        <span class="text-sm text-gray-500"><?php echo $story['listen_count']; ?> <?php echo $story['media_type'] == 'video' ? 'views' : 'listens'; ?></span>
-                      </div>
-                      <a href="mystory.php" class="text-sm text-blue-600 hover:text-blue-800">View details →</a>
+      <!-- Upcoming Events & Quick Tools -->
+      <div class="lg:w-1/3 space-y-6">
+        <!-- Upcoming Events -->
+        <div class="bg-white rounded-xl shadow overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-200">
+            <h2 class="text-xl font-bold text-gray-800">Upcoming Performances</h2>
+          </div>
+          <div class="p-6">
+            <div class="space-y-4">
+              <?php foreach ($events as $event): ?>
+                <div class="flex items-start">
+                  <div class="bg-blue-100 text-blue-800 rounded-lg p-3 text-center mr-4">
+                    <div class="font-bold"><?php echo date('d', strtotime($event['event_date'])); ?></div>
+                    <div class="text-xs uppercase"><?php echo date('M', strtotime($event['event_date'])); ?></div>
+                  </div>
+                  <div>
+                    <h3 class="font-medium text-gray-800"><?php echo htmlspecialchars($event['title']); ?></h3>
+                    <p class="text-sm text-gray-600 mt-1"><?php echo htmlspecialchars($event['description']); ?></p>
+                    <div class="mt-2 flex items-center text-sm text-gray-500">
+                      <i class="fas fa-clock mr-1"></i>
+                      <?php echo date('h:i A', strtotime($event['start_time'])) . ' - ' . date('h:i A', strtotime($event['end_time'])); ?>
                     </div>
                   </div>
-                <?php endforeach; ?>
-              </div>
-              <div class="px-6 py-4 border-t border-gray-200 text-center">
-                <a href="add_story.php" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
-                  <i class="fas fa-plus-circle mr-2"></i> Add New Story
-                </a>
-              </div>
+                </div>
+              <?php endforeach; ?>
             </div>
+            <button class="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-medium">
+              <i class="fas fa-plus mr-2"></i> Schedule New Performance
+            </button>
           </div>
-          <div class="flex items-center p-3 bg-green-50 rounded-lg">
-            <div class="bg-green-100 text-green-800 p-2 rounded-full mr-3">
-              <i class="fas fa-question-circle"></i>
+        </div>
+
+        <!-- Quick Translation Tool -->
+        <div class="bg-white rounded-xl shadow p-6">
+          <h2 class="text-xl font-bold text-gray-800 mb-4">Translate Story</h2>
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Select Story</label>
+              <select class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">
+                <?php foreach ($stories as $story): ?>
+                  <option><?php echo htmlspecialchars($story['title']); ?></option>
+                <?php endforeach; ?>
+              </select>
             </div>
             <div>
-              <h3 class="font-medium"><?php echo $questions; ?> Questions</h3>
-              <p class="text-sm text-gray-600">About your stories</p>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Translate to</label>
+              <select class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">
+                <option>Afaan Oromo</option>
+                <option>English</option>
+                <option>Amharic</option>
+              </select>
             </div>
+            <button class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg font-medium">
+              <i class="fas fa-language mr-2"></i> Generate Translation
+            </button>
           </div>
-          <a href="community.php" class="block text-center text-blue-600 hover:text-blue-800 font-medium mt-4">
-            View All Engagement <i class="fas fa-arrow-right ml-1"></i>
-          </a>
+        </div>
+
+        <!-- Community Engagement -->
+        <div class="bg-white rounded-xl shadow p-6">
+          <h2 class="text-xl font-bold text-gray-800 mb-4">Community</h2>
+          <div class="space-y-4">
+            <div class="flex items-center p-3 bg-blue-50 rounded-lg">
+              <div class="bg-blue-100 text-blue-800 p-2 rounded-full mr-3">
+                <i class="fas fa-comments"></i>
+              </div>
+              <div>
+                <h3 class="font-medium"><?php echo $story_requests; ?> New Story Requests</h3>
+                <p class="text-sm text-gray-600">From listeners worldwide</p>
+              </div>
+            </div>
+            <div class="flex items-center p-3 bg-green-50 rounded-lg">
+              <div class="bg-green-100 text-green-800 p-2 rounded-full mr-3">
+                <i class="fas fa-question-circle"></i>
+              </div>
+              <div>
+                <h3 class="font-medium"><?php echo $questions; ?> Questions</h3>
+                <p class="text-sm text-gray-600">About your stories</p>
+              </div>
+            </div>
+            <a href="#" class="block text-center text-blue-600 hover:text-blue-800 font-medium mt-4">
+              View All Engagement <i class="fas fa-arrow-right ml-1"></i>
+            </a>
+          </div>
         </div>
       </div>
     </div>
-  </div>
   </main>
 
   <!-- Footer -->
