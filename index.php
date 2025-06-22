@@ -320,11 +320,11 @@
     let langData = {};
     let currentLang = 'en';
     const showcaseImages = [
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
-      "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80",
-      "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
-      "https://images.unsplash.com/photo-1511367461989-f85a21fda167?auto=format&fit=crop&w=400&q=80",
-      "https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=400&q=80"
+      "Images/tools.jpg",
+      "Images/story.jpg",
+      "Images/cart.png",
+      "Images/dashboard.png",
+      "Images/art.jpg"
     ];
     const showcaseLinks = [
       "Customer dashboard/products.php",
