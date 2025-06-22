@@ -31,7 +31,7 @@ $result = $con->query($query);
 </head>
 
 <body class="bg-gradient-to-br from-blue-50 to-yellow-50 min-h-screen">
-  <div class="container mx-auto px-4 py-10">
+  <div class="container mx-auto px-4 py-10 w-full max-w-none">
     <h1 class="text-3xl font-extrabold text-center text-blue-900 mb-8 tracking-tight">🛍️ Explore Oromo Artisan Products
     </h1>
     <form method="get" class="flex flex-wrap gap-4 justify-center mb-8">
@@ -69,7 +69,8 @@ $result = $con->query($query);
       <button type="submit"
         class="bg-blue-700 hover:bg-blue-900 text-white px-6 py-2 rounded-lg font-semibold shadow transition">Filter</button>
     </form>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 w-full"
+      style="max-width:1600px;margin-left:auto;margin-right:auto;">
       <?php if(mysqli_num_rows($result) == 0): ?>
       <div class="col-span-full text-center text-gray-500 text-lg">No products found.</div>
       <?php endif; ?>
@@ -86,7 +87,7 @@ $result = $con->query($query);
       ];
       $imgIdx = 0;
       while($row = mysqli_fetch_assoc($result)):
-        $img = $row['image'] ? htmlspecialchars($row['image']) : $sampleImages[$imgIdx % count($sampleImages)];
+        $img = (isset($row['image']) && $row['image']) ? htmlspecialchars($row['image']) : $sampleImages[$imgIdx % count($sampleImages)];
         $imgIdx++;
       ?>
       <div
