@@ -422,5 +422,43 @@
     window.addEventListener('scroll', revealShowcaseCards);
     window.addEventListener('load', revealShowcaseCards);
   </script>
-<?php include './common/footer.php'; ?>
+<footer style="background:#2d1a06; color:#fff; padding:2.5em 0 1.2em 0; margin-top:3em; border-radius:1.2em 1.2em 0 0; box-shadow:0 -2px 16px #7c4f1d22;">
+  <div style="max-width:1100px; margin:0 auto; padding:0 1.5em;">
+    <div style="display:flex; flex-direction:column; gap:2em;">
+      <div style="margin-bottom:1.5em;">
+        <h3 style="font-size:1.5em; font-weight:bold; color:#e0c3a3; margin-bottom:0.7em;">Oromo Artisan & Storyteller Marketplace</h3>
+        <p style="color:#e0c3a3; font-size:1em;">Empowering artisans through technology</p>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:2em;">
+        <div>
+          <h4 style="font-weight:bold; margin-bottom:0.7em; color:#e0c3a3;">Resources</h4>
+          <ul style="list-style:none; padding:0; margin:0;">
+            <li><a href="#" style="color:#ccc; text-decoration:none;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#ccc'">Help Center</a></li>
+            <li><a href="#" style="color:#ccc; text-decoration:none;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#ccc'">Artisan Guides</a></li>
+            <li><a href="#" style="color:#ccc; text-decoration:none;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#ccc'">Pricing</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 style="font-weight:bold; margin-bottom:0.7em; color:#e0c3a3;">Legal</h4>
+          <ul style="list-style:none; padding:0; margin:0;">
+            <li><a href="#" style="color:#ccc; text-decoration:none;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#ccc'">Terms</a></li>
+            <li><a href="#" style="color:#ccc; text-decoration:none;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#ccc'">Privacy</a></li>
+            <li><a href="#" style="color:#ccc; text-decoration:none;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#ccc'">Cookies</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 style="font-weight:bold; margin-bottom:0.7em; color:#e0c3a3;">Contact</h4>
+          <div style="display:flex; gap:1em; margin-top:0.5em;">
+            <a href="#" style="color:#ccc; font-size:1.3em; text-decoration:none;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#ccc'">&#x1F4F1;</a>
+            <a href="#" style="color:#ccc; font-size:1.3em; text-decoration:none;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#ccc'">&#x1F4F7;</a>
+            <a href="#" style="color:#ccc; font-size:1.3em; text-decoration:none;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#ccc'">&#x1F426;</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="border-top:1px solid #4b3621; margin-top:2em; padding-top:1.2em; text-align:center; color:#ccc; font-size:1em;">
+      &copy; 2025 Oromo Artisan & Storyteller Marketplace. All rights reserved.
+    </div>
+  </div>
+</footer>
 </body>
