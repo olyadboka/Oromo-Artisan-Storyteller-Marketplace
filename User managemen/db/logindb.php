@@ -35,7 +35,7 @@ if (empty($password)) {
 }
 
 // Prepare SQL statement to get user
-$sql = "SELECT id, username, email, password, role, status, specialization FROM users WHERE email = ?";
+$sql = "SELECT id, username, email, password, role, specialization FROM users WHERE email = ?";
 $stmt = $con->prepare($sql);
 
 if (!$stmt) {

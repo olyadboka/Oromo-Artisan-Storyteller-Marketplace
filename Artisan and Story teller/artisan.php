@@ -1,3 +1,28 @@
+<?php
+session_start();
+include '../common/dbConnection.php';
+
+// $_SESSION['user_id'] =18;
+if(!isset($_SESSION['user_id'])){
+
+header("Location: ../../../User managemen/login.php");
+}
+
+
+$user_id = $_SESSION['user_id'];
+$sql = "SELECT profileImage from users where id = $user_id";
+$result = mysqli_query($con, $sql);
+$profileData = null;
+if ($result) {
+  while($row = mysqli_fetch_assoc($result)){
+    $profileData = $row['profileImage'];
+  }
+}
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
@@ -38,8 +63,15 @@
     <div class="container mx-auto px-4 py-6">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
         <div class="flex items-center space-x-4 mb-4 md:mb-0">
-          <img src="profile-pic.jpg" alt="Your Profile"
+
+
+          <?php if (!empty($profileData)): ?>
+          <img src="data:image/*;base64,<?php echo base64_encode($profileData); ?>" alt="Profile Image"
             class="w-16 h-16 rounded-full border-4 border-white object-cover">
+          <?php else: ?>
+          <img src="https://ui-avatars.com/api/?name=User" alt="Default Profile"
+            class="w-16 h-16 rounded-full border-4 border-white object-cover">
+          <?php endif; ?>
           <div>
             <h1 class="text-2xl font-bold">My Artisan Dashboard</h1>
             <p class="text-white text-opacity-80">
