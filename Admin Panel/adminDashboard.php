@@ -1,4 +1,11 @@
 <?php
+// --- Admin session and role check ---
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ../index.php?error=not_logged_in');
+    exit();
+}
+
 // Ensure database connection is available as $conn
 if (!isset($conn)) {
     if (file_exists('../common/dbConnection.php')) {
@@ -9,6 +16,20 @@ if (!isset($conn)) {
     if (!isset($conn)) {
         die('Database connection not established.');
     }
+}
+
+// Check user role (must be admin)
+$userId = intval($_SESSION['user_id']);
+$userResult = $conn->query("SELECT role FROM users WHERE id = $userId LIMIT 1");
+if (!$userResult || $userResult->num_rows === 0) {
+    session_destroy();
+    header('Location: ../index.php?error=invalid_user');
+    exit();
+}
+$userRow = $userResult->fetch_assoc();
+if (strtolower($userRow['role']) !== 'admin') {
+    header('Location: ../index.php?error=not_authorized');
+    exit();
 }
 
 // --- Analytics Queries ---

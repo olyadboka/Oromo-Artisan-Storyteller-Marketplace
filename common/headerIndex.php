@@ -338,6 +338,9 @@ if (isset($con) && $con && $con instanceof mysqli && $con->connect_errno === 0) 
             <?php endif; ?>
           </a>
         </li>
+        <li class="oas-nav-login">
+          <a href="/login.php" class="oas-login-btn">Login</a>
+        </li>
       </ul>
     </nav>
   </div>

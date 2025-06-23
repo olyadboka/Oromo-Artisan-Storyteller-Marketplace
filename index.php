@@ -1,3 +1,35 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
+
+<?php
+// Enable error reporting for debugging
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+// Always start session and include dbConnection
+
+include_once __DIR__ . '/common/dbConnection.php';
+
+if (!isset($_SESSION['user_id'])) {
+  // Set a default user id for testing if not set
+  $_SESSION['user_id'] = 8;
+}
+$user_id = $_SESSION['user_id'];
+$profileData = null;
+if (isset($con) && $con && $con instanceof mysqli && $con->connect_errno === 0) {
+  $sql = "SELECT profileImage from users where id = $user_id";
+  $result = mysqli_query($con, $sql);
+  if ($result) {
+    while($row = mysqli_fetch_assoc($result)){
+      $profileData = $row['profileImage'];
+    }
+  }
+}
+?>
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -323,8 +355,8 @@
     display: block;
     text-align: right;
     max-width: 420px;
-    margin: 0 0 0 auto !important; /* align right, no bottom margin */
-    padding: 0 !important; /* no padding */
+    margin: -1.2em 0 0 auto !important; /* pull up closer to header */
+    padding: 0 !important;
     position: relative;
     top: 0;
   }
@@ -410,15 +442,17 @@
       margin-right: auto !important;
     }
   }
+
+  
   </style>
 
-  </link>
+  
 </head>
 
 <body>
-  <?php include './common/header.php'; ?>
+ <?php include 'common/headerIndex.php'; ?>
   <!-- Main Content Start -->
-  <main style="padding-top: 7.5rem;">
+  <main>
     <div class="lang-select-bar">
       <select id="langSelect"
         style="padding:0.4em 1em;border-radius:1.2em;border:1px solid #e0c3a3;font-size:1em;background:#fffbe6;color:#7c4f1d;font-weight:bold;">
@@ -497,7 +531,78 @@
     /* existing styles */
   }
 
-  /* Add any other existing styles here */
+   .navbar-brand-logo {
+    width: 44px;
+    height: 44px;
+    background: rgb(28, 185, 51);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+  }
+  .cart-badge {
+    position: absolute;
+    top: 0;
+    right: -8px;
+    background: rgb(28, 185, 51);
+    color: #fff;
+    font-size: 0.75rem;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .announcement-bar {
+    background: rgb(28, 185, 51);
+    color: #fff;
+    font-size: 0.95rem;
+    padding: 0.4rem 0;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    z-index: 1052;
+  }
+  .navbar {
+    position: fixed !important;
+    top: 2.1rem; /* height of announcement bar */
+    left: 0;
+    width: 100vw;
+    z-index: 1053 !important;
+    border-radius: 0;
+  }
+  .dropdown-menu-end[aria-labelledby="langDropdown"] {
+    min-width: 8rem;
+  }
+  /* Remove forced debug CSS for production */
+  /* .navbar-collapse, .navbar-nav {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    height: auto !important;
+  } */
+  @media (max-width: 991.98px) {
+    .navbar-collapse {
+      display: none !important;
+    }
+    .navbar-collapse.show {
+      display: block !important;
+    }
+    .navbar-nav {
+      width: 100%;
+    }
+    .nav-link {
+      color: #222 !important;
+      font-size: 1.1em;
+      padding: 0.8em 1.2em;
+      width: 100%;
+      text-align: left;
+    }
+  }
   </style>
   <script>
   // Language integration
@@ -619,4 +724,5 @@
   window.addEventListener('load', revealShowcaseCards);
   </script>
   <?php include './common/footer.php'; ?>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
