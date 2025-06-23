@@ -315,8 +315,8 @@ if (isset($con) && $con && $con instanceof mysqli && $con->connect_errno === 0) 
     </button>
     <nav class="oas-nav" id="oasNav">
       <ul class="oas-nav-list">
-        <li><a href="/Artisan and Story teller/artisan.php"><svg class="oas-nav-svg" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2C6.13 2 3 5.13 3 9c0 2.38 1.19 4.47 3 5.74V18a1 1 0 0 0 1.45.89l2.55-1.28 2.55 1.28A1 1 0 0 0 17 18v-3.26C18.81 13.47 20 11.38 20 9c0-3.87-3.13-7-7-7z" fill="#f7b731"/><circle cx="10" cy="9" r="3" fill="#fff"/></svg> Artisans' Product</a></li>
-        <li><a href="/Artisan and Story teller/stories.php"><svg class="oas-nav-svg" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="14" height="12" rx="2" fill="#1cb933"/><rect x="6" y="7" width="8" height="2" rx="1" fill="#fff"/><rect x="6" y="11" width="5" height="2" rx="1" fill="#fff"/></svg> Oromo Stories</a></li>
+        <li><a href="/Artisan and Story teller/artisan.php">Artisans' Product</a></li>
+        <li><a href="/Artisan and Story teller/storytellers.php">Oromo Stories</a></li>
         <li class="oas-nav-search">
           <form class="oas-search-form" role="search">
             <input class="oas-search-input" type="search" placeholder="Search" aria-label="Search">
