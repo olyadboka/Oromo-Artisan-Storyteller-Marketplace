@@ -1,15 +1,27 @@
 <?php
+session_start();
 include '../dbConnection/dbConnection.php';
 
-$sql = "SELECT * FROM orders ORDER BY date DESC";
-$result = $con->query($sql);
+
+// $_SESSION['artisan_id'] = 1;
+
+$artisan_id = $_SESSION['artisan_id'];
+
+// Get orders for this artisan
+$sql = "SELECT o.* 
+        FROM orders o
+        JOIN order_items oi ON o.id = oi.order_id
+        JOIN products p ON oi.id = p.id
+        WHERE p.artisan_id = $artisan_id
+        GROUP BY o.id
+        ORDER BY o.date DESC";
+$result = mysqli_query($con, $sql);
 $orders = [];
-if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
+if ($result && mysqli_num_rows($result) > 0) {
+    while($row = mysqli_fetch_assoc($result)) {
         $orders[] = $row;
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -44,8 +56,6 @@ if ($result->num_rows > 0) {
         </div>
         <nav>
           <ul class="flex space-x-4">
-            <li><a href="#" class="px-3 py-2 bg-white bg-opacity-20 rounded-lg"><i class="fas fa-cog mr-2"></i>as
-                Custormer</a></li>
             <li><a href="#" class="px-3 py-2 bg-white bg-opacity-20 rounded-lg"><i
                   class="fas fa-sign-out-alt mr-2"></i>Logout</a></li>
           </ul>
@@ -74,20 +84,19 @@ if ($result->num_rows > 0) {
       </h1>
       <div class="flex items-center space-x-4">
         <div class="relative">
-          <select
+          <select id="statusFilter"
             class="appearance-none border border-gray-300 rounded-lg px-4 py-2 pr-8 focus:ring-red-500 focus:border-red-500">
-            <option>All Status</option>
-            <option>Pending</option>
-            <option>Processing</option>
-            <option>Shipped</option>
-            <option>Completed</option>
-            <option>Cancelled</option>
+            <option value="">All Status</option>
+            <option value="Pending">Pending</option>
+            <option value="Processing">Processing</option>
+            <option value="Shipped">Shipped</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
           </select>
           <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
             <i class="fas fa-chevron-down"></i>
           </div>
         </div>
-
       </div>
     </div>
 
@@ -109,14 +118,19 @@ if ($result->num_rows > 0) {
             <?php foreach ($orders as $order): ?>
             <tr class="hover:bg-gray-50">
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                #ORD-<?php echo $order['order_id']; ?></td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Customer
-                #<?php echo $order['customer_id']; ?></td>
+                <?php echo htmlspecialchars($order['order_number']); ?></td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                <?php echo date('M j, Y', strtotime($order['date'])); ?></td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?php echo $order['items']; ?></td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">ETB
-                <?php echo number_format($order['total']); ?></td>
+                Customer #<?php echo htmlspecialchars($order['user_id']); ?>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <?php echo date('M j, Y', strtotime($order['date'])); ?>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <?php echo htmlspecialchars($order['items']); ?>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                ETB <?php echo number_format($order['total_amount'], 2); ?>
+              </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <?php 
                 $statusClasses = [
@@ -129,23 +143,23 @@ if ($result->num_rows > 0) {
                 $statusClass = $statusClasses[$order['status']] ?? 'bg-gray-100 text-gray-800';
                 ?>
                 <span class="px-2 py-1 text-xs font-semibold rounded-full <?php echo $statusClass; ?>">
-                  <?php echo $order['status']; ?>
+                  <?php echo htmlspecialchars($order['status']); ?>
                 </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                 <?php if ($order['status'] == 'Pending'): ?>
                 <button class="text-red-600 hover:text-red-900 mr-3 process-btn"
-                  data-order-id="<?php echo $order['order_id']; ?>">
+                  data-order-number="<?php echo $order['order_number']; ?>">
                   <i class="fas fa-check"></i> Process
                 </button>
                 <?php elseif ($order['status'] == 'Processing'): ?>
                 <button class="text-red-600 hover:text-red-900 mr-3 ship-btn"
-                  data-order-id="<?php echo $order['order_id']; ?>">
+                  data-order-number="<?php echo $order['order_number']; ?>">
                   <i class="fas fa-truck"></i> Ship
                 </button>
                 <?php endif; ?>
                 <button class="text-gray-600 hover:text-gray-900 view-btn"
-                  data-order-id="<?php echo $order['order_id']; ?>">
+                  data-order-number="<?php echo $order['order_number']; ?>">
                   <i class="fas fa-eye"></i> View
                 </button>
               </td>
@@ -216,9 +230,7 @@ if ($result->num_rows > 0) {
         </button>
       </div>
       <div class="py-4">
-        <div id="orderDetailsContent">
-
-        </div>
+        <div id="orderDetailsContent"></div>
       </div>
       <div class="flex justify-end pt-2 border-t">
         <button id="saveStatusBtn" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
@@ -229,10 +241,86 @@ if ($result->num_rows > 0) {
   </div>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="./js/orders.js">
+  <script>
+  $(document).ready(function() {
+    // View order details
+    $(".view-btn").click(function() {
+      const orderNumber = $(this).data("order-number");
+      $("#orderModal").removeClass("hidden");
 
+      $.ajax({
+        url: "get_order_details.php",
+        type: "GET",
+        data: {
+          order_number: orderNumber
+        },
+        success: function(response) {
+          $("#orderDetailsContent").html(response);
+        },
+        error: function() {
+          $("#orderDetailsContent").html(
+            '<p class="text-red-500">Error loading order details.</p>'
+          );
+        }
+      });
+    });
+
+    // Close modal
+    $("#closeModal").click(function() {
+      $("#orderModal").addClass("hidden");
+    });
+
+    // Process order
+    $(".process-btn").click(function() {
+      const orderNumber = $(this).data("order-number");
+      updateOrderStatus(orderNumber, "Processing");
+    });
+
+    // Ship order
+    $(".ship-btn").click(function() {
+      const orderNumber = $(this).data("order-number");
+      updateOrderStatus(orderNumber, "Shipped");
+    });
+
+    // Save status changes
+    $("#saveStatusBtn").click(function() {
+      const orderNumber = $("#orderIdInModal").val();
+      const newStatus = $("#statusSelect").val();
+      updateOrderStatus(orderNumber, newStatus);
+    });
+
+    // Filter orders by status
+    $("#statusFilter").change(function() {
+      const status = $(this).val();
+      window.location.href = `orders.php?status=${status}`;
+    });
+
+    // Function to update order status
+    function updateOrderStatus(orderNumber, newStatus) {
+      $.ajax({
+        url: "update_order_status.php",
+        type: "POST",
+        data: {
+          order_number: orderNumber,
+          new_status: newStatus
+        },
+        success: function(response) {
+          if (response.success) {
+            alert("Order status updated successfully!");
+            location.reload();
+          } else {
+            alert("Error updating order status: " + response.message);
+          }
+        },
+        error: function() {
+          alert("Error updating order status. Please try again.");
+        }
+      });
+    }
+  });
   </script>
 
-  <?php
-include '../common/footer.php';
- ?>
+  <?php include '../common/footer.php'; ?>
+</body>
+
+</html>

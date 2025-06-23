@@ -32,7 +32,7 @@ $success_message = '';
 $error_message = '';
 
 // Get logged-in user ID from session
-$user_id = 8;
+$user_id = $_SESSION['user_id'];
 // $_SESSION['user_id'] ?? null;  --- after login page 
 
 if (!$user_id) {
@@ -359,72 +359,72 @@ try {
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    .storyteller-header {
-      background: linear-gradient(135deg, #1e3a8a 0%, #7c2d12 100%);
-    }
+  .storyteller-header {
+    background: linear-gradient(135deg, #1e3a8a 0%, #7c2d12 100%);
+  }
 
-    .event-card:hover .event-actions {
-      opacity: 1;
-    }
+  .event-card:hover .event-actions {
+    opacity: 1;
+  }
 
-    .event-actions {
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
+  .event-actions {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
 
-    .event-icon {
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      background-color: rgba(59, 130, 246, 0.1);
-      color: #3b82f6;
-    }
+  .event-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+  }
 
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 50;
-      justify-content: center;
-      align-items: center;
-    }
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 50;
+    justify-content: center;
+    align-items: center;
+  }
 
-    .modal-content {
-      background-color: white;
-      border-radius: 0.5rem;
-      max-width: 600px;
-      width: 90%;
-      max-height: 80vh;
-      overflow-y: auto;
-    }
+  .modal-content {
+    background-color: white;
+    border-radius: 0.5rem;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
 
-    .media-preview {
-      max-height: 150px;
-      object-fit: contain;
-    }
+  .media-preview {
+    max-height: 150px;
+    object-fit: contain;
+  }
 
-    .nav-link {
-      position: relative;
-    }
+  .nav-link {
+    position: relative;
+  }
 
-    .nav-link.active:after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background-color: #2563eb;
-    }
+  .nav-link.active:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #2563eb;
+  }
 
-    /* .upcom-event {
+  /* .upcom-event {
       display: grid !important;
       grid-template-columns: repeat(2, 1fr) !important;
       background-color: goldenrod !important;
@@ -439,11 +439,13 @@ try {
     <div class="container mx-auto px-4 py-6">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
         <div class="flex items-center space-x-6 mb-6 md:mb-0">
-          <img src="<?php echo htmlspecialchars($storyteller['profile_image_url'] ?? 'uploads/profiles/default-profile.jpg'); ?>"
+          <img
+            src="<?php echo htmlspecialchars($storyteller['profile_image_url'] ?? 'uploads/profiles/default-profile.jpg'); ?>"
             alt="Storyteller"
             class="w-20 h-20 rounded-full border-4 border-white border-opacity-30 object-cover shadow-lg">
           <div>
-            <h1 class="text-2xl md:text-3xl font-bold"><?php echo htmlspecialchars($storyteller['artistic_name'] ?? 'Unknown Storyteller'); ?></h1>
+            <h1 class="text-2xl md:text-3xl font-bold">
+              <?php echo htmlspecialchars($storyteller['artistic_name'] ?? 'Unknown Storyteller'); ?></h1>
             <p class="text-white text-opacity-90 flex items-center mt-1">
               <i class="fas fa-map-marker-alt mr-2 text-blue-200"></i>
               <?php echo htmlspecialchars($storyteller['location'] ?? 'Unknown Location'); ?>
@@ -459,7 +461,8 @@ try {
             <i class="fas fa-cog mr-2"></i>
             <span class="hidden md:inline">Settings</span>
           </button>
-          <a href="logout.php" class="px-4 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg transition flex items-center">
+          <a href="logout.php"
+            class="px-4 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg transition flex items-center">
             <i class="fas fa-sign-out-alt mr-2"></i>
             <span class="hidden md:inline">Logout</span>
           </a>
@@ -498,23 +501,23 @@ try {
   <main class="container mx-auto px-4 py-8">
     <!-- Messages -->
     <?php if ($success_message): ?>
-      <div class="mb-6 p-4 bg-green-100 text-green-800 rounded-lg flex items-center shadow">
-        <i class="fas fa-check-circle mr-2 text-green-600"></i>
-        <?php echo htmlspecialchars($success_message); ?>
-        <button class="ml-auto text-green-700 hover:text-green-900" onclick="this.parentElement.remove()">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
+    <div class="mb-6 p-4 bg-green-100 text-green-800 rounded-lg flex items-center shadow">
+      <i class="fas fa-check-circle mr-2 text-green-600"></i>
+      <?php echo htmlspecialchars($success_message); ?>
+      <button class="ml-auto text-green-700 hover:text-green-900" onclick="this.parentElement.remove()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
     <?php endif; ?>
 
     <?php if ($error_message): ?>
-      <div class="mb-6 p-4 bg-red-100 text-red-800 rounded-lg flex items-center shadow">
-        <i class="fas fa-exclamation-circle mr-2 text-red-600"></i>
-        <?php echo htmlspecialchars($error_message); ?>
-        <button class="ml-auto text-red-700 hover:text-red-900" onclick="this.parentElement.remove()">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
+    <div class="mb-6 p-4 bg-red-100 text-red-800 rounded-lg flex items-center shadow">
+      <i class="fas fa-exclamation-circle mr-2 text-red-600"></i>
+      <?php echo htmlspecialchars($error_message); ?>
+      <button class="ml-auto text-red-700 hover:text-red-900" onclick="this.parentElement.remove()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
     <?php endif; ?>
 
     <!-- Add/Edit Event Form Modal -->
@@ -534,9 +537,9 @@ try {
           <input type="hidden" name="storyteller_id" value="<?php echo $storyteller['id']; ?>">
 
           <?php if ($edit_event): ?>
-            <input type="hidden" name="event_id" value="<?php echo $edit_event['id']; ?>">
-            <input type="hidden" name="current_image" value="<?php echo $edit_event['image_url'] ?? ''; ?>">
-            <input type="hidden" name="current_video" value="<?php echo $edit_event['video_url'] ?? ''; ?>">
+          <input type="hidden" name="event_id" value="<?php echo $edit_event['id']; ?>">
+          <input type="hidden" name="current_image" value="<?php echo $edit_event['image_url'] ?? ''; ?>">
+          <input type="hidden" name="current_video" value="<?php echo $edit_event['video_url'] ?? ''; ?>">
           <?php endif; ?>
 
           <div class="space-y-6">
@@ -546,8 +549,7 @@ try {
                 <label class="block text-sm font-medium text-gray-700 mb-1">
                   Event Title <span class="text-red-600">*</span>
                 </label>
-                <input type="text" name="title"
-                  value="<?php echo htmlspecialchars($edit_event['title'] ?? ''); ?>"
+                <input type="text" name="title" value="<?php echo htmlspecialchars($edit_event['title'] ?? ''); ?>"
                   class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
                   required>
               </div>
@@ -622,11 +624,11 @@ try {
                 </div>
 
                 <?php if ($edit_event && $edit_event['image_url']): ?>
-                  <div class="mt-4">
-                    <p class="text-sm text-gray-500 mb-2">Current Image:</p>
-                    <img src="<?php echo htmlspecialchars($edit_event['image_url']); ?>"
-                      class="media-preview rounded-lg border border-gray-200 shadow-sm">
-                  </div>
+                <div class="mt-4">
+                  <p class="text-sm text-gray-500 mb-2">Current Image:</p>
+                  <img src="<?php echo htmlspecialchars($edit_event['image_url']); ?>"
+                    class="media-preview rounded-lg border border-gray-200 shadow-sm">
+                </div>
                 <?php endif; ?>
 
                 <div id="imagePreview" class="mt-4 hidden">
@@ -644,13 +646,13 @@ try {
                 </div>
 
                 <?php if ($edit_event && $edit_event['video_url']): ?>
-                  <div class="mt-4">
-                    <p class="text-sm text-gray-500 mb-2">Current Video:</p>
-                    <video controls class="media-preview rounded-lg border border-gray-200 shadow-sm">
-                      <source src="<?php echo htmlspecialchars($edit_event['video_url']); ?>" type="video/mp4">
-                      Your browser does not support the video tag.
-                    </video>
-                  </div>
+                <div class="mt-4">
+                  <p class="text-sm text-gray-500 mb-2">Current Video:</p>
+                  <video controls class="media-preview rounded-lg border border-gray-200 shadow-sm">
+                    <source src="<?php echo htmlspecialchars($edit_event['video_url']); ?>" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
                 <?php endif; ?>
 
                 <div id="videoPreview" class="mt-4 hidden">
@@ -702,105 +704,105 @@ try {
 
         <div class="divide-y divide-gray-200">
           <?php if (empty($upcoming_events)): ?>
-            <div class="p-8 text-center">
-              <i class="fas fa-calendar-alt text-gray-300 text-4xl mb-3"></i>
-              <h4 class="text-lg font-medium text-gray-500">No upcoming events</h4>
-              <p class="text-gray-400 mt-1">Schedule your first event to get started</p>
-              <button id="openAddModalEmpty"
-                class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-                <i class="fas fa-plus mr-2"></i> Create Event
-              </button>
-            </div>
+          <div class="p-8 text-center">
+            <i class="fas fa-calendar-alt text-gray-300 text-4xl mb-3"></i>
+            <h4 class="text-lg font-medium text-gray-500">No upcoming events</h4>
+            <p class="text-gray-400 mt-1">Schedule your first event to get started</p>
+            <button id="openAddModalEmpty"
+              class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+              <i class="fas fa-plus mr-2"></i> Create Event
+            </button>
+          </div>
           <?php else: ?>
-            <?php foreach ($upcoming_events as $event): ?>
-              <div class="event-card p-6 hover:bg-gray-50 transition duration-150 ease-in-out upcom-event">
-                <div class="flex flex-col md:flex-row">
-                  <!-- Event Date Badge -->
-                  <div class="flex-shrink-0 mb-4 md:mb-0 md:mr-6">
-                    <div class="flex flex-col items-center justify-center bg-blue-50 rounded-lg p-3 w-20">
-                      <span class="text-blue-800 font-bold text-xl">
-                        <?php echo date('d', strtotime($event['event_date'])); ?>
-                      </span>
-                      <span class="text-blue-600 text-sm uppercase">
-                        <?php echo date('M', strtotime($event['event_date'])); ?>
-                      </span>
-                    </div>
-                  </div>
-
-                  <!-- Event Details -->
-                  <div class="flex-1">
-                    <div class="flex items-start justify-between">
-                      <div>
-                        <h3 class="font-bold text-lg text-gray-800">
-                          <?php echo htmlspecialchars($event['title']); ?>
-                        </h3>
-                        <div class="flex items-center mt-1 text-sm text-gray-500">
-                          <span class="flex items-center mr-4">
-                            <i class="fas fa-clock mr-1.5 text-blue-500"></i>
-                            <?php echo date('h:i A', strtotime($event['start_time'])); ?> - <?php echo date('h:i A', strtotime($event['end_time'])); ?>
-                          </span>
-                          <span class="flex items-center">
-                            <i class="fas fa-map-marker-alt mr-1.5 text-blue-500"></i>
-                            <?php echo htmlspecialchars($event['location']); ?>
-                          </span>
-                        </div>
-                      </div>
-
-                      <div class="event-actions flex space-x-2 ml-4">
-                        <a href="events.php?edit_event_id=<?php echo $event['id']; ?>"
-                          class="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition"
-                          title="Edit">
-                          <i class="fas fa-edit"></i>
-                        </a>
-                        <form action="events.php" method="POST"
-                          onsubmit="return confirm('Are you sure you want to delete this event?');">
-                          <input type="hidden" name="action" value="delete_event">
-                          <input type="hidden" name="event_id" value="<?php echo $event['id']; ?>">
-                          <input type="hidden" name="storyteller_id" value="<?php echo $storyteller['id']; ?>">
-                          <button type="submit"
-                            class="p-2 text-red-600 hover:bg-red-50 rounded-full transition"
-                            title="Delete">
-                            <i class="fas fa-trash"></i>
-                          </button>
-                        </form>
-                      </div>
-                    </div>
-
-                    <?php if (!empty($event['description'])): ?>
-                      <p class="text-gray-600 mt-2">
-                        <?php echo htmlspecialchars($event['description']); ?>
-                      </p>
-                    <?php endif; ?>
-
-                    <!-- Event Media -->
-                    <div class="mt-4 space-y-3">
-                      <?php if ($event['image_url']): ?>
-                        <img src="<?php echo htmlspecialchars($event['image_url']); ?>"
-                          class="max-w-full h-auto rounded-lg border border-gray-200 shadow-sm">
-                      <?php endif; ?>
-
-                      <?php if ($event['video_url']): ?>
-                        <video controls class="max-w-full rounded-lg border border-gray-200 shadow-sm">
-                          <source src="<?php echo htmlspecialchars($event['video_url']); ?>" type="video/mp4">
-                          Your browser does not support the video tag.
-                        </video>
-                      <?php endif; ?>
-                    </div>
-
-                    <!-- Event Tags -->
-                    <div class="mt-4 flex flex-wrap gap-2">
-                      <span class="px-2.5 py-0.5 rounded-full text-xs font-medium 
-                                                <?php echo $event['is_virtual'] ? 'bg-purple-100 text-purple-800' : 'bg-green-100 text-green-800'; ?>">
-                        <?php echo $event['is_virtual'] ? 'Virtual Event' : 'In-Person Event'; ?>
-                      </span>
-                      <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                        <?php echo date('l, F j, Y', strtotime($event['event_date'])); ?>
-                      </span>
-                    </div>
-                  </div>
+          <?php foreach ($upcoming_events as $event): ?>
+          <div class="event-card p-6 hover:bg-gray-50 transition duration-150 ease-in-out upcom-event">
+            <div class="flex flex-col md:flex-row">
+              <!-- Event Date Badge -->
+              <div class="flex-shrink-0 mb-4 md:mb-0 md:mr-6">
+                <div class="flex flex-col items-center justify-center bg-blue-50 rounded-lg p-3 w-20">
+                  <span class="text-blue-800 font-bold text-xl">
+                    <?php echo date('d', strtotime($event['event_date'])); ?>
+                  </span>
+                  <span class="text-blue-600 text-sm uppercase">
+                    <?php echo date('M', strtotime($event['event_date'])); ?>
+                  </span>
                 </div>
               </div>
-            <?php endforeach; ?>
+
+              <!-- Event Details -->
+              <div class="flex-1">
+                <div class="flex items-start justify-between">
+                  <div>
+                    <h3 class="font-bold text-lg text-gray-800">
+                      <?php echo htmlspecialchars($event['title']); ?>
+                    </h3>
+                    <div class="flex items-center mt-1 text-sm text-gray-500">
+                      <span class="flex items-center mr-4">
+                        <i class="fas fa-clock mr-1.5 text-blue-500"></i>
+                        <?php echo date('h:i A', strtotime($event['start_time'])); ?> -
+                        <?php echo date('h:i A', strtotime($event['end_time'])); ?>
+                      </span>
+                      <span class="flex items-center">
+                        <i class="fas fa-map-marker-alt mr-1.5 text-blue-500"></i>
+                        <?php echo htmlspecialchars($event['location']); ?>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="event-actions flex space-x-2 ml-4">
+                    <a href="events.php?edit_event_id=<?php echo $event['id']; ?>"
+                      class="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition" title="Edit">
+                      <i class="fas fa-edit"></i>
+                    </a>
+                    <form action="events.php" method="POST"
+                      onsubmit="return confirm('Are you sure you want to delete this event?');">
+                      <input type="hidden" name="action" value="delete_event">
+                      <input type="hidden" name="event_id" value="<?php echo $event['id']; ?>">
+                      <input type="hidden" name="storyteller_id" value="<?php echo $storyteller['id']; ?>">
+                      <button type="submit" class="p-2 text-red-600 hover:bg-red-50 rounded-full transition"
+                        title="Delete">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </form>
+                  </div>
+                </div>
+
+                <?php if (!empty($event['description'])): ?>
+                <p class="text-gray-600 mt-2">
+                  <?php echo htmlspecialchars($event['description']); ?>
+                </p>
+                <?php endif; ?>
+
+                <!-- Event Media -->
+                <div class="mt-4 space-y-3">
+                  <?php if ($event['image_url']): ?>
+                  <img src="<?php echo htmlspecialchars($event['image_url']); ?>"
+                    class="max-w-full h-auto rounded-lg border border-gray-200 shadow-sm">
+                  <?php endif; ?>
+
+                  <?php if ($event['video_url']): ?>
+                  <video controls class="max-w-full rounded-lg border border-gray-200 shadow-sm">
+                    <source src="<?php echo htmlspecialchars($event['video_url']); ?>" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                  <?php endif; ?>
+                </div>
+
+                <!-- Event Tags -->
+                <div class="mt-4 flex flex-wrap gap-2">
+                  <span
+                    class="px-2.5 py-0.5 rounded-full text-xs font-medium 
+                                                <?php echo $event['is_virtual'] ? 'bg-purple-100 text-purple-800' : 'bg-green-100 text-green-800'; ?>">
+                    <?php echo $event['is_virtual'] ? 'Virtual Event' : 'In-Person Event'; ?>
+                  </span>
+                  <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                    <?php echo date('l, F j, Y', strtotime($event['event_date'])); ?>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <?php endforeach; ?>
           <?php endif; ?>
         </div>
       </div>
@@ -818,101 +820,101 @@ try {
 
         <div class="divide-y divide-gray-200 ">
           <?php if (empty($past_events)): ?>
-            <div class="p-8 text-center">
-              <i class="fas fa-history text-gray-300 text-4xl mb-3"></i>
-              <h4 class="text-lg font-medium text-gray-500">No past events found</h4>
-              <p class="text-gray-400 mt-1">Your completed events will appear here</p>
-            </div>
+          <div class="p-8 text-center">
+            <i class="fas fa-history text-gray-300 text-4xl mb-3"></i>
+            <h4 class="text-lg font-medium text-gray-500">No past events found</h4>
+            <p class="text-gray-400 mt-1">Your completed events will appear here</p>
+          </div>
           <?php else: ?>
-            <?php foreach ($past_events as $event): ?>
-              <div class="event-card p-6 hover:bg-gray-50 transition duration-150 ease-in-out">
-                <div class="flex flex-col md:flex-row">
-                  <!-- Event Date Badge -->
-                  <div class="flex-shrink-0 mb-4 md:mb-0 md:mr-6">
-                    <div class="flex flex-col items-center justify-center bg-gray-100 rounded-lg p-3 w-20">
-                      <span class="text-gray-800 font-bold text-xl">
-                        <?php echo date('d', strtotime($event['event_date'])); ?>
-                      </span>
-                      <span class="text-gray-600 text-sm uppercase">
-                        <?php echo date('M', strtotime($event['event_date'])); ?>
-                      </span>
-                    </div>
-                  </div>
-
-                  <!-- Event Details -->
-                  <div class="flex-1">
-                    <div class="flex items-start justify-between">
-                      <div>
-                        <h3 class="font-bold text-lg text-gray-800">
-                          <?php echo htmlspecialchars($event['title']); ?>
-                        </h3>
-                        <div class="flex items-center mt-1 text-sm text-gray-500">
-                          <span class="flex items-center mr-4">
-                            <i class="fas fa-clock mr-1.5 text-blue-500"></i>
-                            <?php echo date('h:i A', strtotime($event['start_time'])); ?> - <?php echo date('h:i A', strtotime($event['end_time'])); ?>
-                          </span>
-                          <span class="flex items-center">
-                            <i class="fas fa-map-marker-alt mr-1.5 text-blue-500"></i>
-                            <?php echo htmlspecialchars($event['location']); ?>
-                          </span>
-                        </div>
-                      </div>
-
-                      <div class="event-actions flex space-x-2 ml-4">
-                        <a href="events.php?edit_event_id=<?php echo $event['id']; ?>"
-                          class="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition"
-                          title="Edit">
-                          <i class="fas fa-edit"></i>
-                        </a>
-                        <form action="events.php" method="POST"
-                          onsubmit="return confirm('Are you sure you want to delete this event?');">
-                          <input type="hidden" name="action" value="delete_event">
-                          <input type="hidden" name="event_id" value="<?php echo $event['id']; ?>">
-                          <input type="hidden" name="storyteller_id" value="<?php echo $storyteller['id']; ?>">
-                          <button type="submit"
-                            class="p-2 text-red-600 hover:bg-red-50 rounded-full transition"
-                            title="Delete">
-                            <i class="fas fa-trash"></i>
-                          </button>
-                        </form>
-                      </div>
-                    </div>
-
-                    <?php if (!empty($event['description'])): ?>
-                      <p class="text-gray-600 mt-2">
-                        <?php echo htmlspecialchars($event['description']); ?>
-                      </p>
-                    <?php endif; ?>
-
-                    <!-- Event Media -->
-                    <div class="mt-4 space-y-3">
-                      <?php if ($event['image_url']): ?>
-                        <img src="<?php echo htmlspecialchars($event['image_url']); ?>"
-                          class="max-w-full h-auto rounded-lg border border-gray-200 shadow-sm">
-                      <?php endif; ?>
-
-                      <?php if ($event['video_url']): ?>
-                        <video controls class="max-w-full rounded-lg border border-gray-200 shadow-sm">
-                          <source src="<?php echo htmlspecialchars($event['video_url']); ?>" type="video/mp4">
-                          Your browser does not support the video tag.
-                        </video>
-                      <?php endif; ?>
-                    </div>
-
-                    <!-- Event Tags -->
-                    <div class="mt-4 flex flex-wrap gap-2">
-                      <span class="px-2.5 py-0.5 rounded-full text-xs font-medium 
-                                                <?php echo $event['is_virtual'] ? 'bg-purple-100 text-purple-800' : 'bg-green-100 text-green-800'; ?>">
-                        <?php echo $event['is_virtual'] ? 'Virtual Event' : 'In-Person Event'; ?>
-                      </span>
-                      <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                        Completed on <?php echo date('F j, Y', strtotime($event['event_date'])); ?>
-                      </span>
-                    </div>
-                  </div>
+          <?php foreach ($past_events as $event): ?>
+          <div class="event-card p-6 hover:bg-gray-50 transition duration-150 ease-in-out">
+            <div class="flex flex-col md:flex-row">
+              <!-- Event Date Badge -->
+              <div class="flex-shrink-0 mb-4 md:mb-0 md:mr-6">
+                <div class="flex flex-col items-center justify-center bg-gray-100 rounded-lg p-3 w-20">
+                  <span class="text-gray-800 font-bold text-xl">
+                    <?php echo date('d', strtotime($event['event_date'])); ?>
+                  </span>
+                  <span class="text-gray-600 text-sm uppercase">
+                    <?php echo date('M', strtotime($event['event_date'])); ?>
+                  </span>
                 </div>
               </div>
-            <?php endforeach; ?>
+
+              <!-- Event Details -->
+              <div class="flex-1">
+                <div class="flex items-start justify-between">
+                  <div>
+                    <h3 class="font-bold text-lg text-gray-800">
+                      <?php echo htmlspecialchars($event['title']); ?>
+                    </h3>
+                    <div class="flex items-center mt-1 text-sm text-gray-500">
+                      <span class="flex items-center mr-4">
+                        <i class="fas fa-clock mr-1.5 text-blue-500"></i>
+                        <?php echo date('h:i A', strtotime($event['start_time'])); ?> -
+                        <?php echo date('h:i A', strtotime($event['end_time'])); ?>
+                      </span>
+                      <span class="flex items-center">
+                        <i class="fas fa-map-marker-alt mr-1.5 text-blue-500"></i>
+                        <?php echo htmlspecialchars($event['location']); ?>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="event-actions flex space-x-2 ml-4">
+                    <a href="events.php?edit_event_id=<?php echo $event['id']; ?>"
+                      class="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition" title="Edit">
+                      <i class="fas fa-edit"></i>
+                    </a>
+                    <form action="events.php" method="POST"
+                      onsubmit="return confirm('Are you sure you want to delete this event?');">
+                      <input type="hidden" name="action" value="delete_event">
+                      <input type="hidden" name="event_id" value="<?php echo $event['id']; ?>">
+                      <input type="hidden" name="storyteller_id" value="<?php echo $storyteller['id']; ?>">
+                      <button type="submit" class="p-2 text-red-600 hover:bg-red-50 rounded-full transition"
+                        title="Delete">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </form>
+                  </div>
+                </div>
+
+                <?php if (!empty($event['description'])): ?>
+                <p class="text-gray-600 mt-2">
+                  <?php echo htmlspecialchars($event['description']); ?>
+                </p>
+                <?php endif; ?>
+
+                <!-- Event Media -->
+                <div class="mt-4 space-y-3">
+                  <?php if ($event['image_url']): ?>
+                  <img src="<?php echo htmlspecialchars($event['image_url']); ?>"
+                    class="max-w-full h-auto rounded-lg border border-gray-200 shadow-sm">
+                  <?php endif; ?>
+
+                  <?php if ($event['video_url']): ?>
+                  <video controls class="max-w-full rounded-lg border border-gray-200 shadow-sm">
+                    <source src="<?php echo htmlspecialchars($event['video_url']); ?>" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                  <?php endif; ?>
+                </div>
+
+                <!-- Event Tags -->
+                <div class="mt-4 flex flex-wrap gap-2">
+                  <span
+                    class="px-2.5 py-0.5 rounded-full text-xs font-medium 
+                                                <?php echo $event['is_virtual'] ? 'bg-purple-100 text-purple-800' : 'bg-green-100 text-green-800'; ?>">
+                    <?php echo $event['is_virtual'] ? 'Virtual Event' : 'In-Person Event'; ?>
+                  </span>
+                  <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                    Completed on <?php echo date('F j, Y', strtotime($event['event_date'])); ?>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <?php endforeach; ?>
           <?php endif; ?>
         </div>
 
@@ -927,7 +929,8 @@ try {
       <div class="flex flex-col md:flex-row justify-between">
         <div class="mb-8 md:mb-0">
           <h3 class="text-xl font-bold mb-4">Oromo Storyteller Network</h3>
-          <p class="text-gray-400 max-w-md">Preserving and celebrating the rich oral traditions of the Oromo people for future generations.</p>
+          <p class="text-gray-400 max-w-md">Preserving and celebrating the rich oral traditions of the Oromo people for
+            future generations.</p>
         </div>
 
         <div class="grid grid-cols-2 md:grid-cols-3 gap-8">
@@ -976,108 +979,108 @@ try {
   </footer>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Event card hover effects
-      const eventCards = document.querySelectorAll('.event-card');
-      eventCards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-          this.querySelector('.event-actions').style.opacity = '1';
-        });
-        card.addEventListener('mouseleave', function() {
-          this.querySelector('.event-actions').style.opacity = '0';
-        });
+  document.addEventListener('DOMContentLoaded', function() {
+    // Event card hover effects
+    const eventCards = document.querySelectorAll('.event-card');
+    eventCards.forEach(card => {
+      card.addEventListener('mouseenter', function() {
+        this.querySelector('.event-actions').style.opacity = '1';
       });
+      card.addEventListener('mouseleave', function() {
+        this.querySelector('.event-actions').style.opacity = '0';
+      });
+    });
 
-      // Modal handling
-      const modal = document.getElementById('eventModal');
-      const openAddModal = document.getElementById('openAddModal');
-      const openAddModalEmpty = document.getElementById('openAddModalEmpty');
-      const closeModal = document.getElementById('closeModal');
-      const cancelModal = document.getElementById('cancelModal');
+    // Modal handling
+    const modal = document.getElementById('eventModal');
+    const openAddModal = document.getElementById('openAddModal');
+    const openAddModalEmpty = document.getElementById('openAddModalEmpty');
+    const closeModal = document.getElementById('closeModal');
+    const cancelModal = document.getElementById('cancelModal');
 
-      function openModal() {
-        modal.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
+    function openModal() {
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModalFunc() {
+      modal.style.display = 'none';
+      document.body.style.overflow = 'auto';
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
+    if (openAddModal) {
+      openAddModal.addEventListener('click', openModal);
+    }
+
+    if (openAddModalEmpty) {
+      openAddModalEmpty.addEventListener('click', openModal);
+    }
+
+    if (closeModal) {
+      closeModal.addEventListener('click', closeModalFunc);
+    }
+
+    if (cancelModal) {
+      cancelModal.addEventListener('click', closeModalFunc);
+    }
+
+    // Close modal when clicking outside
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) {
+        closeModalFunc();
       }
+    });
 
-      function closeModalFunc() {
-        modal.style.display = 'none';
-        document.body.style.overflow = 'auto';
-        window.history.replaceState({}, document.title, window.location.pathname);
-      }
+    // Image preview handler
+    const imageInput = document.getElementById('eventImageInput');
+    const imagePreview = document.getElementById('imagePreview');
+    const previewImage = document.getElementById('previewImage');
 
-      if (openAddModal) {
-        openAddModal.addEventListener('click', openModal);
-      }
-
-      if (openAddModalEmpty) {
-        openAddModalEmpty.addEventListener('click', openModal);
-      }
-
-      if (closeModal) {
-        closeModal.addEventListener('click', closeModalFunc);
-      }
-
-      if (cancelModal) {
-        cancelModal.addEventListener('click', closeModalFunc);
-      }
-
-      // Close modal when clicking outside
-      modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-          closeModalFunc();
+    if (imageInput) {
+      imageInput.addEventListener('change', function() {
+        if (this.files && this.files[0]) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            previewImage.src = e.target.result;
+            imagePreview.classList.remove('hidden');
+          }
+          reader.readAsDataURL(this.files[0]);
         }
       });
+    }
 
-      // Image preview handler
-      const imageInput = document.getElementById('eventImageInput');
-      const imagePreview = document.getElementById('imagePreview');
-      const previewImage = document.getElementById('previewImage');
+    // Video preview handler
+    const videoInput = document.getElementById('eventVideoInput');
+    const videoPreview = document.getElementById('videoPreview');
+    const previewVideo = document.getElementById('previewVideo');
 
-      if (imageInput) {
-        imageInput.addEventListener('change', function() {
-          if (this.files && this.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-              previewImage.src = e.target.result;
-              imagePreview.classList.remove('hidden');
-            }
-            reader.readAsDataURL(this.files[0]);
+    if (videoInput) {
+      videoInput.addEventListener('change', function() {
+        if (this.files && this.files[0]) {
+          const file = this.files[0];
+          const videoURL = URL.createObjectURL(file);
+
+          // Create video element to check duration
+          const video = document.createElement('video');
+          video.preload = 'metadata';
+
+          video.onloadedmetadata = function() {
+            window.URL.revokeObjectURL(video.src);
+            previewVideo.src = videoURL;
+            videoPreview.classList.remove('hidden');
           }
-        });
-      }
 
-      // Video preview handler
-      const videoInput = document.getElementById('eventVideoInput');
-      const videoPreview = document.getElementById('videoPreview');
-      const previewVideo = document.getElementById('previewVideo');
+          video.src = videoURL;
+        }
+      });
+    }
 
-      if (videoInput) {
-        videoInput.addEventListener('change', function() {
-          if (this.files && this.files[0]) {
-            const file = this.files[0];
-            const videoURL = URL.createObjectURL(file);
-
-            // Create video element to check duration
-            const video = document.createElement('video');
-            video.preload = 'metadata';
-
-            video.onloadedmetadata = function() {
-              window.URL.revokeObjectURL(video.src);
-              previewVideo.src = videoURL;
-              videoPreview.classList.remove('hidden');
-            }
-
-            video.src = videoURL;
-          }
-        });
-      }
-
-      // Auto-open modal for editing
-      <?php if ($edit_event): ?>
-        openModal();
-      <?php endif; ?>
-    });
+    // Auto-open modal for editing
+    <?php if ($edit_event): ?>
+    openModal();
+    <?php endif; ?>
+  });
   </script>
 </body>
 

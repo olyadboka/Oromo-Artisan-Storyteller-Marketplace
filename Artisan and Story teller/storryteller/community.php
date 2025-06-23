@@ -1,5 +1,6 @@
 <?php
 // Database connection
+session_start();
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -14,7 +15,7 @@ try {
 }
 
 // Assume logged-in user (replace with proper authentication)
-$user_id = 8; // Jirenya Dhugaa for testing
+$user_id = $_SESSION['user_id']; // Jirenya Dhugaa for testing
 
 // Fetch storyteller data
 $stmt = $conn->prepare("
@@ -116,17 +117,17 @@ try {
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    .storyteller-header {
-      background: linear-gradient(135deg, #1e3a8a 0%, #7c2d12 100%);
-    }
+  .storyteller-header {
+    background: linear-gradient(135deg, #1e3a8a 0%, #7c2d12 100%);
+  }
 
-    .engagement-story_request {
-      border-left: 4px solid #3B82F6;
-    }
+  .engagement-story_request {
+    border-left: 4px solid #3B82F6;
+  }
 
-    .engagement-question {
-      border-left: 4px solid #10B981;
-    }
+  .engagement-question {
+    border-left: 4px solid #10B981;
+  }
   </style>
 </head>
 
@@ -136,11 +137,16 @@ try {
     <div class="container mx-auto px-4 py-8">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
         <div class="flex items-center space-x-6 mb-6 md:mb-0">
-          <img src="<?php echo htmlspecialchars($storyteller['profile_image_url'] ?? 'uploads/profiles/default-profile.jpg'); ?>" alt="Storyteller" class="w-20 h-20 rounded-full border-4 border-white border-opacity-30 object-cover shadow-lg">
+          <img
+            src="<?php echo htmlspecialchars($storyteller['profile_image_url'] ?? 'uploads/profiles/default-profile.jpg'); ?>"
+            alt="Storyteller"
+            class="w-20 h-20 rounded-full border-4 border-white border-opacity-30 object-cover shadow-lg">
           <div>
-            <h1 class="text-3xl font-bold"><?php echo htmlspecialchars($storyteller['artistic_name'] ?? 'Unknown Storyteller'); ?></h1>
+            <h1 class="text-3xl font-bold">
+              <?php echo htmlspecialchars($storyteller['artistic_name'] ?? 'Unknown Storyteller'); ?></h1>
             <p class="text-white text-opacity-80 flex items-center">
-              <i class="fas fa-map-marker-alt mr-2"></i> <?php echo htmlspecialchars($storyteller['location'] ?? 'Unknown Location'); ?>
+              <i class="fas fa-map-marker-alt mr-2"></i>
+              <?php echo htmlspecialchars($storyteller['location'] ?? 'Unknown Location'); ?>
               <span class="ml-4 px-3 py-1 bg-white bg-opacity-20 rounded-full text-sm">
                 <i class="fas fa-certificate mr-1"></i>
                 <?php echo ucfirst($storyteller['verification_status'] ?? 'Pending') ?> Storykeeper
@@ -201,15 +207,15 @@ try {
     </div>
 
     <?php if ($success): ?>
-      <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded">
-        <p>Your engagement has been posted successfully!</p>
-      </div>
+    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded">
+      <p>Your engagement has been posted successfully!</p>
+    </div>
     <?php endif; ?>
 
     <?php if (!empty($errors['database'])): ?>
-      <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded">
-        <p><?php echo $errors['database']; ?></p>
-      </div>
+    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded">
+      <p><?php echo $errors['database']; ?></p>
+    </div>
     <?php endif; ?>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -222,15 +228,18 @@ try {
             <div class="mb-4">
               <label class="block text-sm font-medium text-gray-700 mb-1">Engagement Type *</label>
               <div class="grid grid-cols-2 gap-2">
-                <label class="flex items-center space-x-2 p-3 border rounded-lg cursor-pointer <?php echo $engagement_type === 'story_request' ? 'border-blue-500 bg-blue-50' : 'border-gray-300'; ?>">
-                  <input type="radio" name="engagement_type" value="story_request" class="text-blue-600 focus:ring-blue-500"
+                <label
+                  class="flex items-center space-x-2 p-3 border rounded-lg cursor-pointer <?php echo $engagement_type === 'story_request' ? 'border-blue-500 bg-blue-50' : 'border-gray-300'; ?>">
+                  <input type="radio" name="engagement_type" value="story_request"
+                    class="text-blue-600 focus:ring-blue-500"
                     <?php echo $engagement_type === 'story_request' ? 'checked' : ''; ?>>
                   <div class="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
                     <i class="fas fa-book text-sm"></i>
                   </div>
                   <span>Story Request</span>
                 </label>
-                <label class="flex items-center space-x-2 p-3 border rounded-lg cursor-pointer <?php echo $engagement_type === 'question' ? 'border-blue-500 bg-blue-50' : 'border-gray-300'; ?>">
+                <label
+                  class="flex items-center space-x-2 p-3 border rounded-lg cursor-pointer <?php echo $engagement_type === 'question' ? 'border-blue-500 bg-blue-50' : 'border-gray-300'; ?>">
                   <input type="radio" name="engagement_type" value="question" class="text-blue-600 focus:ring-blue-500"
                     <?php echo $engagement_type === 'question' ? 'checked' : ''; ?>>
                   <div class="w-6 h-6 rounded-full bg-green-100 text-green-600 flex items-center justify-center">
@@ -247,11 +256,12 @@ try {
                 class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500 <?php echo isset($errors['content']) ? 'border-red-500' : ''; ?>"
                 placeholder="<?php echo $engagement_type === 'story_request' ? 'What story would you like to hear?' : 'Ask your question here...'; ?>"><?php echo htmlspecialchars($content); ?></textarea>
               <?php if (isset($errors['content'])): ?>
-                <p class="mt-1 text-sm text-red-600"><?php echo $errors['content']; ?></p>
+              <p class="mt-1 text-sm text-red-600"><?php echo $errors['content']; ?></p>
               <?php endif; ?>
             </div>
 
-            <button type="submit" class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium">
+            <button type="submit"
+              class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium">
               <i class="fas fa-paper-plane mr-2"></i> Post to Community
             </button>
           </form>
@@ -267,46 +277,49 @@ try {
           </div>
 
           <?php if (empty($engagements)): ?>
-            <div class="p-8 text-center">
-              <i class="fas fa-comments text-4xl text-gray-300 mb-4"></i>
-              <h3 class="text-lg font-medium text-gray-700">No engagements yet</h3>
-              <p class="text-gray-500 mt-2">Be the first to start a conversation!</p>
-            </div>
+          <div class="p-8 text-center">
+            <i class="fas fa-comments text-4xl text-gray-300 mb-4"></i>
+            <h3 class="text-lg font-medium text-gray-700">No engagements yet</h3>
+            <p class="text-gray-500 mt-2">Be the first to start a conversation!</p>
+          </div>
           <?php else: ?>
-            <div class="divide-y divide-gray-200">
-              <?php foreach ($engagements as $engagement): ?>
-                <div class="p-6 engagement-<?php echo $engagement['type']; ?>">
-                  <div class="flex items-start space-x-4">
-                    <img src="<?php echo htmlspecialchars($engagement['profile_image_url'] ?? 'uploads/profiles/default-profile.jpg'); ?>"
-                      alt="<?php echo htmlspecialchars($engagement['artistic_name']); ?>"
-                      class="w-12 h-12 rounded-full object-cover">
-                    <div class="flex-1">
-                      <div class="flex items-center justify-between">
-                        <h3 class="font-medium text-gray-900">
-                          <?php echo htmlspecialchars($engagement['artistic_name']); ?>
-                          <span class="text-sm text-gray-500 ml-2">@<?php echo htmlspecialchars($engagement['username']); ?></span>
-                        </h3>
-                        <span class="text-xs text-gray-500">
-                          <?php echo date('M j, Y g:i a', strtotime($engagement['created_at'])); ?>
-                        </span>
-                      </div>
-                      <div class="mt-1 flex items-center space-x-2">
-                        <?php if ($engagement['type'] === 'story_request'): ?>
-                          <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
-                            <i class="fas fa-book mr-1"></i> Story Request
-                          </span>
-                        <?php else: ?>
-                          <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">
-                            <i class="fas fa-question mr-1"></i> Question
-                          </span>
-                        <?php endif; ?>
-                      </div>
-                      <p class="mt-2 text-gray-700 whitespace-pre-wrap"><?php echo htmlspecialchars($engagement['content']); ?></p>
-                    </div>
+          <div class="divide-y divide-gray-200">
+            <?php foreach ($engagements as $engagement): ?>
+            <div class="p-6 engagement-<?php echo $engagement['type']; ?>">
+              <div class="flex items-start space-x-4">
+                <img
+                  src="<?php echo htmlspecialchars($engagement['profile_image_url'] ?? 'uploads/profiles/default-profile.jpg'); ?>"
+                  alt="<?php echo htmlspecialchars($engagement['artistic_name']); ?>"
+                  class="w-12 h-12 rounded-full object-cover">
+                <div class="flex-1">
+                  <div class="flex items-center justify-between">
+                    <h3 class="font-medium text-gray-900">
+                      <?php echo htmlspecialchars($engagement['artistic_name']); ?>
+                      <span
+                        class="text-sm text-gray-500 ml-2">@<?php echo htmlspecialchars($engagement['username']); ?></span>
+                    </h3>
+                    <span class="text-xs text-gray-500">
+                      <?php echo date('M j, Y g:i a', strtotime($engagement['created_at'])); ?>
+                    </span>
                   </div>
+                  <div class="mt-1 flex items-center space-x-2">
+                    <?php if ($engagement['type'] === 'story_request'): ?>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
+                      <i class="fas fa-book mr-1"></i> Story Request
+                    </span>
+                    <?php else: ?>
+                    <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">
+                      <i class="fas fa-question mr-1"></i> Question
+                    </span>
+                    <?php endif; ?>
+                  </div>
+                  <p class="mt-2 text-gray-700 whitespace-pre-wrap">
+                    <?php echo htmlspecialchars($engagement['content']); ?></p>
                 </div>
-              <?php endforeach; ?>
+              </div>
             </div>
+            <?php endforeach; ?>
+          </div>
           <?php endif; ?>
         </div>
       </div>
@@ -355,19 +368,19 @@ try {
   </footer>
 
   <script>
-    // Update placeholder text when engagement type changes
-    const engagementTypeRadios = document.querySelectorAll('input[name="engagement_type"]');
-    const contentTextarea = document.getElementById('content');
+  // Update placeholder text when engagement type changes
+  const engagementTypeRadios = document.querySelectorAll('input[name="engagement_type"]');
+  const contentTextarea = document.getElementById('content');
 
-    engagementTypeRadios.forEach(radio => {
-      radio.addEventListener('change', function() {
-        if (this.value === 'story_request') {
-          contentTextarea.placeholder = 'What story would you like to hear?';
-        } else {
-          contentTextarea.placeholder = 'Ask your question here...';
-        }
-      });
+  engagementTypeRadios.forEach(radio => {
+    radio.addEventListener('change', function() {
+      if (this.value === 'story_request') {
+        contentTextarea.placeholder = 'What story would you like to hear?';
+      } else {
+        contentTextarea.placeholder = 'Ask your question here...';
+      }
     });
+  });
   </script>
 </body>
 

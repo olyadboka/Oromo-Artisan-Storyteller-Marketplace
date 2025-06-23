@@ -53,7 +53,8 @@
     <div class="container mx-auto px-4 py-8">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
         <div class="flex items-center space-x-6 mb-6 md:mb-0">
-          <img src="storyteller-profile.jpg" alt="Storyteller"
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcz5kv79l6XgmpU4Z3n3_OwCm-kf8M01D0qg&s"
+            alt="Storyteller"
             class="w-20 h-20 rounded-full border-4 border-white border-opacity-30 object-cover shadow-lg">
           <div>
             <h1 class="text-3xl font-bold">Jirenya Dhugaa</h1>
@@ -89,7 +90,7 @@
         <a href="#" class="px-6 py-4 font-medium text-blue-800 border-b-2 border-blue-800">
           <i class="fas fa-home mr-2"></i> Dashboard
         </a>
-        <a href="#" class="px-6 py-4 font-medium text-gray-600 hover:text-blue-800">
+        <a href="" class="px-6 py-4 font-medium text-gray-600 hover:text-blue-800">
           <i class="fas fa-book-open mr-2"></i> My Stories
         </a>
         <a href="#" class="px-6 py-4 font-medium text-gray-600 hover:text-blue-800">

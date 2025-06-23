@@ -9,15 +9,25 @@ header("Location: ../../../User managemen/login.php");
 }
 
 
-$user_id = $_SESSION['user_id'];
-$sql = "SELECT profileImage from users where id = $user_id";
-$result = mysqli_query($con, $sql);
-$profileData = null;
-if ($result) {
-  while($row = mysqli_fetch_assoc($result)){
-    $profileData = $row['profileImage'];
-  }
-}
+// $user_id = $_SESSION['user_id'];
+// $sql = "SELECT profileImage from users where id = $user_id";
+// $result = mysqli_query($con, $sql);
+// $profileData = null;
+// if ($result) {
+//   while($row = mysqli_fetch_assoc($result)){
+//     $profileData = $row['profileImage'];
+//   }
+// }
+
+ $stmt = mysqli_prepare($con, "SELECT profileImage FROM users WHERE id = ?");
+        mysqli_stmt_bind_param($stmt, "s", $user_id);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+
+        $imageData = '';
+        if ($row = mysqli_fetch_assoc($result)) {
+          $imageData = base64_encode($row['profileImage']); 
+        }
 
 ?>
 
@@ -34,7 +44,7 @@ if ($result) {
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
   .dashboard-header {
-    background: linear-gradient(135deg, #1e3a8a 0%, #7c2d12 100%);
+    background: linear-gradient(135deg, #1e3a8a 0%, rgb(28, 185, 51) 100%);
   }
 
   .stat-card {
@@ -66,7 +76,7 @@ if ($result) {
 
 
           <?php if (!empty($profileData)): ?>
-          <img src="data:image/*;base64,<?php echo base64_encode($profileData); ?>" alt="Profile Image"
+          <img src="data:image/jpeg;base64,' . $imageData . '" alt="Profile Image"
             class="w-16 h-16 rounded-full border-4 border-white object-cover">
           <?php else: ?>
           <img src="https://ui-avatars.com/api/?name=User" alt="Default Profile"
@@ -84,9 +94,8 @@ if ($result) {
         </div>
         <nav>
           <ul class="flex space-x-4">
-            <li><a href="#" class="px-3 py-2 bg-white bg-opacity-20 rounded-lg"><i class="fas fa-cog mr-2"></i>as
-                Custormer</a></li>
-            <li><a href="#" class="px-3 py-2 bg-white bg-opacity-20 rounded-lg"><i
+
+            <li><a href="../User managemen/logout.php" class="px-3 py-2 bg-white bg-opacity-20 rounded-lg"><i
                   class="fas fa-sign-out-alt mr-2"></i>Logout</a></li>
           </ul>
         </nav>
@@ -98,15 +107,15 @@ if ($result) {
   <div class="bg-white shadow-sm">
     <div class="container mx-auto px-4">
       <nav class="flex overflow-x-auto">
-        <a href="#" class="px-6 py-4 font-medium text-red-600 border-b-2 border-red-600">Overview</a>
+        <a href="#" class="px-6 py-4 font-medium text-green-600 border-b-2 border-green-600">Overview</a>
         <a href="./artisanContent/product.php"
-          class="px-6 py-4 font-medium text-gray-600 hover:text-red-600">Products</a>
+          class="px-6 py-4 font-medium text-gray-600 hover:text-green-600">Products</a>
 
-        <a href="./artisanContent/orders.php" class="px-6 py-4 font-medium text-gray-600 hover:text-red-600">Orders</a>
+        <a href="./artisanContent/orders.php"
+          class="px-6 py-4 font-medium text-gray-600 hover:text-green-600">Orders</a>
         <a href="./artisanContent/earning.php"
-          class="px-6 py-4 font-medium text-gray-600 hover:text-red-600">Earnings</a>
+          class="px-6 py-4 font-medium text-gray-600 hover:text-green-600">Earnings</a>
 
-        <a href="#" class="px-6 py-4 font-medium text-gray-600 hover:text-red-600">Messages</a>
       </nav>
     </div>
   </div>
@@ -116,27 +125,29 @@ if ($result) {
     <!-- Stats Overview -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
       <div class="stat-card bg-white rounded-lg shadow p-6 text-center">
-        <div class="text-3xl font-bold text-red-600 mb-2">24</div>
+        <div class="text-3xl font-bold text-green-600 mb-2">24</div>
         <div class="text-gray-600">Active Products</div>
-        <a href="./artisanContent/product.php" class="mt-3 inline-block text-sm text-red-600 hover:text-red-700">Manage
+        <a href="./artisanContent/product.php"
+          class="mt-3 inline-block text-sm text-green-600 hover:text-red-700">Manage
           <i class="fas fa-arrow-right ml-1"></i></a>
       </div>
       <div class="stat-card bg-white rounded-lg shadow p-6 text-center">
-        <div class="text-3xl font-bold text-red-600 mb-2">8</div>
+        <div class="text-3xl font-bold text-green-600 mb-2">8</div>
         <div class="text-gray-600">Pending Orders</div>
-        <a href="./artisanContent/orders.php" class="mt-3 inline-block text-sm text-red-600 hover:text-red-700">View <i
-            class="fas fa-arrow-right ml-1"></i></a>
-      </div>
-      <div class="stat-card bg-white rounded-lg shadow p-6 text-center">
-        <div class="text-3xl font-bold text-red-600 mb-2">ETB 12,450</div>
-        <div class="text-gray-600">This Month's Earnings</div>
-        <a href="./artisanContent/earning.php" class="mt-3 inline-block text-sm text-red-600 hover:text-red-700">Details
+        <a href="./artisanContent/orders.php" class="mt-3 inline-block text-sm text-green-600 hover:text-red-700">View
           <i class="fas fa-arrow-right ml-1"></i></a>
       </div>
       <div class="stat-card bg-white rounded-lg shadow p-6 text-center">
-        <div class="text-3xl font-bold text-red-600 mb-2">4.8</div>
+        <div class="text-3xl font-bold text-green-600 mb-2">ETB 12,450</div>
+        <div class="text-gray-600">This Month's Earnings</div>
+        <a href="./artisanContent/earning.php"
+          class="mt-3 inline-block text-sm text-green-600 hover:text-green-700">Details
+          <i class="fas fa-arrow-right ml-1"></i></a>
+      </div>
+      <div class="stat-card bg-white rounded-lg shadow p-6 text-center">
+        <div class="text-3xl font-bold text-green-600 mb-2">4.8</div>
         <div class="text-gray-600">Average Rating</div>
-        <a href="#" class="mt-3 inline-block text-sm text-red-600 hover:text-red-700">Reviews <i
+        <a href="#" class="mt-3 inline-block text-sm text-green-600 hover:text-red-700">Reviews <i
             class="fas fa-arrow-right ml-1"></i></a>
       </div>
     </div>
@@ -147,14 +158,14 @@ if ($result) {
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         <a href="./artisanContent/add_product.php"
           class="border border-gray-200 rounded-lg p-4 text-center hover:border-red-500 transition-colors">
-          <div class="text-red-600 mb-2"><i class="fas fa-plus-circle text-2xl"></i></div>
+          <div class="text-green-600 mb-2"><i class="fas fa-plus-circle text-2xl"></i></div>
           <div class="font-medium">Add New Product</div>
         </a>
 
 
         <a href="./artisanContent/analytics.php"
           class="border border-gray-200 rounded-lg p-4 text-center hover:border-red-500 transition-colors">
-          <div class="text-red-600 mb-2"><i class="fas fa-chart-line text-2xl"></i></div>
+          <div class="text-green-600 mb-2"><i class="fas fa-chart-line text-2xl"></i></div>
           <div class="font-medium">View Analytics</div>
         </a>
       </div>
@@ -204,7 +215,7 @@ if ($result) {
                     <span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">Shipped</span>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    <a href="#" class="text-red-600 hover:text-red-900">Track</a>
+                    <a href="#" class="text-green-600 hover:text-red-900">Track</a>
                   </td>
                 </tr>
                 <tr>
@@ -215,9 +226,7 @@ if ($result) {
                     <span
                       class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
                   </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    <a href="#" class="text-red-600 hover:text-red-900">Message</a>
-                  </td>
+
                 </tr>
               </tbody>
             </table>

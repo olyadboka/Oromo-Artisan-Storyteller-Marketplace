@@ -21,6 +21,7 @@ if ($productId === false || $productId <= 0) {
     echo json_encode(['error' => 'Invalid Product ID']);
     exit();
 }
+
 $_SESSION['artisan_id']=1;
 
 if (!isset($_SESSION['artisan_id'])) {

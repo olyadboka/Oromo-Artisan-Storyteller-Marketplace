@@ -1,5 +1,6 @@
 <?php
 // Database connection
+session_start();
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -14,7 +15,7 @@ try {
 }
 
 // Assume logged-in user (replace with proper authentication)
-$user_id = 8; // Jirenya Dhugaa for testing
+$user_id = $_SESSION['user_id'];// Jirenya Dhugaa for testing
 
 // Fetch storyteller data
 $stmt = $conn->prepare("
@@ -110,276 +111,288 @@ foreach ($engagement as $eng) {
 <html lang="en" dir="ltr">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Storyteller Analytics - Oromo Storyteller Network</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
-    <style>
-        .storyteller-header {
-            background: linear-gradient(135deg, #1e3a8a 0%, #7c2d12 100%);
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Storyteller Analytics - Oromo Storyteller Network</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+  <style>
+  .storyteller-header {
+    background: linear-gradient(135deg, #1e3a8a 0%, #7c2d12 100%);
+  }
 
-        .table-header {
-            background-color: #f8fafc;
-        }
+  .table-header {
+    background-color: #f8fafc;
+  }
 
-        .chart-container {
-            max-width: 100%;
-            height: 200px;
-        }
-    </style>
+  .chart-container {
+    max-width: 100%;
+    height: 200px;
+  }
+  </style>
 </head>
 
 <body class="bg-gray-50">
-    <!-- Dashboard Header -->
-    <header class="storyteller-header text-white">
-        <div class="container mx-auto px-4 py-8">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
-                <div class="flex items-center space-x-6 mb-6 md:mb-0">
-                    <img src="<?php echo htmlspecialchars($storyteller['profile_image_url'] ?? 'uploads/profiles/default-profile.jpg'); ?>" alt="Storyteller" class="w-20 h-20 rounded-full border-4 border-white border-opacity-30 object-cover shadow-lg">
-                    <div>
-                        <h1 class="text-3xl font-bold"><?php echo htmlspecialchars($storyteller['artistic_name'] ?? 'Unknown Storyteller'); ?></h1>
-                        <p class="text-white text-opacity-80 flex items-center">
-                            <i class="fas fa-map-marker-alt mr-2"></i> <?php echo htmlspecialchars($storyteller['location'] ?? 'Unknown Location'); ?>
-                            <span class="ml-4 px-3 py-1 bg-white bg-opacity-20 rounded-full text-sm">
-                                <i class="fas fa-certificate mr-1"></i>
-                                <?php echo ucfirst($storyteller['verification_status'] ?? 'Pending') ?> Storykeeper
-                            </span>
-                        </p>
-                    </div>
-                </div>
-                <div class="flex space-x-4">
-                    <button class="px-5 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg transition">
-                        <i class="fas fa-cog mr-2"></i> as customer
-                    </button>
-                    <button class="px-5 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg transition">
-                        <i class="fas fa-sign-out-alt mr-2"></i> Logout
-                    </button>
-                </div>
-            </div>
+  <!-- Dashboard Header -->
+  <header class="storyteller-header text-white">
+    <div class="container mx-auto px-4 py-8">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+        <div class="flex items-center space-x-6 mb-6 md:mb-0">
+          <img
+            src="<?php echo htmlspecialchars($storyteller['profile_image_url'] ?? 'uploads/profiles/default-profile.jpg'); ?>"
+            alt="Storyteller"
+            class="w-20 h-20 rounded-full border-4 border-white border-opacity-30 object-cover shadow-lg">
+          <div>
+            <h1 class="text-3xl font-bold">
+              <?php echo htmlspecialchars($storyteller['artistic_name'] ?? 'Unknown Storyteller'); ?></h1>
+            <p class="text-white text-opacity-80 flex items-center">
+              <i class="fas fa-map-marker-alt mr-2"></i>
+              <?php echo htmlspecialchars($storyteller['location'] ?? 'Unknown Location'); ?>
+              <span class="ml-4 px-3 py-1 bg-white bg-opacity-20 rounded-full text-sm">
+                <i class="fas fa-certificate mr-1"></i>
+                <?php echo ucfirst($storyteller['verification_status'] ?? 'Pending') ?> Storykeeper
+              </span>
+            </p>
+          </div>
         </div>
-    </header>
-
-    <!-- Dashboard Navigation -->
-    <nav class="bg-white shadow-sm sticky top-0 z-10">
-        <div class="container mx-auto px-4">
-            <div class="flex overflow-x-auto">
-                <a href="storytellers.php" class="px-6 py-4 font-medium text-gray-600 hover:text-blue-800">
-                    <i class="fas fa-home mr-2"></i> Dashboard
-                </a>
-                <a href="mystory.php" class="px-6 py-4 font-medium text-gray-600 hover:text-blue-800">
-                    <i class="fas fa-book-open mr-2"></i> My Stories
-                </a>
-                <a href="events.php" class="px-6 py-4 font-medium text-gray-600 hover:text-blue-800">
-                    <i class="fas fa-calendar-alt mr-2"></i> Events
-                </a>
-                <a href="community.php" class="px-6 py-4 font-medium text-gray-600 hover:text-blue-800">
-                    <i class="fas fa-comments mr-2"></i> Community
-                </a>
-                <a href="analytics.php" class="px-6 py-4 font-medium text-blue-800 border-b-2 border-blue-800">
-                    <i class="fas fa-chart-line mr-2"></i> Analytics
-                </a>
-                <a href="earning.php" class="px-6 py-4 font-medium text-gray-600 hover:text-blue-800">
-                    <i class="fas fa-wallet mr-2"></i> Earnings
-                </a>
-            </div>
+        <div class="flex space-x-4">
+          <button class="px-5 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg transition">
+            <i class="fas fa-cog mr-2"></i> as customer
+          </button>
+          <button class="px-5 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg transition">
+            <i class="fas fa-sign-out-alt mr-2"></i> Logout
+          </button>
         </div>
-    </nav>
+      </div>
+    </div>
+  </header>
 
-    <!-- Main Content -->
-    <main class="container mx-auto px-4 py-8">
-        <h1 class="text-2xl font-bold text-gray-800 mb-6">Analytics Dashboard</h1>
+  <!-- Dashboard Navigation -->
+  <nav class="bg-white shadow-sm sticky top-0 z-10">
+    <div class="container mx-auto px-4">
+      <div class="flex overflow-x-auto">
+        <a href="storytellers.php" class="px-6 py-4 font-medium text-gray-600 hover:text-blue-800">
+          <i class="fas fa-home mr-2"></i> Dashboard
+        </a>
+        <a href="mystory.php" class="px-6 py-4 font-medium text-gray-600 hover:text-blue-800">
+          <i class="fas fa-book-open mr-2"></i> My Stories
+        </a>
+        <a href="events.php" class="px-6 py-4 font-medium text-gray-600 hover:text-blue-800">
+          <i class="fas fa-calendar-alt mr-2"></i> Events
+        </a>
+        <a href="community.php" class="px-6 py-4 font-medium text-gray-600 hover:text-blue-800">
+          <i class="fas fa-comments mr-2"></i> Community
+        </a>
+        <a href="analytics.php" class="px-6 py-4 font-medium text-blue-800 border-b-2 border-blue-800">
+          <i class="fas fa-chart-line mr-2"></i> Analytics
+        </a>
+        <a href="earning.php" class="px-6 py-4 font-medium text-gray-600 hover:text-blue-800">
+          <i class="fas fa-wallet mr-2"></i> Earnings
+        </a>
+      </div>
+    </div>
+  </nav>
 
-        <!-- Filters -->
-        <div class="bg-white rounded-xl shadow p-6 mb-8">
-            <h2 class="text-xl font-bold text-gray-800 mb-4">Filter Stories</h2>
-            <form class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Media Type</label>
-                    <select name="media_type" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">
-                        <option value="">All</option>
-                        <option value="audio" <?php echo $media_type == 'audio' ? 'selected' : ''; ?>>Audio</option>
-                        <option value="video" <?php echo $media_type == 'video' ? 'selected' : ''; ?>>Video</option>
-                        <option value="text" <?php echo $media_type == 'text' ? 'selected' : ''; ?>>Text</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Language</label>
-                    <select name="language" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">
-                        <option value="">All</option>
-                        <option value="Afaan Oromo" <?php echo $language == 'Afaan Oromo' ? 'selected' : ''; ?>>Afaan Oromo</option>
-                        <option value="English" <?php echo $language == 'English' ? 'selected' : ''; ?>>English</option>
-                        <option value="Amharic" <?php echo $language == 'Amharic' ? 'selected' : ''; ?>>Amharic</option>
-                    </select>
-                </div>
-                <div class="sm:col-span-2">
-                    <button type="submit" class="mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-medium">
-                        <i class="fas fa-filter mr-2"></i> Apply Filters
-                    </button>
-                </div>
-            </form>
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold text-gray-800 mb-6">Analytics Dashboard</h1>
+
+    <!-- Filters -->
+    <div class="bg-white rounded-xl shadow p-6 mb-8">
+      <h2 class="text-xl font-bold text-gray-800 mb-4">Filter Stories</h2>
+      <form class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Media Type</label>
+          <select name="media_type"
+            class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">
+            <option value="">All</option>
+            <option value="audio" <?php echo $media_type == 'audio' ? 'selected' : ''; ?>>Audio</option>
+            <option value="video" <?php echo $media_type == 'video' ? 'selected' : ''; ?>>Video</option>
+            <option value="text" <?php echo $media_type == 'text' ? 'selected' : ''; ?>>Text</option>
+          </select>
         </div>
-
-        <!-- Story Performance -->
-        <div class="bg-white rounded-xl shadow overflow-hidden mb-8">
-            <div class="px-6 py-4 border-b border-gray-200">
-                <h2 class="text-xl font-bold text-gray-800">Story Performance</h2>
-                <p class="text-sm text-gray-600">Total Listeners: <?php echo number_format($total_listeners); ?></p>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="table-header">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Media Type</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Language</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Themes</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Listens</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Posted</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        <?php foreach ($stories as $story): ?>
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"><?php echo htmlspecialchars($story['title']); ?></td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?php echo ucfirst($story['media_type']); ?></td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?php echo $story['language']; ?></td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?php echo htmlspecialchars($story['themes'] ?? $storyteller['specialization']); ?></td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?php echo number_format($story['listen_count']); ?></td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?php echo date('M d, Y', strtotime($story['created_at'])); ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Language</label>
+          <select name="language"
+            class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">
+            <option value="">All</option>
+            <option value="Afaan Oromo" <?php echo $language == 'Afaan Oromo' ? 'selected' : ''; ?>>Afaan Oromo</option>
+            <option value="English" <?php echo $language == 'English' ? 'selected' : ''; ?>>English</option>
+            <option value="Amharic" <?php echo $language == 'Amharic' ? 'selected' : ''; ?>>Amharic</option>
+          </select>
         </div>
-
-        <!-- Earnings Trend -->
-        <div class="bg-white rounded-xl shadow p-6 mb-8">
-            <h2 class="text-xl font-bold text-gray-800 mb-4">Earnings Trend (Last 6 Months)</h2>
-            <div class="chart-container">
-                <canvas id="earningsChart"></canvas>
-            </div>
+        <div class="sm:col-span-2">
+          <button type="submit" class="mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-medium">
+            <i class="fas fa-filter mr-2"></i> Apply Filters
+          </button>
         </div>
+      </form>
+    </div>
 
-        <!-- Community Engagement -->
-        <div class="bg-white rounded-xl shadow p-6">
-            <h2 class="text-xl font-bold text-gray-800 mb-4">Community Engagement</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <p class="text-sm text-gray-600 mb-2">Story Requests: <?php echo $story_requests; ?></p>
-                    <p class="text-sm text-gray-600 mb-2">Questions: <?php echo $questions; ?></p>
-                </div>
-                <div class="chart-container">
-                    <canvas id="engagementChart"></canvas>
-                </div>
-            </div>
+    <!-- Story Performance -->
+    <div class="bg-white rounded-xl shadow overflow-hidden mb-8">
+      <div class="px-6 py-4 border-b border-gray-200">
+        <h2 class="text-xl font-bold text-gray-800">Story Performance</h2>
+        <p class="text-sm text-gray-600">Total Listeners: <?php echo number_format($total_listeners); ?></p>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="table-header">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Media Type</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Language</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Themes</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Listens</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Posted</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <?php foreach ($stories as $story): ?>
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                <?php echo htmlspecialchars($story['title']); ?></td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?php echo ucfirst($story['media_type']); ?>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?php echo $story['language']; ?></td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <?php echo htmlspecialchars($story['themes'] ?? $storyteller['specialization']); ?></td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <?php echo number_format($story['listen_count']); ?></td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <?php echo date('M d, Y', strtotime($story['created_at'])); ?></td>
+            </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Earnings Trend -->
+    <div class="bg-white rounded-xl shadow p-6 mb-8">
+      <h2 class="text-xl font-bold text-gray-800 mb-4">Earnings Trend (Last 6 Months)</h2>
+      <div class="chart-container">
+        <canvas id="earningsChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Community Engagement -->
+    <div class="bg-white rounded-xl shadow p-6">
+      <h2 class="text-xl font-bold text-gray-800 mb-4">Community Engagement</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <p class="text-sm text-gray-600 mb-2">Story Requests: <?php echo $story_requests; ?></p>
+          <p class="text-sm text-gray-600 mb-2">Questions: <?php echo $questions; ?></p>
         </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-8 mt-12">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between">
-                <div class="mb-6 md:mb-0">
-                    <h3 class="text-xl font-bold mb-4">Oromo Storyteller Network</h3>
-                    <p class="text-gray-400">Preserving oral traditions for future generations</p>
-                </div>
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-8">
-                    <div>
-                        <h4 class="font-semibold mb-3">Resources</h4>
-                        <ul class="space-y-2">
-                            <li><a href="#" class="text-gray-400 hover:text-white">Recording Guide</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white">Storytelling Tips</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white">Cultural Database</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="font-semibold mb-3">Support</h4>
-                        <ul class="space-y-2">
-                            <li><a href="#" class="text-gray-400 hover:text-white">Help Center</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white">Community</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white">Contact Us</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="font-semibold mb-3">Connect</h4>
-                        <div class="flex space-x-4">
-                            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
-                            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-youtube"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-400 text-sm">
-                © 2025 Oromo Artisan & Storyteller Marketplace. All rights reserved.
-            </div>
+        <div class="chart-container">
+          <canvas id="engagementChart"></canvas>
         </div>
-    </footer>
+      </div>
+    </div>
+  </main>
 
-    <script>
-        // Earnings Chart
-        const earningsCtx = document.getElementById('earningsChart').getContext('2d');
-        new Chart(earningsCtx, {
-            type: 'bar',
-            data: {
-                labels: <?php echo json_encode(array_keys($earnings_data)); ?>,
-                datasets: [{
-                    label: 'Earnings (ETB)',
-                    data: <?php echo json_encode(array_values($earnings_data)); ?>,
-                    backgroundColor: 'rgba(59, 130, 246, 0.5)',
-                    borderColor: 'rgba(59, 130, 246, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Earnings (ETB)'
-                        }
-                    },
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Month'
-                        }
-                    }
-                }
-            }
-        });
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-8 mt-12">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row justify-between">
+        <div class="mb-6 md:mb-0">
+          <h3 class="text-xl font-bold mb-4">Oromo Storyteller Network</h3>
+          <p class="text-gray-400">Preserving oral traditions for future generations</p>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-8">
+          <div>
+            <h4 class="font-semibold mb-3">Resources</h4>
+            <ul class="space-y-2">
+              <li><a href="#" class="text-gray-400 hover:text-white">Recording Guide</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white">Storytelling Tips</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white">Cultural Database</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-semibold mb-3">Support</h4>
+            <ul class="space-y-2">
+              <li><a href="#" class="text-gray-400 hover:text-white">Help Center</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white">Community</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white">Contact Us</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-semibold mb-3">Connect</h4>
+            <div class="flex space-x-4">
+              <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+              <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-400 text-sm">
+        © 2025 Oromo Artisan & Storyteller Marketplace. All rights reserved.
+      </div>
+    </div>
+  </footer>
 
-        // Engagement Chart
-        const engagementCtx = document.getElementById('engagementChart').getContext('2d');
-        new Chart(engagementCtx, {
-            type: 'pie',
-            data: {
-                labels: ['Story Requests', 'Questions'],
-                datasets: [{
-                    data: [<?php echo $story_requests; ?>, <?php echo $questions; ?>],
-                    backgroundColor: ['rgba(59, 130, 246, 0.5)', 'rgba(16, 185, 129, 0.5)'],
-                    borderColor: ['rgba(59, 130, 246, 1)', 'rgba(16, 185, 129, 1)'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'top'
-                    }
-                }
-            }
-        });
-    </script>
+  <script>
+  // Earnings Chart
+  const earningsCtx = document.getElementById('earningsChart').getContext('2d');
+  new Chart(earningsCtx, {
+    type: 'bar',
+    data: {
+      labels: <?php echo json_encode(array_keys($earnings_data)); ?>,
+      datasets: [{
+        label: 'Earnings (ETB)',
+        data: <?php echo json_encode(array_values($earnings_data)); ?>,
+        backgroundColor: 'rgba(59, 130, 246, 0.5)',
+        borderColor: 'rgba(59, 130, 246, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Earnings (ETB)'
+          }
+        },
+        x: {
+          title: {
+            display: true,
+            text: 'Month'
+          }
+        }
+      }
+    }
+  });
+
+  // Engagement Chart
+  const engagementCtx = document.getElementById('engagementChart').getContext('2d');
+  new Chart(engagementCtx, {
+    type: 'pie',
+    data: {
+      labels: ['Story Requests', 'Questions'],
+      datasets: [{
+        data: [<?php echo $story_requests; ?>, <?php echo $questions; ?>],
+        backgroundColor: ['rgba(59, 130, 246, 0.5)', 'rgba(16, 185, 129, 0.5)'],
+        borderColor: ['rgba(59, 130, 246, 1)', 'rgba(16, 185, 129, 1)'],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'top'
+        }
+      }
+    }
+  });
+  </script>
 </body>
 
 </html>

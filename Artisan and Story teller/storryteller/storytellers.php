@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -14,7 +14,7 @@ try {
 }
 
 
-$user_id = 1;
+$user_id = $_SESSION['user_id'];
 
 $stmt = $conn->prepare("
     SELECT s.*, u.username 
@@ -65,7 +65,7 @@ $stmt = $conn->prepare("
 $stmt->execute(['storyteller_id' => $storyteller['id']]);
 $monthly_listeners = $stmt->fetchColumn() ?: 0;
 
-// Fetch earnings
+
 $stmt = $conn->prepare("
     SELECT SUM(amount) as total_earnings
     FROM earnings
@@ -114,42 +114,42 @@ foreach ($engagement as $eng) {
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    .storyteller-header {
-      background: linear-gradient(135deg, #1e3a8a 0%, #7c2d12 100%);
-    }
+  .storyteller-header {
+    background: linear-gradient(135deg, #1e3a8a 0%, #7c2d12 100%);
+  }
 
-    .story-card:hover .story-actions {
-      opacity: 1;
-    }
+  .story-card:hover .story-actions {
+    opacity: 1;
+  }
 
-    .story-actions {
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
+  .story-actions {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
 
-    .media-icon {
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-    }
+  .media-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
 
-    .audio-icon {
-      background-color: rgba(59, 130, 246, 0.1);
-      color: #3b82f6;
-    }
+  .audio-icon {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+  }
 
-    .video-icon {
-      background-color: rgba(220, 38, 38, 0.1);
-      color: #dc2626;
-    }
+  .video-icon {
+    background-color: rgba(220, 38, 38, 0.1);
+    color: #dc2626;
+  }
 
-    .text-icon {
-      background-color: rgba(5, 150, 105, 0.1);
-      color: #059669;
-    }
+  .text-icon {
+    background-color: rgba(5, 150, 105, 0.1);
+    color: #059669;
+  }
   </style>
 </head>
 
@@ -159,11 +159,15 @@ foreach ($engagement as $eng) {
     <div class="container mx-auto px-4 py-8">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
         <div class="flex items-center space-x-6 mb-6 md:mb-0">
-          <img src="<?php echo htmlspecialchars($storyteller['profile_image_url'] ?? 'uploads/profiles/default-profile.jpg'); ?>" alt="Storyteller" class="w-20 h-20 rounded-full border-4 border-white border-opacity-30 object-cover shadow-lg">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcz5kv79l6XgmpU4Z3n3_OwCm-kf8M01D0qg&s"
+            alt="Storyteller"
+            class="w-20 h-20 rounded-full border-4 border-white border-opacity-30 object-cover shadow-lg">
           <div>
-            <h1 class="text-3xl font-bold"><?php echo htmlspecialchars($storyteller['artistic_name'] ?? 'Unknown Storyteller'); ?></h1>
+            <h1 class="text-3xl font-bold">
+              <?php echo htmlspecialchars($storyteller['artistic_name'] ?? 'Unknown Storyteller'); ?></h1>
             <p class="text-white text-opacity-80 flex items-center">
-              <i class="fas fa-map-marker-alt mr-2"></i> <?php echo htmlspecialchars($storyteller['location'] ?? 'Unknown Location'); ?>
+              <i class="fas fa-map-marker-alt mr-2"></i>
+              <?php echo htmlspecialchars($storyteller['location'] ?? 'Unknown Location'); ?>
               <span class="ml-4 px-3 py-1 bg-white bg-opacity-20 rounded-full text-sm">
                 <i class="fas fa-certificate mr-1"></i>
                 <?php echo ucfirst($storyteller['verification_status'] ?? 'Pending') ?> Storykeeper
@@ -171,18 +175,18 @@ foreach ($engagement as $eng) {
             </p>
             <div class="flex mt-2 space-x-2">
               <?php foreach ($specializations as $spec): ?>
-                <span class="px-2 py-1 bg-white bg-opacity-10 rounded text-xs"><?php echo htmlspecialchars(trim($spec)); ?></span>
+              <span
+                class="px-2 py-1 bg-white bg-opacity-10 rounded text-xs"><?php echo htmlspecialchars(trim($spec)); ?></span>
               <?php endforeach; ?>
             </div>
           </div>
         </div>
         <div class="flex space-x-4">
-          <button class="px-5 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg transition">
-            <i class="fas fa-bell mr-2"></i> Notifications
-          </button>
-          <button class="px-5 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg transition">
-            <i class="fas fa-cog mr-2"></i> Settings
-          </button>
+
+          <a href="../../User managemen/logout.php"
+            class="px-5 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg transition inline-flex items-center">
+            <i class="fas fa-cog mr-2"></i> Logout
+          </a>
         </div>
       </div>
     </div>
@@ -266,17 +270,20 @@ foreach ($engagement as $eng) {
     <div class="bg-white rounded-xl shadow p-6 mb-8">
       <h2 class="text-xl font-bold text-gray-800 mb-6">Quick Actions</h2>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <a href="#" class="border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-5 text-center transition-colors">
+        <a href="#"
+          class="border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-5 text-center transition-colors">
           <div class="text-blue-600 mb-3"><i class="fas fa-microphone text-3xl"></i></div>
           <h3 class="font-medium text-gray-800">Record New Story</h3>
           <p class="text-sm text-gray-500 mt-1">Audio or video</p>
         </a>
-        <a href="#" class="border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-5 text-center transition-colors">
+        <a href="#"
+          class="border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-5 text-center transition-colors">
           <div class="text-red-600 mb-3"><i class="fas fa-calendar-plus text-3xl"></i></div>
           <h3 class="font-medium text-gray-800">Schedule Performance</h3>
           <p class="text-sm text-gray-500 mt-1">Live or virtual</p>
         </a>
-        <a href="#" class="border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-5 text-center transition-colors">
+        <a href="#"
+          class="border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-lg p-5 text-center transition-colors">
           <div class="text-green-600 mb-3"><i class="fas fa-pen-fancy text-3xl"></i></div>
           <h3 class="font-medium text-gray-800">Write Story</h3>
           <p class="text-sm text-gray-500 mt-1">Text version</p>
@@ -297,46 +304,51 @@ foreach ($engagement as $eng) {
           </div>
           <div class="divide-y divide-gray-200">
             <?php foreach ($stories as $story): ?>
-              <div class="story-card p-6 hover:bg-gray-50 transition">
-                <div class="flex items-start">
-                  <div class="media-icon <?php echo $story['media_type'] == 'audio' ? 'audio-icon' : ($story['media_type'] == 'video' ? 'video-icon' : 'text-icon'); ?> mr-4">
-                    <i class="fas fa-<?php echo $story['media_type'] == 'audio' ? 'music' : ($story['media_type'] == 'video' ? 'video' : 'file-alt'); ?>"></i>
-                  </div>
-                  <div class="flex-1">
-                    <h3 class="font-bold text-lg text-gray-800"><?php echo htmlspecialchars($story['title']); ?></h3>
-                    <p class="text-gray-600 mt-1"><?php echo htmlspecialchars($story['description']); ?></p>
-                    <div class="flex items-center mt-3 text-sm text-gray-500">
-                      <span class="mr-4"><i class="fas fa-tag mr-1"></i> <?php echo htmlspecialchars($story['themes'] ?? $storyteller['specialization']); ?></span>
-                      <span class="mr-4"><i class="fas fa-language mr-1"></i> <?php echo $story['language']; ?></span>
-                      <span><i class="fas fa-clock mr-1"></i> <?php echo $story['duration'] ? ($story['duration'] . ' min') : ($story['word_count'] . ' words'); ?></span>
-                    </div>
-                  </div>
-                  <div class="story-actions flex space-x-2 ml-4">
-                    <button class="p-2 text-blue-600 hover:bg-blue-50 rounded-full">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="p-2 text-red-600 hover:bg-red-50 rounded-full">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                    <button class="p-2 text-green-600 hover:bg-green-50 rounded-full">
-                      <i class="fas fa-share-alt"></i>
-                    </button>
+            <div class="story-card p-6 hover:bg-gray-50 transition">
+              <div class="flex items-start">
+                <div
+                  class="media-icon <?php echo $story['media_type'] == 'audio' ? 'audio-icon' : ($story['media_type'] == 'video' ? 'video-icon' : 'text-icon'); ?> mr-4">
+                  <i
+                    class="fas fa-<?php echo $story['media_type'] == 'audio' ? 'music' : ($story['media_type'] == 'video' ? 'video' : 'file-alt'); ?>"></i>
+                </div>
+                <div class="flex-1">
+                  <h3 class="font-bold text-lg text-gray-800"><?php echo htmlspecialchars($story['title']); ?></h3>
+                  <p class="text-gray-600 mt-1"><?php echo htmlspecialchars($story['description']); ?></p>
+                  <div class="flex items-center mt-3 text-sm text-gray-500">
+                    <span class="mr-4"><i class="fas fa-tag mr-1"></i>
+                      <?php echo htmlspecialchars($story['themes'] ?? $storyteller['specialization']); ?></span>
+                    <span class="mr-4"><i class="fas fa-language mr-1"></i> <?php echo $story['language']; ?></span>
+                    <span><i class="fas fa-clock mr-1"></i>
+                      <?php echo $story['duration'] ? ($story['duration'] . ' min') : ($story['word_count'] . ' words'); ?></span>
                   </div>
                 </div>
-                <div class="mt-4 flex items-center justify-between">
-                  <div class="flex items-center">
-                    <div class="flex items-center text-yellow-400 mr-3">
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star-half-alt"></i>
-                    </div>
-                    <span class="text-sm text-gray-500"><?php echo $story['listen_count']; ?> <?php echo $story['media_type'] == 'video' ? 'views' : 'listens'; ?></span>
-                  </div>
-                  <a href="#" class="text-sm text-blue-600 hover:text-blue-800">View details →</a>
+                <div class="story-actions flex space-x-2 ml-4">
+                  <button class="p-2 text-blue-600 hover:bg-blue-50 rounded-full">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="p-2 text-red-600 hover:bg-red-50 rounded-full">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                  <button class="p-2 text-green-600 hover:bg-green-50 rounded-full">
+                    <i class="fas fa-share-alt"></i>
+                  </button>
                 </div>
               </div>
+              <div class="mt-4 flex items-center justify-between">
+                <div class="flex items-center">
+                  <div class="flex items-center text-yellow-400 mr-3">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                  </div>
+                  <span class="text-sm text-gray-500"><?php echo $story['listen_count']; ?>
+                    <?php echo $story['media_type'] == 'video' ? 'views' : 'listens'; ?></span>
+                </div>
+                <a href="#" class="text-sm text-blue-600 hover:text-blue-800">View details →</a>
+              </div>
+            </div>
             <?php endforeach; ?>
           </div>
           <div class="px-6 py-4 border-t border-gray-200 text-center">
@@ -357,20 +369,20 @@ foreach ($engagement as $eng) {
           <div class="p-6">
             <div class="space-y-4">
               <?php foreach ($events as $event): ?>
-                <div class="flex items-start">
-                  <div class="bg-blue-100 text-blue-800 rounded-lg p-3 text-center mr-4">
-                    <div class="font-bold"><?php echo date('d', strtotime($event['event_date'])); ?></div>
-                    <div class="text-xs uppercase"><?php echo date('M', strtotime($event['event_date'])); ?></div>
-                  </div>
-                  <div>
-                    <h3 class="font-medium text-gray-800"><?php echo htmlspecialchars($event['title']); ?></h3>
-                    <p class="text-sm text-gray-600 mt-1"><?php echo htmlspecialchars($event['description']); ?></p>
-                    <div class="mt-2 flex items-center text-sm text-gray-500">
-                      <i class="fas fa-clock mr-1"></i>
-                      <?php echo date('h:i A', strtotime($event['start_time'])) . ' - ' . date('h:i A', strtotime($event['end_time'])); ?>
-                    </div>
+              <div class="flex items-start">
+                <div class="bg-blue-100 text-blue-800 rounded-lg p-3 text-center mr-4">
+                  <div class="font-bold"><?php echo date('d', strtotime($event['event_date'])); ?></div>
+                  <div class="text-xs uppercase"><?php echo date('M', strtotime($event['event_date'])); ?></div>
+                </div>
+                <div>
+                  <h3 class="font-medium text-gray-800"><?php echo htmlspecialchars($event['title']); ?></h3>
+                  <p class="text-sm text-gray-600 mt-1"><?php echo htmlspecialchars($event['description']); ?></p>
+                  <div class="mt-2 flex items-center text-sm text-gray-500">
+                    <i class="fas fa-clock mr-1"></i>
+                    <?php echo date('h:i A', strtotime($event['start_time'])) . ' - ' . date('h:i A', strtotime($event['end_time'])); ?>
                   </div>
                 </div>
+              </div>
               <?php endforeach; ?>
             </div>
             <button class="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-medium">
@@ -385,15 +397,17 @@ foreach ($engagement as $eng) {
           <div class="space-y-4">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Select Story</label>
-              <select class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">
+              <select
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">
                 <?php foreach ($stories as $story): ?>
-                  <option><?php echo htmlspecialchars($story['title']); ?></option>
+                <option><?php echo htmlspecialchars($story['title']); ?></option>
                 <?php endforeach; ?>
               </select>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Translate to</label>
-              <select class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">
+              <select
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">
                 <option>Afaan Oromo</option>
                 <option>English</option>
                 <option>Amharic</option>
@@ -478,17 +492,17 @@ foreach ($engagement as $eng) {
   </footer>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const storyCards = document.querySelectorAll('.story-card');
-      storyCards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-          this.querySelector('.story-actions').style.opacity = '1';
-        });
-        card.addEventListener('mouseleave', function() {
-          this.querySelector('.story-actions').style.opacity = '0';
-        });
+  document.addEventListener('DOMContentLoaded', function() {
+    const storyCards = document.querySelectorAll('.story-card');
+    storyCards.forEach(card => {
+      card.addEventListener('mouseenter', function() {
+        this.querySelector('.story-actions').style.opacity = '1';
+      });
+      card.addEventListener('mouseleave', function() {
+        this.querySelector('.story-actions').style.opacity = '0';
       });
     });
+  });
   </script>
 </body>
 

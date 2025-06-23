@@ -1,5 +1,6 @@
 <?php
 // Database connection
+session_start();
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -14,7 +15,7 @@ try {
 }
 
 // Assume logged-in user (replace with proper authentication)
-$user_id = 7; // Jirenya Dhugaa for testing
+$user_id = $_SESSION['user_id']; // Jirenya Dhugaa for testing
 
 // Fetch storyteller data
 $stmt = $conn->prepare("
@@ -224,30 +225,30 @@ $current_themes = $story['themes'] ? explode(',', $story['themes']) : [];
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    .storyteller-header {
-      background: linear-gradient(135deg, #1e3a8a 0%, #7c2d12 100%);
-    }
+  .storyteller-header {
+    background: linear-gradient(135deg, #1e3a8a 0%, #7c2d12 100%);
+  }
 
-    .media-icon {
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 8px;
-    }
+  .media-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+  }
 
-    .audio-bg {
-      background-color: #3B82F6;
-    }
+  .audio-bg {
+    background-color: #3B82F6;
+  }
 
-    .video-bg {
-      background-color: #EF4444;
-    }
+  .video-bg {
+    background-color: #EF4444;
+  }
 
-    .text-bg {
-      background-color: #10B981;
-    }
+  .text-bg {
+    background-color: #10B981;
+  }
   </style>
 </head>
 
@@ -257,11 +258,16 @@ $current_themes = $story['themes'] ? explode(',', $story['themes']) : [];
     <div class="container mx-auto px-4 py-8">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
         <div class="flex items-center space-x-6 mb-6 md:mb-0">
-          <img src="<?php echo htmlspecialchars($storyteller['profile_image_url'] ?? 'uploads/profiles/default-profile.jpg'); ?>" alt="Storyteller" class="w-20 h-20 rounded-full border-4 border-white border-opacity-30 object-cover shadow-lg">
+          <img
+            src="<?php echo htmlspecialchars($storyteller['profile_image_url'] ?? 'uploads/profiles/default-profile.jpg'); ?>"
+            alt="Storyteller"
+            class="w-20 h-20 rounded-full border-4 border-white border-opacity-30 object-cover shadow-lg">
           <div>
-            <h1 class="text-3xl font-bold"><?php echo htmlspecialchars($storyteller['artistic_name'] ?? 'Unknown Storyteller'); ?></h1>
+            <h1 class="text-3xl font-bold">
+              <?php echo htmlspecialchars($storyteller['artistic_name'] ?? 'Unknown Storyteller'); ?></h1>
             <p class="text-white text-opacity-80 flex items-center">
-              <i class="fas fa-map-marker-alt mr-2"></i> <?php echo htmlspecialchars($storyteller['location'] ?? 'Unknown Location'); ?>
+              <i class="fas fa-map-marker-alt mr-2"></i>
+              <?php echo htmlspecialchars($storyteller['location'] ?? 'Unknown Location'); ?>
               <span class="ml-4 px-3 py-1 bg-white bg-opacity-20 rounded-full text-sm">
                 <i class="fas fa-certificate mr-1"></i>
                 <?php echo ucfirst($storyteller['verification_status'] ?? 'Pending') ?> Storykeeper
@@ -317,15 +323,15 @@ $current_themes = $story['themes'] ? explode(',', $story['themes']) : [];
     </div>
 
     <?php if ($success): ?>
-      <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6">
-        <p>Story updated successfully!</p>
-      </div>
+    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6">
+      <p>Story updated successfully!</p>
+    </div>
     <?php endif; ?>
 
     <?php if (!empty($errors['database'])): ?>
-      <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6">
-        <p><?php echo $errors['database']; ?></p>
-      </div>
+    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6">
+      <p><?php echo $errors['database']; ?></p>
+    </div>
     <?php endif; ?>
 
     <div class="bg-white rounded-xl shadow overflow-hidden">
@@ -339,7 +345,7 @@ $current_themes = $story['themes'] ? explode(',', $story['themes']) : [];
               <input type="text" id="title" name="title" value="<?php echo htmlspecialchars($story['title']); ?>"
                 class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500 <?php echo isset($errors['title']) ? 'border-red-500' : ''; ?>">
               <?php if (isset($errors['title'])): ?>
-                <p class="mt-1 text-sm text-red-600"><?php echo $errors['title']; ?></p>
+              <p class="mt-1 text-sm text-red-600"><?php echo $errors['title']; ?></p>
               <?php endif; ?>
             </div>
 
@@ -349,7 +355,7 @@ $current_themes = $story['themes'] ? explode(',', $story['themes']) : [];
               <textarea id="description" name="description" rows="4"
                 class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500 <?php echo isset($errors['description']) ? 'border-red-500' : ''; ?>"><?php echo htmlspecialchars($story['description']); ?></textarea>
               <?php if (isset($errors['description'])): ?>
-                <p class="mt-1 text-sm text-red-600"><?php echo $errors['description']; ?></p>
+              <p class="mt-1 text-sm text-red-600"><?php echo $errors['description']; ?></p>
               <?php endif; ?>
             </div>
 
@@ -357,7 +363,8 @@ $current_themes = $story['themes'] ? explode(',', $story['themes']) : [];
             <div class="mb-4">
               <label class="block text-sm font-medium text-gray-700 mb-1">Media Type *</label>
               <div class="grid grid-cols-3 gap-2">
-                <label class="flex items-center space-x-2 p-3 border rounded-lg cursor-pointer <?php echo $story['media_type'] === 'audio' ? 'border-blue-500 bg-blue-50' : 'border-gray-300'; ?>">
+                <label
+                  class="flex items-center space-x-2 p-3 border rounded-lg cursor-pointer <?php echo $story['media_type'] === 'audio' ? 'border-blue-500 bg-blue-50' : 'border-gray-300'; ?>">
                   <input type="radio" name="media_type" value="audio" class="text-blue-600 focus:ring-blue-500"
                     <?php echo $story['media_type'] === 'audio' ? 'checked' : ''; ?>>
                   <div class="media-icon audio-bg text-white">
@@ -365,7 +372,8 @@ $current_themes = $story['themes'] ? explode(',', $story['themes']) : [];
                   </div>
                   <span>Audio</span>
                 </label>
-                <label class="flex items-center space-x-2 p-3 border rounded-lg cursor-pointer <?php echo $story['media_type'] === 'video' ? 'border-blue-500 bg-blue-50' : 'border-gray-300'; ?>">
+                <label
+                  class="flex items-center space-x-2 p-3 border rounded-lg cursor-pointer <?php echo $story['media_type'] === 'video' ? 'border-blue-500 bg-blue-50' : 'border-gray-300'; ?>">
                   <input type="radio" name="media_type" value="video" class="text-blue-600 focus:ring-blue-500"
                     <?php echo $story['media_type'] === 'video' ? 'checked' : ''; ?>>
                   <div class="media-icon video-bg text-white">
@@ -373,7 +381,8 @@ $current_themes = $story['themes'] ? explode(',', $story['themes']) : [];
                   </div>
                   <span>Video</span>
                 </label>
-                <label class="flex items-center space-x-2 p-3 border rounded-lg cursor-pointer <?php echo $story['media_type'] === 'text' ? 'border-blue-500 bg-blue-50' : 'border-gray-300'; ?>">
+                <label
+                  class="flex items-center space-x-2 p-3 border rounded-lg cursor-pointer <?php echo $story['media_type'] === 'text' ? 'border-blue-500 bg-blue-50' : 'border-gray-300'; ?>">
                   <input type="radio" name="media_type" value="text" class="text-blue-600 focus:ring-blue-500"
                     <?php echo $story['media_type'] === 'text' ? 'checked' : ''; ?>>
                   <div class="media-icon text-bg text-white">
@@ -383,7 +392,7 @@ $current_themes = $story['themes'] ? explode(',', $story['themes']) : [];
                 </label>
               </div>
               <?php if (isset($errors['media_type'])): ?>
-                <p class="mt-1 text-sm text-red-600"><?php echo $errors['media_type']; ?></p>
+              <p class="mt-1 text-sm text-red-600"><?php echo $errors['media_type']; ?></p>
               <?php endif; ?>
             </div>
 
@@ -392,8 +401,7 @@ $current_themes = $story['themes'] ? explode(',', $story['themes']) : [];
               <label for="media_file" class="block text-sm font-medium text-gray-700 mb-1">Media File</label>
               <div class="flex items-center space-x-4">
                 <div class="flex-1">
-                  <input type="file" id="media_file" name="media_file"
-                    class="block w-full text-sm text-gray-500
+                  <input type="file" id="media_file" name="media_file" class="block w-full text-sm text-gray-500
                                                   file:mr-4 file:py-2 file:px-4
                                                   file:rounded-lg file:border-0
                                                   file:text-sm file:font-semibold
@@ -405,7 +413,7 @@ $current_themes = $story['themes'] ? explode(',', $story['themes']) : [];
                 </div>
               </div>
               <?php if (isset($errors['media_file'])): ?>
-                <p class="mt-1 text-sm text-red-600"><?php echo $errors['media_file']; ?></p>
+              <p class="mt-1 text-sm text-red-600"><?php echo $errors['media_file']; ?></p>
               <?php endif; ?>
             </div>
           </div>
@@ -415,19 +423,19 @@ $current_themes = $story['themes'] ? explode(',', $story['themes']) : [];
             <!-- Duration/Word Count -->
             <div class="mb-4">
               <?php if ($story['media_type'] === 'audio' || $story['media_type'] === 'video'): ?>
-                <label for="duration" class="block text-sm font-medium text-gray-700 mb-1">Duration (minutes) *</label>
-                <input type="number" id="duration" name="duration" min="1" value="<?php echo $story['duration']; ?>"
-                  class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500 <?php echo isset($errors['duration']) ? 'border-red-500' : ''; ?>">
-                <?php if (isset($errors['duration'])): ?>
-                  <p class="mt-1 text-sm text-red-600"><?php echo $errors['duration']; ?></p>
-                <?php endif; ?>
+              <label for="duration" class="block text-sm font-medium text-gray-700 mb-1">Duration (minutes) *</label>
+              <input type="number" id="duration" name="duration" min="1" value="<?php echo $story['duration']; ?>"
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500 <?php echo isset($errors['duration']) ? 'border-red-500' : ''; ?>">
+              <?php if (isset($errors['duration'])): ?>
+              <p class="mt-1 text-sm text-red-600"><?php echo $errors['duration']; ?></p>
+              <?php endif; ?>
               <?php else: ?>
-                <label for="word_count" class="block text-sm font-medium text-gray-700 mb-1">Word Count *</label>
-                <input type="number" id="word_count" name="word_count" min="1" value="<?php echo $story['word_count']; ?>"
-                  class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500 <?php echo isset($errors['word_count']) ? 'border-red-500' : ''; ?>">
-                <?php if (isset($errors['word_count'])): ?>
-                  <p class="mt-1 text-sm text-red-600"><?php echo $errors['word_count']; ?></p>
-                <?php endif; ?>
+              <label for="word_count" class="block text-sm font-medium text-gray-700 mb-1">Word Count *</label>
+              <input type="number" id="word_count" name="word_count" min="1" value="<?php echo $story['word_count']; ?>"
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500 <?php echo isset($errors['word_count']) ? 'border-red-500' : ''; ?>">
+              <?php if (isset($errors['word_count'])): ?>
+              <p class="mt-1 text-sm text-red-600"><?php echo $errors['word_count']; ?></p>
+              <?php endif; ?>
               <?php endif; ?>
             </div>
 
@@ -436,12 +444,15 @@ $current_themes = $story['themes'] ? explode(',', $story['themes']) : [];
               <label for="language" class="block text-sm font-medium text-gray-700 mb-1">Language *</label>
               <select id="language" name="language"
                 class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500 <?php echo isset($errors['language']) ? 'border-red-500' : ''; ?>">
-                <option value="Afaan Oromo" <?php echo $story['language'] === 'Afaan Oromo' ? 'selected' : ''; ?>>Afaan Oromo</option>
-                <option value="English" <?php echo $story['language'] === 'English' ? 'selected' : ''; ?>>English</option>
-                <option value="Amharic" <?php echo $story['language'] === 'Amharic' ? 'selected' : ''; ?>>Amharic</option>
+                <option value="Afaan Oromo" <?php echo $story['language'] === 'Afaan Oromo' ? 'selected' : ''; ?>>Afaan
+                  Oromo</option>
+                <option value="English" <?php echo $story['language'] === 'English' ? 'selected' : ''; ?>>English
+                </option>
+                <option value="Amharic" <?php echo $story['language'] === 'Amharic' ? 'selected' : ''; ?>>Amharic
+                </option>
               </select>
               <?php if (isset($errors['language'])): ?>
-                <p class="mt-1 text-sm text-red-600"><?php echo $errors['language']; ?></p>
+              <p class="mt-1 text-sm text-red-600"><?php echo $errors['language']; ?></p>
               <?php endif; ?>
             </div>
 
@@ -451,7 +462,8 @@ $current_themes = $story['themes'] ? explode(',', $story['themes']) : [];
               <select id="age_group" name="age_group"
                 class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">
                 <option value="all" <?php echo $story['age_group'] === 'all' ? 'selected' : ''; ?>>All Ages</option>
-                <option value="children" <?php echo $story['age_group'] === 'children' ? 'selected' : ''; ?>>Children</option>
+                <option value="children" <?php echo $story['age_group'] === 'children' ? 'selected' : ''; ?>>Children
+                </option>
                 <option value="adults" <?php echo $story['age_group'] === 'adults' ? 'selected' : ''; ?>>Adults</option>
               </select>
             </div>
@@ -471,12 +483,12 @@ $current_themes = $story['themes'] ? explode(',', $story['themes']) : [];
               <label class="block text-sm font-medium text-gray-700 mb-1">Themes</label>
               <div class="grid grid-cols-2 gap-2">
                 <?php foreach ($available_themes as $theme): ?>
-                  <label class="inline-flex items-center">
-                    <input type="checkbox" name="themes[]" value="<?php echo htmlspecialchars($theme); ?>"
-                      class="rounded text-blue-600 focus:ring-blue-500"
-                      <?php echo in_array($theme, $current_themes) ? 'checked' : ''; ?>>
-                    <span class="ml-2 text-sm text-gray-700"><?php echo $theme; ?></span>
-                  </label>
+                <label class="inline-flex items-center">
+                  <input type="checkbox" name="themes[]" value="<?php echo htmlspecialchars($theme); ?>"
+                    class="rounded text-blue-600 focus:ring-blue-500"
+                    <?php echo in_array($theme, $current_themes) ? 'checked' : ''; ?>>
+                  <span class="ml-2 text-sm text-gray-700"><?php echo $theme; ?></span>
+                </label>
                 <?php endforeach; ?>
               </div>
             </div>
@@ -538,29 +550,29 @@ $current_themes = $story['themes'] ? explode(',', $story['themes']) : [];
   </footer>
 
   <script>
-    // Show/hide duration or word count based on media type selection
-    const mediaTypeRadios = document.querySelectorAll('input[name="media_type"]');
-    const durationField = document.getElementById('duration');
-    const wordCountField = document.getElementById('word_count');
+  // Show/hide duration or word count based on media type selection
+  const mediaTypeRadios = document.querySelectorAll('input[name="media_type"]');
+  const durationField = document.getElementById('duration');
+  const wordCountField = document.getElementById('word_count');
 
-    function toggleFields() {
-      const selectedType = document.querySelector('input[name="media_type"]:checked').value;
+  function toggleFields() {
+    const selectedType = document.querySelector('input[name="media_type"]:checked').value;
 
-      if (selectedType === 'text') {
-        if (durationField) durationField.closest('.mb-4').style.display = 'none';
-        if (wordCountField) wordCountField.closest('.mb-4').style.display = 'block';
-      } else {
-        if (durationField) durationField.closest('.mb-4').style.display = 'block';
-        if (wordCountField) wordCountField.closest('.mb-4').style.display = 'none';
-      }
+    if (selectedType === 'text') {
+      if (durationField) durationField.closest('.mb-4').style.display = 'none';
+      if (wordCountField) wordCountField.closest('.mb-4').style.display = 'block';
+    } else {
+      if (durationField) durationField.closest('.mb-4').style.display = 'block';
+      if (wordCountField) wordCountField.closest('.mb-4').style.display = 'none';
     }
+  }
 
-    mediaTypeRadios.forEach(radio => {
-      radio.addEventListener('change', toggleFields);
-    });
+  mediaTypeRadios.forEach(radio => {
+    radio.addEventListener('change', toggleFields);
+  });
 
-    // Initialize on page load
-    toggleFields();
+  // Initialize on page load
+  toggleFields();
   </script>
 </body>
 

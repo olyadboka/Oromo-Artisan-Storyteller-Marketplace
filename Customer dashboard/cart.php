@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../common/header.php'; ?>
+// include '../common/header.php'; ?>
 <?php
 
 include '../common/dbConnection.php';
@@ -158,7 +158,9 @@ $grand_total = $total + $story_total;
                       alt="Product" class="w-16 h-16 object-cover rounded shadow">
                     <div>
                       <div class="font-bold text-blue-900"><?= htmlspecialchars($item['name']) ?></div>
-                      <div class="text-xs text-gray-500"><?php if(isset($item['category'])): ?><?= htmlspecialchars($item['category']) ?><?php endif; ?><?php if(isset($item['location'])): ?> | <?= htmlspecialchars($item['location']) ?><?php endif; ?></div>
+                      <div class="text-xs text-gray-500">
+                        <?php if(isset($item['category'])): ?><?= htmlspecialchars($item['category']) ?><?php endif; ?><?php if(isset($item['location'])): ?>
+                        | <?= htmlspecialchars($item['location']) ?><?php endif; ?></div>
                     </div>
                   </td>
                   <td class="py-3 px-4 font-semibold text-green-700">ETB <?= $item['price'] ?></td>

@@ -1,5 +1,6 @@
 <?php
 // Database connection
+session_start();
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -14,7 +15,7 @@ try {
 }
 
 // Assume logged-in user (replace with proper authentication)
-$user_id = 8; // Jirenya Dhugaa for testing
+$user_id = $_SESSION['user_id'];// Jirenya Dhugaa for testing
 
 // Fetch storyteller data
 $stmt = $conn->prepare("
@@ -107,34 +108,34 @@ if (isset($_POST['delete_story'])) {
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    .storyteller-header {
-      background: linear-gradient(135deg, #1e3a8a 0%, #7c2d12 100%);
-    }
+  .storyteller-header {
+    background: linear-gradient(135deg, #1e3a8a 0%, #7c2d12 100%);
+  }
 
-    .table-header {
-      background-color: #f8fafc;
-    }
+  .table-header {
+    background-color: #f8fafc;
+  }
 
-    .media-icon {
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 8px;
-    }
+  .media-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+  }
 
-    .audio-bg {
-      background-color: #3B82F6;
-    }
+  .audio-bg {
+    background-color: #3B82F6;
+  }
 
-    .video-bg {
-      background-color: #EF4444;
-    }
+  .video-bg {
+    background-color: #EF4444;
+  }
 
-    .text-bg {
-      background-color: #10B981;
-    }
+  .text-bg {
+    background-color: #10B981;
+  }
   </style>
 </head>
 
@@ -144,11 +145,16 @@ if (isset($_POST['delete_story'])) {
     <div class="container mx-auto px-4 py-8">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
         <div class="flex items-center space-x-6 mb-6 md:mb-0">
-          <img src="<?php echo htmlspecialchars($storyteller['profile_image_url'] ?? 'uploads/profiles/default-profile.jpg'); ?>" alt="Storyteller" class="w-20 h-20 rounded-full border-4 border-white border-opacity-30 object-cover shadow-lg">
+          <img
+            src="<?php echo htmlspecialchars($storyteller['profile_image_url'] ?? 'uploads/profiles/default-profile.jpg'); ?>"
+            alt="Storyteller"
+            class="w-20 h-20 rounded-full border-4 border-white border-opacity-30 object-cover shadow-lg">
           <div>
-            <h1 class="text-3xl font-bold"><?php echo htmlspecialchars($storyteller['artistic_name'] ?? 'Unknown Storyteller'); ?></h1>
+            <h1 class="text-3xl font-bold">
+              <?php echo htmlspecialchars($storyteller['artistic_name'] ?? 'Unknown Storyteller'); ?></h1>
             <p class="text-white text-opacity-80 flex items-center">
-              <i class="fas fa-map-marker-alt mr-2"></i> <?php echo htmlspecialchars($storyteller['location'] ?? 'Unknown Location'); ?>
+              <i class="fas fa-map-marker-alt mr-2"></i>
+              <?php echo htmlspecialchars($storyteller['location'] ?? 'Unknown Location'); ?>
               <span class="ml-4 px-3 py-1 bg-white bg-opacity-20 rounded-full text-sm">
                 <i class="fas fa-certificate mr-1"></i>
                 <?php echo ucfirst($storyteller['verification_status'] ?? 'Pending') ?> Storykeeper
@@ -198,7 +204,8 @@ if (isset($_POST['delete_story'])) {
   <main class="container mx-auto px-4 py-8">
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
       <h1 class="text-2xl font-bold text-gray-800">My Stories</h1>
-      <a href="add_story.php" class="mt-4 md:mt-0 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-medium">
+      <a href="add_story.php"
+        class="mt-4 md:mt-0 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-medium">
         <i class="fas fa-plus mr-2"></i> Add New Story
       </a>
     </div>
@@ -215,7 +222,8 @@ if (isset($_POST['delete_story'])) {
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Media Type</label>
-          <select name="media_type" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">
+          <select name="media_type"
+            class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">
             <option value="">All</option>
             <option value="audio" <?php echo $media_type == 'audio' ? 'selected' : ''; ?>>Audio</option>
             <option value="video" <?php echo $media_type == 'video' ? 'selected' : ''; ?>>Video</option>
@@ -224,7 +232,8 @@ if (isset($_POST['delete_story'])) {
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Language</label>
-          <select name="language" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">
+          <select name="language"
+            class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">
             <option value="">All</option>
             <option value="Afaan Oromo" <?php echo $language == 'Afaan Oromo' ? 'selected' : ''; ?>>Afaan Oromo</option>
             <option value="English" <?php echo $language == 'English' ? 'selected' : ''; ?>>English</option>
@@ -233,7 +242,8 @@ if (isset($_POST['delete_story'])) {
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Age Group</label>
-          <select name="age_group" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">
+          <select name="age_group"
+            class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">
             <option value="">All</option>
             <option value="all" <?php echo $age_group == 'all' ? 'selected' : ''; ?>>All Ages</option>
             <option value="children" <?php echo $age_group == 'children' ? 'selected' : ''; ?>>Children</option>
@@ -244,7 +254,8 @@ if (isset($_POST['delete_story'])) {
           <button type="submit" class="mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-medium">
             <i class="fas fa-filter mr-2"></i> Apply Filters
           </button>
-          <a href="mystory.php" class="mt-4 ml-2 bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded-lg font-medium">
+          <a href="mystory.php"
+            class="mt-4 ml-2 bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded-lg font-medium">
             <i class="fas fa-times mr-2"></i> Clear Filters
           </a>
         </div>
@@ -256,44 +267,46 @@ if (isset($_POST['delete_story'])) {
       <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
         <h2 class="text-xl font-bold text-gray-800">Your Stories (<?php echo count($stories); ?>)</h2>
         <p class="text-sm text-gray-600">
-          <i class="fas fa-headphones mr-1"></i> Total Listens: <?php echo array_sum(array_column($stories, 'listen_count')); ?>
+          <i class="fas fa-headphones mr-1"></i> Total Listens:
+          <?php echo array_sum(array_column($stories, 'listen_count')); ?>
         </p>
       </div>
 
       <?php if (isset($delete_error)): ?>
-        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mx-6 mt-4">
-          <p><?php echo $delete_error; ?></p>
-        </div>
+      <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mx-6 mt-4">
+        <p><?php echo $delete_error; ?></p>
+      </div>
       <?php endif; ?>
 
       <?php if (empty($stories)): ?>
-        <div class="p-8 text-center">
-          <i class="fas fa-book-open text-4xl text-gray-300 mb-4"></i>
-          <h3 class="text-lg font-medium text-gray-700">No stories found</h3>
-          <p class="text-gray-500 mt-2">You haven't added any stories yet or no stories match your filters.</p>
-          <a href="add_story.php" class="mt-4 inline-block bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-medium">
-            <i class="fas fa-plus mr-2"></i> Add Your First Story
-          </a>
-        </div>
+      <div class="p-8 text-center">
+        <i class="fas fa-book-open text-4xl text-gray-300 mb-4"></i>
+        <h3 class="text-lg font-medium text-gray-700">No stories found</h3>
+        <p class="text-gray-500 mt-2">You haven't added any stories yet or no stories match your filters.</p>
+        <a href="add_story.php"
+          class="mt-4 inline-block bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-medium">
+          <i class="fas fa-plus mr-2"></i> Add Your First Story
+        </a>
+      </div>
       <?php else: ?>
-        <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="table-header">
-              <tr>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Details</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Themes</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Listens</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-              </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-              <?php foreach ($stories as $story): ?>
-                <tr>
-                  <td class="px-6 py-4">
-                    <div class="flex items-center">
-                      <?php
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="table-header">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Details</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Themes</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Listens</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <?php foreach ($stories as $story): ?>
+            <tr>
+              <td class="px-6 py-4">
+                <div class="flex items-center">
+                  <?php
                       $icon_class = '';
                       $bg_class = '';
                       if ($story['media_type'] == 'audio') {
@@ -307,62 +320,64 @@ if (isset($_POST['delete_story'])) {
                         $bg_class = 'text-bg';
                       }
                       ?>
-                      <div class="media-icon <?php echo $bg_class; ?> text-white mr-4">
-                        <i class="<?php echo $icon_class; ?>"></i>
-                      </div>
-                      <div>
-                        <div class="font-medium text-gray-900"><?php echo htmlspecialchars($story['title']); ?></div>
-                        <div class="text-sm text-gray-500">
-                          <?php echo date('M d, Y', strtotime($story['created_at'])); ?>
-                        </div>
-                      </div>
+                  <div class="media-icon <?php echo $bg_class; ?> text-white mr-4">
+                    <i class="<?php echo $icon_class; ?>"></i>
+                  </div>
+                  <div>
+                    <div class="font-medium text-gray-900"><?php echo htmlspecialchars($story['title']); ?></div>
+                    <div class="text-sm text-gray-500">
+                      <?php echo date('M d, Y', strtotime($story['created_at'])); ?>
                     </div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span
+                  class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
                                             <?php echo $story['media_type'] == 'audio' ? 'bg-blue-100 text-blue-800' : ($story['media_type'] == 'video' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'); ?>">
-                      <?php echo ucfirst($story['media_type']); ?>
-                    </span>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    <div><strong>Language:</strong> <?php echo $story['language']; ?></div>
-                    <div><strong>Age:</strong> <?php echo ucfirst($story['age_group']); ?></div>
-                    <?php if ($story['media_type'] == 'audio' || $story['media_type'] == 'video'): ?>
-                      <div><strong>Duration:</strong> <?php echo $story['duration']; ?> min</div>
-                    <?php else: ?>
-                      <div><strong>Words:</strong> <?php echo $story['word_count']; ?></div>
-                    <?php endif; ?>
-                  </td>
-                  <td class="px-6 py-4 text-sm text-gray-500">
-                    <?php echo htmlspecialchars($story['themes'] ?? $storyteller['specialization']); ?>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    <div class="flex items-center">
-                      <i class="fas fa-headphones mr-2 text-gray-400"></i>
-                      <?php echo number_format($story['listen_count']); ?>
-                      <?php if ($story['is_featured']): ?>
-                        <span class="ml-2 px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">
-                          <i class="fas fa-star mr-1"></i> Featured
-                        </span>
-                      <?php endif; ?>
-                    </div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <a href="edit_story.php?id=<?php echo $story['id']; ?>" class="text-blue-600 hover:text-blue-900 mr-4">
-                      <i class="fas fa-edit"></i> Edit
-                    </a>
-                    <form method="post" class="inline" onsubmit="return confirm('Are you sure you want to delete this story?');">
-                      <input type="hidden" name="story_id" value="<?php echo $story['id']; ?>">
-                      <button type="submit" name="delete_story" class="text-red-600 hover:text-red-900">
-                        <i class="fas fa-trash"></i> Delete
-                      </button>
-                    </form>
-                  </td>
-                </tr>
-              <?php endforeach; ?>
-            </tbody>
-          </table>
-        </div>
+                  <?php echo ucfirst($story['media_type']); ?>
+                </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <div><strong>Language:</strong> <?php echo $story['language']; ?></div>
+                <div><strong>Age:</strong> <?php echo ucfirst($story['age_group']); ?></div>
+                <?php if ($story['media_type'] == 'audio' || $story['media_type'] == 'video'): ?>
+                <div><strong>Duration:</strong> <?php echo $story['duration']; ?> min</div>
+                <?php else: ?>
+                <div><strong>Words:</strong> <?php echo $story['word_count']; ?></div>
+                <?php endif; ?>
+              </td>
+              <td class="px-6 py-4 text-sm text-gray-500">
+                <?php echo htmlspecialchars($story['themes'] ?? $storyteller['specialization']); ?>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <div class="flex items-center">
+                  <i class="fas fa-headphones mr-2 text-gray-400"></i>
+                  <?php echo number_format($story['listen_count']); ?>
+                  <?php if ($story['is_featured']): ?>
+                  <span class="ml-2 px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">
+                    <i class="fas fa-star mr-1"></i> Featured
+                  </span>
+                  <?php endif; ?>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <a href="edit_story.php?id=<?php echo $story['id']; ?>" class="text-blue-600 hover:text-blue-900 mr-4">
+                  <i class="fas fa-edit"></i> Edit
+                </a>
+                <form method="post" class="inline"
+                  onsubmit="return confirm('Are you sure you want to delete this story?');">
+                  <input type="hidden" name="story_id" value="<?php echo $story['id']; ?>">
+                  <button type="submit" name="delete_story" class="text-red-600 hover:text-red-900">
+                    <i class="fas fa-trash"></i> Delete
+                  </button>
+                </form>
+              </td>
+            </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+      </div>
       <?php endif; ?>
     </div>
   </main>

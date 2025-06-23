@@ -25,8 +25,8 @@ session_start();
     <div class="container mx-auto px-4 py-6">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
         <div class="flex items-center space-x-4 mb-4 md:mb-0">
-          <img src="profile-pic.jpg" alt="Your Profile"
-            class="w-16 h-16 rounded-full border-4 border-white object-cover">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcz5kv79l6XgmpU4Z3n3_OwCm-kf8M01D0qg&s"
+            alt="Your Profile" class="w-16 h-16 rounded-full border-4 border-white object-cover">
           <div>
             <h1 class="text-2xl font-bold">My Artisan Dashboard</h1>
             <p class="text-white text-opacity-80">
@@ -39,9 +39,8 @@ session_start();
         </div>
         <nav>
           <ul class="flex space-x-4">
-            <li><a href="#" class="px-3 py-2 bg-white bg-opacity-20 rounded-lg"><i class="fas fa-cog mr-2"></i>as
-                Custormer</a></li>
-            <li><a href="#" class="px-3 py-2 bg-white bg-opacity-20 rounded-lg"><i
+
+            <li><a href="../../User managemen/logout.php" class="px-3 py-2 bg-white bg-opacity-20 rounded-lg"><i
                   class="fas fa-sign-out-alt mr-2"></i>Logout</a></li>
           </ul>
         </nav>
@@ -53,11 +52,12 @@ session_start();
   <div class="bg-white shadow-sm">
     <div class="container mx-auto px-4">
       <nav class="flex overflow-x-auto">
-        <a href="#" class="px-6 py-4 font-medium text-red-600 border-b-2 border-red-600">Overview</a>
-        <a href="./product.php" class="px-6 py-4 font-medium text-gray-600 hover:text-red-600">Products</a>
+        <a href="#" class="px-6 py-4 font-medium text-green-600 hover:text-red-600 ">Overview</a>
+        <a href="./product.php"
+          class="px-6 py-4 font-medium text-gray-600 hover:text-red-600 border-b-2 border-green-600">Products</a>
 
-        <a href="./orders.php" class="px-6 py-4 font-medium text-gray-600 hover:text-red-600">Orders</a>
-        <a href="./earning.php" class="px-6 py-4 font-medium text-gray-600 hover:text-red-600">Earnings</a>
+        <a href="./orders.php" class="px-6 py-4 font-medium text-gray-600 hover:text-green-600">Orders</a>
+        <a href="./earning.php" class="px-6 py-4 font-medium text-green-600 hover:text-red-600">Earnings</a>
 
 
       </nav>
@@ -70,7 +70,7 @@ session_start();
   <main class="container mx-auto px-4 py-8">
     <div class="flex justify-between items-center mb-8">
       <h1 class="text-2xl font-bold text-gray-800">
-        <i class="fas fa-plus-circle text-red-600 mr-2"></i> Add New Product
+        <i class="fas fa-plus-circle text-green-600 mr-2"></i> Add New Product
       </h1>
       <a href="products.html" class="text-gray-600 hover:text-red-600">
         <i class="fas fa-times mr-1"></i> Cancel

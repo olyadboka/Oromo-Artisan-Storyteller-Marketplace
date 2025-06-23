@@ -1,5 +1,5 @@
 .dashboard-header {
-  background: linear-gradient(135deg, #1e3a8a 0%, #7c2d12 100%);
+  background: linear-gradient(135deg, #1e3a8a 0%, rgb(28, 185, 51) 100%);
 }
 
 .stat-card {
@@ -18,4 +18,7 @@
 .product-actions {
   opacity: 0;
   transition: opacity 0.3s ease;
+}
+a {
+  text-decoration: none !important;
 }

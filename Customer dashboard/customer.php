@@ -1,7 +1,7 @@
 <?php
 session_start();
 include '../Artisan and Story teller/dbConnection/dbConnection.php';
-$_SESSION['user_id'] = 8;
+// $_SESSION['user_id'] = 8;
 // Demo user data (in real app, get from session)
 $user_id = $_SESSION['user_id'];
 $user_name = $_SESSION['username'];
