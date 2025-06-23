@@ -36,10 +36,14 @@ if (isset($con) && $con && $con instanceof mysqli && $con->connect_errno === 0) 
   <title>Welcome | Oromo Artisan & Storyteller Marketplace</title>
  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@700;800&display=swap" rel="stylesheet">
   <style>
   body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 
+               Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
     background: linear-gradient(120deg, #f8f8f8 60%, #e0c3a3 100%);
+    line-height: 1.6;
+  color: #333;
   }
 
   .landing-hero {
@@ -91,8 +95,10 @@ if (isset($con) && $con && $con instanceof mysqli && $con->connect_errno === 0) 
 
   .landing-hero h1 {
     margin-top: 0 !important;
-    font-size: 4rem;
-    font-family: 'Poppins', 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 3.5rem;
+    font-weight: 800;
+  line-height: 1.2;
+    font-family: 'Poppins', sans-serif;
     color: rgb(28, 185, 51);
     margin-bottom: 0.35em;
     letter-spacing: 1.5px;
@@ -105,24 +111,31 @@ if (isset($con) && $con && $con instanceof mysqli && $con->connect_errno === 0) 
 
   .landing-hero p {
     margin-top: 0.7rem !important;
-    font-size: 1.3em;
+    font-size: 1.25rem; /* 20px */
+    line-height: 1.6;
     color: #f8f8ff;
     margin-bottom: 1.7em;
     z-index: 1;
     position: relative;
     text-shadow: 0 1px 8px #fff8;
     padding: 1rem 8rem 0;
+    max-width: 800px;
+    font-weight: 400;
+    text-align:center;
+    align-self:center;
+     margin: 0 auto 1.7em;
   }
 
   .showcase-animated-tagline {
     text-align: center;
-    font-size: 1.3em;
+    font-size: 1.5em;
     color: #a06c2b;
     font-weight: bold;
     margin-bottom: 1.5em;
     min-height: 2.2em;
     letter-spacing: 1px;
     transition: color 0.5s;
+    font-weight: 600;
   }
 
   .landing-showcase {
@@ -173,16 +186,17 @@ if (isset($con) && $con && $con instanceof mysqli && $con->connect_errno === 0) 
   }
 
   .showcase-title {
-    font-size: 1.25em;
+    font-size: 1.375em;
     color: #7c4f1d;
-    font-weight: bold;
+    font-weight: 700;
     margin-bottom: 0.3em;
   }
 
   .showcase-desc {
     color: #4d2e00;
-    font-size: 1.05em;
+    font-size: 1.0625em;
     margin-bottom: 1.1em;
+     line-height: 1.5;
   }
 
   .showcase-link {
@@ -191,8 +205,8 @@ if (isset($con) && $con && $con instanceof mysqli && $con->connect_errno === 0) 
     padding: 0.7em 1.7em;
     border-radius: 2em;
     text-decoration: none;
-    font-weight: bold;
-    font-size: 1.05em;
+    font-weight: 600;
+    font-size: 1.0625em;
     box-shadow: 0 2px 8px #0002;
     transition: background 0.2s, box-shadow 0.2s;
     margin-top: auto;
@@ -255,17 +269,19 @@ if (isset($con) && $con && $con instanceof mysqli && $con->connect_errno === 0) 
   .step-content h3 {
     color: #7c4f1d;
     margin: 0 0 0.3em 0;
-    font-size: 1.18em;
-    font-weight: bold;
+    font-size: 1.25em;
+    font-weight: 600;
   }
 
   .step-content p {
     color: #4d2e00;
     margin: 0;
-    font-size: 1.03em;
+    font-size: 1.0625em;
   }
 
   .landing-cta {
+    font-size: 1.25rem;
+    font-weight: 700;
     text-align: center;
     margin: 3em 0 0 0;
   }
@@ -315,9 +331,9 @@ if (isset($con) && $con && $con instanceof mysqli && $con->connect_errno === 0) 
 
   .landing-guides h2 {
     color: #7c4f1d;
-    font-size: 1.6em;
+    font-size: 1.75em;
     margin-bottom: 1.2em;
-    font-weight: bold;
+    font-weight: 700;
     letter-spacing: 0.5px;
     text-align: center;
   }
@@ -340,6 +356,8 @@ if (isset($con) && $con && $con instanceof mysqli && $con->connect_errno === 0) 
     border-radius: 0.7em;
     padding: 0.7em 1em;
     box-shadow: 0 1px 4px #e0c3a322;
+    font-size: 1.125rem; /* 18px */
+    line-height: 1.6;
   }
 
   .guide-icon {
