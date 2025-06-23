@@ -5,7 +5,10 @@
 <!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-  .footer-gradient { background: linear-gradient(to right, #14532d, #854d0e, #7f1d1d); }
+  footer{
+    margin-top:5px;
+  }
+  .footer-gradient { background: black }
   .footer-shadow { box-shadow: 0 8px 32px 0 rgba(0,0,0,0.25); }
   .footer-link:hover { color: #facc15 !important; }
   .footer-newsletter input:focus { outline: 2px solid #facc15; }
