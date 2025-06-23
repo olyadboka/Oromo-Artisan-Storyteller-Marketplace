@@ -338,9 +338,11 @@ if (isset($con) && $con && $con instanceof mysqli && $con->connect_errno === 0) 
             <?php endif; ?>
           </a>
         </li>
+        <?php if (!isset($_SESSION['user_id'])): ?>
         <li class="oas-nav-login">
           <a href="/login.php" class="oas-login-btn">Login</a>
         </li>
+        <?php endif; ?>
       </ul>
     </nav>
   </div>
