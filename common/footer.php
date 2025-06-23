@@ -55,25 +55,4 @@
       &copy; <?php echo date('Y'); ?> Vist Oromo Artisan & Storyteller Marketplace. All rights reserved.
     </div>
   </div>
-</footer>       </li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="font-semibold mb-4 text-yellow-300">Newsletter</h4>
-            <form class="flex flex-col space-y-2 footer-newsletter">
-              <input type="email" placeholder="Your email"
-                class="px-3 py-2 rounded bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-yellow-400" />
-              <button type="submit"
-                class="bg-yellow-400 text-gray-900 font-semibold rounded px-3 py-2 hover:bg-yellow-500 transition">Subscribe</button>
-            </form>
-          </div>
-        </div>
-      </div>
-      <div class="border-t border-gray-700 mt-10 pt-6 text-center text-gray-400 text-sm">
-        &copy; <?php echo date('Y'); ?> Vist Oromo Artisan & Storyteller Marketplace. All rights reserved.
-      </div>
-    </div>
-  </footer>
-</body>
-
-</html>
+</footer>       

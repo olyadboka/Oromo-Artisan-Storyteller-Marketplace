@@ -3,16 +3,40 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
+
+<?php
+// Enable error reporting for debugging
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+// Always start session and include dbConnection
+
+include_once __DIR__ . '/common/dbConnection.php';
+
+if (!isset($_SESSION['user_id'])) {
+  // Set a default user id for testing if not set
+  $_SESSION['user_id'] = 8;
+}
+$user_id = $_SESSION['user_id'];
+$profileData = null;
+if (isset($con) && $con && $con instanceof mysqli && $con->connect_errno === 0) {
+  $sql = "SELECT profileImage from users where id = $user_id";
+  $result = mysqli_query($con, $sql);
+  if ($result) {
+    while($row = mysqli_fetch_assoc($result)){
+      $profileData = $row['profileImage'];
+    }
+  }
+}
+?>
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Welcome | Oromo Artisan & Storyteller Marketplace</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
   <style>
   body {
     background: linear-gradient(120deg, #f8f8f8 60%, #e0c3a3 100%);
@@ -331,10 +355,8 @@ if (session_status() === PHP_SESSION_NONE) {
     display: block;
     text-align: right;
     max-width: 420px;
-    margin: 0 0 0 auto !important;
-    /* align right, no bottom margin */
+    margin: -1.2em 0 0 auto !important; /* pull up closer to header */
     padding: 0 !important;
-    /* no padding */
     position: relative;
     top: 0;
   }
@@ -412,56 +434,177 @@ if (session_status() === PHP_SESSION_NONE) {
       text-align: right;
       display: block;
     }
-
     .landing-hero {
-      margin-top: 0.3 !important;
-      /* Remove all top margin */
-      padding-top: 0 !important;
-      /* Remove all top padding */
+      margin-top: 0.3 !important; /* Remove all top margin */
+      padding-top: 0 !important; /* Remove all top padding */
       max-width: 540px !important;
       margin-left: auto !important;
       margin-right: auto !important;
     }
   }
+
+  
   </style>
 
+  
 </head>
+
 <body>
-<?php include 'common/header.php'; ?>
-<!-- Main Content Start -->
-<main style="margin-top: 7.2rem;">
-  <div class="lang-select-bar">
-    <select id="langSelect"
-      style="padding:0.4em 1em;border-radius:1.2em;border:1px solid #e0c3a3;font-size:1em;background:#fffbe6;color:#7c4f1d;font-weight:bold;">
-      <option value="en">English</option>
-      <option value="om">Afaan Oromo</option>
-      <option value="am">Amharic</option>
-    </select>
-  </div>
-  <div class="landing-hero">
-    <h1 id="heroTitle">Oromo Artisan & Storyteller Anaadhufuu!!</h1>
-    <p id="heroDesc">Discover, support, and celebrate Oromo culture through artisan crafts and oral storytelling. This
-      platform connects artisans, storytellers, and Tourists in a vibrant, fair-trade community.</p>
-  </div>
-  <div class="showcase-animated-tagline" id="animatedTagline">Empowering Artisans</div>
-  <div class="landing-showcase" id="showcaseCards">
-    <!-- Showcase cards will be rendered by JS -->
-  </div>
-  <div class="landing-guides">
-    <h2 id="guidesTitle">How to Get the Most Out of This Marketplace</h2>
-    <ul id="guidesList">
-      <!-- Guide items will be rendered by JS -->
-    </ul>
-  </div>
-  <div class="landing-steps" id="stepsList">
-    <!-- Steps will be rendered by JS -->
-  </div>
-  <div class="landing-cta">
-    <a id="ctaBtn" href="Customer dashboard/index.php">Enter Marketplace</a>
-  </div>
-</main>
-<!-- Main Content End -->
-<script>
+ <?php include 'common/headerIndex.php'; ?>
+  <!-- Main Content Start -->
+  <main>
+    <div class="lang-select-bar">
+      <select id="langSelect"
+        style="padding:0.4em 1em;border-radius:1.2em;border:1px solid #e0c3a3;font-size:1em;background:#fffbe6;color:#7c4f1d;font-weight:bold;">
+        <option value="en">English</option>
+        <option value="om">Afaan Oromo</option>
+        <option value="am">Amharic</option>
+      </select>
+    </div>
+    <div class="landing-hero">
+      <h1 id="heroTitle">Oromo Artisan & Storyteller Anaadhufuu!!</h1>
+      <p id="heroDesc">Discover, support, and celebrate Oromo culture through artisan crafts and oral storytelling. This
+        platform connects artisans, storytellers, and Tourists in a vibrant, fair-trade community.</p>
+    </div>
+    <div class="showcase-animated-tagline" id="animatedTagline">Empowering Artisans</div>
+    <div class="landing-showcase" id="showcaseCards">
+      <!-- Showcase cards will be rendered by JS -->
+    </div>
+    <div class="landing-guides">
+      <h2 id="guidesTitle">How to Get the Most Out of This Marketplace</h2>
+      <ul id="guidesList">
+        <!-- Guide items will be rendered by JS -->
+      </ul>
+    </div>
+    <div class="landing-steps" id="stepsList">
+      <!-- Steps will be rendered by JS -->
+    </div>
+    <div class="landing-cta">
+      <a id="ctaBtn" href="Customer dashboard/index.php">Enter Marketplace</a>
+    </div>
+  </main>
+  <!-- Main Content End -->
+  <style>
+  body {
+    background: linear-gradient(120deg, #f8f8f8 60%, #e0c3a3 100%);
+  }
+
+  .landing-hero {
+    margin-top: -1rem;
+    /* Only gradient here, no background image */
+    background: linear-gradient(rgba(255, 244, 230, 0), rgba(255, 244, 230, 0));
+    background-blend-mode: lighten;
+    border-radius: 1.5em;
+    box-shadow: 0 8px 40px #7c4f1d22;
+    padding: 3.5em 1.5em 2.7em 1.5em;
+    margin: 2.5em auto 2em auto;
+    max-width: 100vw;
+    height: 80vh;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    animation: heroFadeIn 1.2s ease;
+  }
+
+  .landing-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      url("https://media.licdn.com/dms/image/v2/D4E12AQHQteOqo9FyOQ/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1695207472629?e=2147483647&v=beta&t=rE19TLABHKh6-VcwvjTRJqln9mQgTUTAM0orhTBgEyg") center/cover no-repeat,
+      linear-gradient(rgba(255, 244, 230, 0.7), rgba(255, 244, 230, 0.7));
+    filter: blur(12px);
+    z-index: -1;
+    border-radius: 1.5em;
+    opacity: 0.85;
+  }
+
+  .showcase-card {
+    /* existing styles */
+  }
+
+  .guide-icon {
+    /* existing styles */
+  }
+
+  .step {
+    /* existing styles */
+  }
+
+   .navbar-brand-logo {
+    width: 44px;
+    height: 44px;
+    background: rgb(28, 185, 51);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+  }
+  .cart-badge {
+    position: absolute;
+    top: 0;
+    right: -8px;
+    background: rgb(28, 185, 51);
+    color: #fff;
+    font-size: 0.75rem;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .announcement-bar {
+    background: rgb(28, 185, 51);
+    color: #fff;
+    font-size: 0.95rem;
+    padding: 0.4rem 0;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    z-index: 1052;
+  }
+  .navbar {
+    position: fixed !important;
+    top: 2.1rem; /* height of announcement bar */
+    left: 0;
+    width: 100vw;
+    z-index: 1053 !important;
+    border-radius: 0;
+  }
+  .dropdown-menu-end[aria-labelledby="langDropdown"] {
+    min-width: 8rem;
+  }
+  /* Remove forced debug CSS for production */
+  /* .navbar-collapse, .navbar-nav {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    height: auto !important;
+  } */
+  @media (max-width: 991.98px) {
+    .navbar-collapse {
+      display: none !important;
+    }
+    .navbar-collapse.show {
+      display: block !important;
+    }
+    .navbar-nav {
+      width: 100%;
+    }
+    .nav-link {
+      color: #222 !important;
+      font-size: 1.1em;
+      padding: 0.8em 1.2em;
+      width: 100%;
+      text-align: left;
+    }
+  }
+  </style>
+  <script>
   // Language integration
   let langData = {};
   let currentLang = 'en';
@@ -580,6 +723,6 @@ if (session_status() === PHP_SESSION_NONE) {
   window.addEventListener('scroll', revealShowcaseCards);
   window.addEventListener('load', revealShowcaseCards);
   </script>
-<?php include './common/footer.php'; ?>
+  <?php include './common/footer.php'; ?>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html>
