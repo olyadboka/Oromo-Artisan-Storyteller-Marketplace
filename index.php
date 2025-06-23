@@ -600,7 +600,7 @@ if (isset($con) && $con && $con instanceof mysqli && $con->connect_errno === 0) 
       <!-- Steps will be rendered by JS -->
     </div>
     <div class="landing-cta">
-      <a id="ctaBtn" href="Customer dashboard/index.php">Enter Marketplace</a>
+      <a id="ctaBtn" href="Customer dashboard/products.php">Enter Marketplace</a>
     </div>
   </main>
   <!-- Main Content End -->
@@ -608,6 +608,35 @@ if (isset($con) && $con && $con instanceof mysqli && $con->connect_errno === 0) 
   body {
     background: linear-gradient(120deg, #f8f8f8 60%, #e0c3a3 100%);
   }
+
+  /* Chatbot Styles */
+#chatbotContainer {
+  border: 1px solid #e0c3a3;
+  z-index: 1000;
+}
+
+#chatMessages {
+  scrollbar-width: thin;
+  scrollbar-color: #e0c3a3 #f8f8f8;
+}
+
+#chatMessages::-webkit-scrollbar {
+  width: 6px;
+}
+
+#chatMessages::-webkit-scrollbar-track {
+  background: #f8f8f8;
+}
+
+#chatMessages::-webkit-scrollbar-thumb {
+  background-color: #e0c3a3;
+  border-radius: 3px;
+}
+
+#userInput:focus {
+  outline: 2px solid #e0c3a3;
+  border-color: transparent;
+}
 
   .landing-hero {
     margin: 0;
@@ -871,4 +900,186 @@ if (isset($con) && $con && $con instanceof mysqli && $con->connect_errno === 0) 
   </script>
   <?php include './common/footer.php'; ?>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+ <!-- Chatbot Button -->
+<button id="chatbotToggle" class="fixed bottom-6 right-6 bg-yellow-400 text-gray-900 p-4 rounded-full shadow-lg hover:bg-yellow-500 transition z-50">
+  <i class="fas fa-robot text-xl"></i>
+</button>
+
+<!-- Chatbot Container -->
+<div id="chatbotContainer" class="fixed bottom-20 right-6 w-80 bg-white rounded-lg shadow-xl hidden flex flex-col z-50" style="height: 60vh;">
+  <div class="bg-yellow-400 p-3 rounded-t-lg flex justify-between items-center">
+    <h3 class="font-bold">Oromo Guide Assistant</h3>
+    <button id="closeChatbot" class="text-gray-700 hover:text-gray-900">✕</button>
+  </div>
+  
+  <div id="chatMessages" class="flex-1 p-4 overflow-y-auto">
+    <!-- Messages will appear here -->
+  </div>
+  
+  <div class="p-3 border-t">
+    <input type="text" id="userInput" placeholder="Ask about marketplace..." class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-yellow-400">
+    <button id="sendMessage" class="mt-2 bg-yellow-400 text-gray-900 py-2 px-4 rounded hover:bg-yellow-500 w-full font-semibold transition">
+      Send
+    </button>
+  </div>
+</div>
+
+<script>
+// Configuration - Exactly matches quickstart format
+const GEMINI_API_KEY = "AIzaSyC746ZGht2D9eR3pnlTot0OYcW4aMt6HFg";
+const MODEL_NAME = "gemini-2.0-flash"; // Using exact model from quickstart
+
+// DOM Elements
+const elements = {
+  toggle: document.getElementById('chatbotToggle'),
+  container: document.getElementById('chatbotContainer'),
+  close: document.getElementById('closeChatbot'),
+  messages: document.getElementById('chatMessages'),
+  input: document.getElementById('userInput'),
+  send: document.getElementById('sendMessage')
+};
+
+// Toggle Chatbot
+elements.toggle.addEventListener('click', () => {
+  elements.container.classList.toggle('hidden');
+});
+
+elements.close.addEventListener('click', () => {
+  elements.container.classList.add('hidden');
+});
+
+// API Call - Matches quickstart curl example exactly
+async function generateContent(userMessage) {
+  const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${GEMINI_API_KEY}`;
+  
+  const response = await fetch(apiUrl, {
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json' // Exactly as in quickstart
+    },
+    body: JSON.stringify({
+      contents: [{
+        parts: [{ 
+          text: userMessage // Simple text input like quickstart example
+        }]
+      }]
+    }) // No extra parameters (matches quickstart minimalism)
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error?.message || "API request failed");
+  }
+
+  return await response.json();
+}
+
+// System instructions are now prepended to user messages
+function formatMessage(userMessage) {
+  return `You are an Oromo Marketplace assistant. Respond concisely.\n\nUser: ${userMessage}`;
+}
+
+// Enhanced Send Function
+async function sendMessageToGemini(userMessage) {
+  addMessage(userMessage, 'user');
+  showTypingIndicator();
+
+  try {
+    const result = await generateContent(formatMessage(userMessage));
+    const botResponse = result.candidates[0].content.parts[0].text;
+    addMessage(botResponse, 'bot');
+  } catch (error) {
+    console.error("API Error:", error);
+    addMessage("Sorry, I can't respond right now. Please try again later.", 'bot');
+  } finally {
+    hideTypingIndicator();
+  }
+}
+
+// Helper Functions (unchanged)
+function addMessage(text, sender) {
+  const messageDiv = document.createElement('div');
+  messageDiv.className = `mb-3 p-3 rounded-lg max-w-[90%] ${sender === 'user' ? 'bg-gray-100 ml-auto' : 'bg-yellow-50 mr-auto'}`;
+  messageDiv.textContent = text;
+  elements.messages.appendChild(messageDiv);
+  elements.messages.scrollTop = elements.messages.scrollHeight;
+}
+
+let typingIndicator = null;
+function showTypingIndicator() {
+  typingIndicator = document.createElement('div');
+  typingIndicator.className = 'mb-3 p-3 rounded-lg bg-yellow-50 mr-auto max-w-[90%] typing-indicator';
+  typingIndicator.innerHTML = '<span class="dot"></span><span class="dot"></span><span class="dot"></span>';
+  elements.messages.appendChild(typingIndicator);
+  elements.messages.scrollTop = elements.messages.scrollHeight;
+}
+
+function hideTypingIndicator() {
+  if (typingIndicator) {
+    typingIndicator.remove();
+    typingIndicator = null;
+  }
+}
+
+// Event Listeners
+elements.send.addEventListener('click', () => {
+  const message = elements.input.value.trim();
+  if (message) {
+    sendMessageToGemini(message);
+    elements.input.value = '';
+  }
+});
+
+elements.input.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') elements.send.click();
+});
+
+// Initial greeting
+window.addEventListener('load', () => {
+  addMessage("Hello! I'm your Oromo Marketplace guide. How can I help?", 'bot');
+});
+</script>
+
+<style>
+  /* Chatbot specific styles */
+  .typing-indicator {
+    display: inline-block;
+  }
+  
+  .typing-indicator .dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #a06c2b;
+    margin: 0 2px;
+    animation: bounce 1.4s infinite ease-in-out;
+  }
+  
+  .typing-indicator .dot:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  
+  .typing-indicator .dot:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+  
+  @keyframes bounce {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-5px); }
+  }
+  
+  #chatMessages::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  #chatMessages::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  #chatMessages::-webkit-scrollbar-thumb {
+    background-color: #e0c3a3;
+    border-radius: 3px;
+  }
+</style>
 </body>
