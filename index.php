@@ -976,7 +976,7 @@ async function generateContent(userMessage) {
 
 // System instructions are now prepended to user messages
 function formatMessage(userMessage) {
-  return `You are an Oromo Marketplace assistant. Respond concisely.\n\nUser: ${userMessage}`;
+  return `You are an Oromo Marketplace assistant, you can speak Amharic, English and Ormic. Respond concisely.\n\nUser: ${userMessage}`;
 }
 
 // Enhanced Send Function
