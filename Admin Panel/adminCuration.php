@@ -1,4 +1,19 @@
 <?php
+// Check user role (must be admin)
+$userId = intval($_SESSION['user_id']);
+$userResult = $conn->query("SELECT role FROM users WHERE id = $userId LIMIT 1");
+if (!$userResult || $userResult->num_rows === 0) {
+    session_destroy();
+    header('Location: ../index.php?error=invalid_user');
+    exit();
+}
+$userRow = $userResult->fetch_assoc();
+if (strtolower($userRow['role']) !== 'admin') {
+    header('Location: ../index.php?error=not_authorized');
+    exit();
+}
+?>
+<?php
 // Include the modular admin header
 include 'common/adminHeader.php';
 ?>
