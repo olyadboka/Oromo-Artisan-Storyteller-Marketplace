@@ -14,9 +14,11 @@ $sql = "SELECT p.*,
 $result = mysqli_query($con, $sql);
 
 // Function to detect image type from BLOB data
-function getImageType($imageData) {
-    if (empty($imageData)) return false;}
-   
+function getImageType($imageData)
+{
+  if (empty($imageData)) return false;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -78,40 +80,40 @@ function getImageType($imageData) {
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       <?php while ($product = mysqli_fetch_assoc($result)): ?>
-      <div class="product-card bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden relative">
-        <div class="relative h-48 overflow-hidden">
-          <?php if ($product['pImage1']): ?>
-          <img src="../uploads/products/<?php echo htmlspecialchars($product['pImage1']); ?>"
-            alt="<?php echo htmlspecialchars($product['name']); ?>" class="w-full h-full object-cover">
-          <?php else: ?>
-          <div class="w-full h-full bg-gray-200 flex items-center justify-center">
-            <i class="fas fa-image text-gray-400 text-4xl"></i>
+        <div class="product-card bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden relative">
+          <div class="relative h-48 overflow-hidden">
+            <?php if ($product['pImage1']): ?>
+              <img src="../uploads/products/<?php echo htmlspecialchars($product['pImage1']); ?>"
+                alt="<?php echo htmlspecialchars($product['name']); ?>" class="w-full h-full object-cover">
+            <?php else: ?>
+              <div class="w-full h-full bg-gray-200 flex items-center justify-center">
+                <i class="fas fa-image text-gray-400 text-4xl"></i>
+              </div>
+            <?php endif; ?>
+            <div
+              class="product-actions absolute top-2 right-2 bg-white bg-opacity-90 p-2 rounded-lg shadow-sm flex space-x-1">
+              <a href="edit_product.php?id=<?php echo $product['id']; ?>" class="text-blue-600 hover:text-blue-800 p-1">
+                <i class="fas fa-edit"></i>
+              </a>
+              <a href="#" class="text-green-600 hover:text-green-800 p-1 view-product"
+                data-id="<?php echo $product['id']; ?>">
+                <i class="fas fa-eye"></i>
+              </a>
+            </div>
           </div>
-          <?php endif; ?>
-          <div
-            class="product-actions absolute top-2 right-2 bg-white bg-opacity-90 p-2 rounded-lg shadow-sm flex space-x-1">
-            <a href="edit_product.php?id=<?php echo $product['id']; ?>" class="text-blue-600 hover:text-blue-800 p-1">
-              <i class="fas fa-edit"></i>
-            </a>
-            <a href="#" class="text-green-600 hover:text-green-800 p-1 view-product"
-              data-id="<?php echo $product['id']; ?>">
-              <i class="fas fa-eye"></i>
-            </a>
+          <div class="p-4">
+            <h3 class="font-semibold text-gray-800 mb-1"><?php echo htmlspecialchars($product['name']); ?></h3>
+            <p class="text-sm text-gray-600 mb-2">
+              <?php echo substr(htmlspecialchars($product['description']), 0, 50); ?>...</p>
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-gray-900">ETB <?php echo number_format($product['price'], 2); ?></span>
+              <span
+                class="text-xs px-2 py-1 rounded-full <?php echo $product['quantity'] > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'; ?>">
+                <?php echo $product['quantity'] > 0 ? 'In Stock' : 'Out of Stock'; ?>
+              </span>
+            </div>
           </div>
         </div>
-        <div class="p-4">
-          <h3 class="font-semibold text-gray-800 mb-1"><?php echo htmlspecialchars($product['name']); ?></h3>
-          <p class="text-sm text-gray-600 mb-2">
-            <?php echo substr(htmlspecialchars($product['description']), 0, 50); ?>...</p>
-          <div class="flex justify-between items-center">
-            <span class="font-bold text-gray-900">ETB <?php echo number_format($product['price'], 2); ?></span>
-            <span
-              class="text-xs px-2 py-1 rounded-full <?php echo $product['quantity'] > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'; ?>">
-              <?php echo $product['quantity'] > 0 ? 'In Stock' : 'Out of Stock'; ?>
-            </span>
-          </div>
-        </div>
-      </div>
       <?php endwhile; ?>
     </div>
   </main>

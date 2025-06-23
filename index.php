@@ -617,11 +617,11 @@ if (isset($con) && $con && $con instanceof mysqli && $con->connect_errno === 0) 
     "https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=400&q=80"
   ];
   const showcaseLinks = [
-    "Customer dashboard/products.php",
-    "Customer dashboard/stories.php",
+    "./Customer dashboard/products.php",
+    "./Customer dashboard/storyLibrary.php",
     "Customer dashboard/cart.php",
-    "Customer dashboard/index.php",
-    "Artisan and Story teller/artisan.php"
+    "./Customer dashboard/customer.php",
+    "./Artisan and Story teller/artisan.php"
   ];
 
   const guideIcons = ["🔑", "🔎", "🎧", "🛒", "👤", "🌱"];
