@@ -43,22 +43,20 @@ if (isset($con) && $con && $con instanceof mysqli && $con->connect_errno === 0) 
   }
 
   .landing-hero {
-    margin-top: 0.7rem !important;
-    /* Remove background image here, keep only gradient if desired */
+    margin: 0;
+    padding-top: 0;
+    /* Only gradient here, no background image */
     background: linear-gradient(rgba(255, 244, 230, 0), rgba(255, 244, 230, 0));
     background-blend-mode: lighten;
     border-radius: 1.5em;
     box-shadow: 0 8px 40px #7c4f1d22;
     padding: 3.5em 1.5em 2.7em 1.5em;
-    margin: 2.5em auto 2em auto;
     max-width: 100vw;
-    height: 80vh;
+    height: calc(80vh - 7.3rem);
     text-align: center;
     position: relative;
     overflow: hidden;
     animation: heroFadeIn 1.2s ease;
-
-    /* Blur background using pseudo-element */
   }
 
   .landing-hero::before {
@@ -92,7 +90,7 @@ if (isset($con) && $con && $con instanceof mysqli && $con->connect_errno === 0) 
   }
 
   .landing-hero h1 {
-    margin-top: 1rem !important;
+    margin-top: 0 !important;
     font-size: 4rem;
     font-family: 'Poppins', 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     color: rgb(28, 185, 51);
@@ -352,98 +350,202 @@ if (isset($con) && $con && $con instanceof mysqli && $con->connect_errno === 0) 
   }
 
   .lang-select-bar {
-    display: block;
-    text-align: right;
-    max-width: 420px;
-    margin: -1.2em 0 0 auto !important; /* pull up closer to header */
+    position: absolute;
+    top: 1.2em;
+    right: 1.2em;
+    z-index: 2;
+    max-width: 320px;
+    width: auto;
+    margin: 0 !important;
     padding: 0 !important;
-    position: relative;
-    top: 0;
+    text-align: right;
+    display: block;
+    background: rgba(249, 171, 171, 0.85);
+    border-radius: 2em;
+    box-shadow: 0 2px 12px rgba(224, 163, 163, 0.33);
+    border: 1.5px solidrgb(255, 0, 0);
+    min-width: 120px;
   }
-
+  .lang-select-bar select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 1em;
+    font-weight: bold;
+    color:rgb(255, 188, 110);
+    padding: 0.5em 2.2em 0.5em 1.2em;
+    border-radius: 2em;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%237c4f1d" height="18" viewBox="0 0 20 20" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M7.293 8.293a1 1 0 011.414 0L10 9.586l1.293-1.293a1 1 0 111.414 1.414l-2 2a1 1 0 01-1.414 0l-2-2a1 1 0 010-1.414z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 1em center;
+    background-size: 1.1em;
+    box-shadow: none;
+    transition: background 0.2s, color 0.2s;
+    cursor: pointer;
+    min-width: 100px;
+  }
+  .lang-select-bar select:focus {
+    background-color: #fffbe6;
+    color: #a06c2b;
+    outline: 2px solidrgb(255, 0, 0);
+  }
   @media (max-width: 900px) {
-    .landing-showcase {
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .showcase-card {
-      width: 95%;
-      max-width: 350px;
+    .lang-select-bar {
+      top: 0.7em;
+      right: 0.7em;
+      max-width: 60vw;
+      min-width: 90px;
     }
   }
-
   @media (max-width: 600px) {
     .landing-hero {
-      padding: 1.5em 0.5em;
+      padding: 2.7em 0.5em 1.2em 0.5em;
+      margin: 0 !important;
+      height: auto;
+      min-height: calc(55vh - 6.1rem);
     }
-
+    .lang-select-bar {
+      top: 0.5em;
+      right: 0.5em;
+      max-width: 90vw;
+      min-width: 80px;
+      box-shadow: 0 1px 6px #e0c3a355;
+    }
+    .lang-select-bar select {
+      font-size: 0.98em;
+      padding: 0.45em 1.7em 0.45em 0.8em;
+      min-width: 70px;
+    }
     .landing-hero h1 {
       font-size: 2em;
+      padding: 1.5em 0.2em 0 0.2em;
+      line-height: 1.15;
+      word-break: break-word;
     }
-
     .landing-hero p {
       font-size: 1em;
-    }
-
-    .landing-showcase {
-      gap: 1.2em;
-    }
-
-    .showcase-card {
-      padding: 1.2em 0.5em;
-    }
-
-    .landing-guides,
-    .landing-steps {
-      padding: 1em 0.5em;
-    }
-
-    .landing-guides {
-      padding: 1.2em 0.5em 1em 0.5em;
-      border-left: 4px solid #e0c3a3;
-      box-shadow: 0 1px 6px #e0c3a322;
-    }
-
-    .landing-guides h2 {
-      font-size: 1.1em;
-      margin-bottom: 0.7em;
-    }
-
-    .landing-guides ul {
-      font-size: 1em;
-    }
-
-    .landing-guides li {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.3em;
-      padding: 0.6em 0.7em;
-      font-size: 1em;
-    }
-
-    .guide-icon {
-      font-size: 1.5em;
-      margin-bottom: 0.2em;
-    }
-
-    .lang-select-bar {
-      max-width: 100vw;
-      margin: 0 0 0 auto !important;
-      padding: 0 !important;
-      text-align: right;
-      display: block;
-    }
-    .landing-hero {
-      margin-top: 0.3 !important; /* Remove all top margin */
-      padding-top: 0 !important; /* Remove all top padding */
-      max-width: 540px !important;
-      margin-left: auto !important;
-      margin-right: auto !important;
+      padding: 0.5em 0.2em 0 0.2em;
+      line-height: 1.4;
+      word-break: break-word;
     }
   }
+  .landing-hero {
+    margin-top: 1rem;
+    position: relative;
+    /* Remove background image here, keep only gradient if desired */
+    background: linear-gradient(rgba(255, 244, 230, 0), rgba(255, 244, 230, 0));
+    background-blend-mode: lighten;
+    border-radius: 1.5em;
+    box-shadow: 0 8px 40px #7c4f1d22;
+    padding: 3.5em 1.5em 2.7em 1.5em;
+    max-width: 100vw;
+    height: 80vh;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    animation: heroFadeIn 1.2s ease;
+  }
 
-  
+  .landing-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      url("https://media.licdn.com/dms/image/v2/D4E12AQHQteOqo9FyOQ/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1695207472629?e=2147483647&v=beta&t=rE19TLABHKh6-VcwvjTRJqln9mQgTUTAM0orhTBgEyg") center/cover no-repeat,
+      linear-gradient(rgba(255, 244, 230, 0.7), rgba(255, 244, 230, 0.7));
+    filter: blur(12px);
+    z-index: -1;
+    border-radius: 1.5em;
+    opacity: 0.85;
+  }
+
+  .showcase-card {
+    /* existing styles */
+  }
+
+  .guide-icon {
+    /* existing styles */
+  }
+
+  .step {
+    /* existing styles */
+  }
+
+   .navbar-brand-logo {
+    width: 44px;
+    height: 44px;
+    background: rgb(28, 185, 51);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+  }
+  .cart-badge {
+    position: absolute;
+    top: 0;
+    right: -8px;
+    background: rgb(28, 185, 51);
+    color: #fff;
+    font-size: 0.75rem;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .announcement-bar {
+    background: rgb(28, 185, 51);
+    color: #fff;
+    font-size: 0.95rem;
+    padding: 0.4rem 0;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    z-index: 1052;
+  }
+  .navbar {
+    position: fixed !important;
+    top: 2.1rem; /* height of announcement bar */
+    left: 0;
+    width: 100vw;
+    z-index: 1053 !important;
+    border-radius: 0;
+  }
+  .dropdown-menu-end[aria-labelledby="langDropdown"] {
+    min-width: 8rem;
+  }
+  /* Remove forced debug CSS for production */
+  /* .navbar-collapse, .navbar-nav {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    height: auto !important;
+  } */
+  @media (max-width: 991.98px) {
+    .navbar-collapse {
+      display: none !important;
+    }
+    .navbar-collapse.show {
+      display: block !important;
+    }
+    .navbar-nav {
+      width: 100%;
+    }
+    .nav-link {
+      color: #222 !important;
+      font-size: 1.1em;
+      padding: 0.8em 1.2em;
+      width: 100%;
+      text-align: left;
+    }
+  }
   </style>
 
   
@@ -452,16 +554,16 @@ if (isset($con) && $con && $con instanceof mysqli && $con->connect_errno === 0) 
 <body>
  <?php include 'common/headerIndex.php'; ?>
   <!-- Main Content Start -->
-  <main>
-    <div class="lang-select-bar">
-      <select id="langSelect"
-        style="padding:0.4em 1em;border-radius:1.2em;border:1px solid #e0c3a3;font-size:1em;background:#fffbe6;color:#7c4f1d;font-weight:bold;">
-        <option value="en">English</option>
-        <option value="om">Afaan Oromo</option>
-        <option value="am">Amharic</option>
-      </select>
-    </div>
+  <main style="padding-top:7.3rem;">
     <div class="landing-hero">
+      <div class="lang-select-bar">
+        <select id="langSelect"
+          style="padding:0.2em 2em;border-radius:1.2em;border:1px solid #e0c3a3;font-size:1em;background:#fffbe6;color:#7c4f1d;font-weight:bold;">
+          <option value="en">English</option>
+          <option value="om">Afaan Oromo</option>
+          <option value="am">Amharic</option>
+        </select>
+      </div>
       <h1 id="heroTitle">Oromo Artisan & Storyteller Anaadhufuu!!</h1>
       <p id="heroDesc">Discover, support, and celebrate Oromo culture through artisan crafts and oral storytelling. This
         platform connects artisans, storytellers, and Tourists in a vibrant, fair-trade community.</p>
@@ -490,14 +592,40 @@ if (isset($con) && $con && $con instanceof mysqli && $con->connect_errno === 0) 
   }
 
   .landing-hero {
-    margin-top: -1rem;
+    margin: 0;
+    padding-top: 0;
     /* Only gradient here, no background image */
     background: linear-gradient(rgba(255, 244, 230, 0), rgba(255, 244, 230, 0));
     background-blend-mode: lighten;
     border-radius: 1.5em;
     box-shadow: 0 8px 40px #7c4f1d22;
     padding: 3.5em 1.5em 2.7em 1.5em;
-    margin: 2.5em auto 2em auto;
+    max-width: 100vw;
+    height: calc(80vh - 7.3rem);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    animation: heroFadeIn 1.2s ease;
+  
+  }
+  @media (max-width: 600px) {
+    .landing-hero {
+      text-align: center;
+      justify-content: center;
+      padding: 1.2em 0.5em 1.2em 0.5em;
+      margin: 0 !important;
+      height: auto;
+      min-height: calc(55vh - 6.1rem);
+    }
+  }
+  .landing-hero {
+    position: relative;
+    /* Remove background image here, keep only gradient if desired */
+    background: linear-gradient(rgba(255, 244, 230, 0), rgba(255, 244, 230, 0));
+    background-blend-mode: lighten;
+    border-radius: 1.5em;
+    box-shadow: 0 8px 40px #7c4f1d22;
+    padding: 3.5em 1.5em 2.7em 1.5em;
     max-width: 100vw;
     height: 80vh;
     text-align: center;

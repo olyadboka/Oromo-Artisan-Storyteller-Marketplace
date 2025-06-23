@@ -46,10 +46,6 @@ if (isset($con) && $con && $con instanceof mysqli && $con->connect_errno === 0) 
     font-size: 1.2em;
     vertical-align: middle;
   }
-  /* Ensure body/main content is not hidden under fixed bars */
-  body, main {
-    padding-top: 2.5rem !important; /* 2.1rem announcement + 4.4rem header */
-  }
 </style>
 <div class="oas-announcement-bar">
   <span class="oas-announcement-icon">&#129504;</span>
@@ -64,9 +60,9 @@ if (isset($con) && $con && $con instanceof mysqli && $con->connect_errno === 0) 
     color: #fff;
     font-family: 'Montserrat', Arial, sans-serif;
     box-shadow: 0 4px 24px rgba(26,74,122,0.10);
-    position: sticky;
+    position: fixed;
     top: 2.1rem; /* below announcement bar */
-    z-index: 1053;
+    z-index: 1101;
     width: 100vw;
   }
   .oas-header-inner {
