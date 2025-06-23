@@ -58,4 +58,97 @@
       &copy; <?php echo date('Y'); ?> Vist Oromo Artisan & Storyteller Marketplace. All rights reserved.
     </div>
   </div>
-</footer>       
+</footer>   
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+  const newsletterForm = document.querySelector('.footer-newsletter');
+  
+  if (newsletterForm) {
+    newsletterForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const emailInput = newsletterForm.querySelector('input[type="email"]');
+      const email = emailInput.value.trim();
+      
+      // Simple email validation
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        alert('Please enter a valid email address');
+        return;
+      }
+      
+      // Show thank you popup
+      showThankYouPopup();
+      
+      // Clear the input
+      emailInput.value = '';
+    });
+  }
+  
+  function showThankYouPopup() {
+    // Create popup overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+    
+    // Create popup content
+    const popup = document.createElement('div');
+    popup.className = 'bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4';
+    
+    popup.innerHTML = `
+      <div class="text-center">
+        <h3 class="text-xl font-semibold text-yellow-300 mb-3">Thank You for Subscribing!</h3>
+        <p class="text-gray-300 mb-5">We appreciate your interest in our newsletter.</p>
+        
+        <p class="text-gray-400 mb-3">Share this website with others:</p>
+        <button id="copyUrlBtn" class="bg-yellow-400 text-gray-900 font-semibold rounded px-4 py-2 hover:bg-yellow-500 transition flex items-center justify-center mx-auto">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+          </svg>
+          Copy Link
+        </button>
+        
+        <button id="closePopupBtn" class="mt-4 text-gray-400 hover:text-white transition">
+          Close
+        </button>
+      </div>
+    `;
+    
+    overlay.appendChild(popup);
+    document.body.appendChild(overlay);
+    
+    // Add copy functionality
+    const copyBtn = overlay.querySelector('#copyUrlBtn');
+    copyBtn.addEventListener('click', function() {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        copyBtn.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          Copied!
+        `;
+        setTimeout(() => {
+          copyBtn.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+            </svg>
+            Copy Link
+          `;
+        }, 2000);
+      });
+    });
+    
+    // Add close functionality
+    const closeBtn = overlay.querySelector('#closePopupBtn');
+    closeBtn.addEventListener('click', function() {
+      document.body.removeChild(overlay);
+    });
+    
+    // Close when clicking outside
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) {
+        document.body.removeChild(overlay);
+      }
+    });
+  }
+});
+  </script>
