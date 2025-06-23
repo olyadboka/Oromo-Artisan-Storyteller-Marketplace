@@ -14,7 +14,7 @@ try {
 }
 
 // Assume logged-in user (replace with proper authentication)
-$user_id = 7; // Jirenya Dhugaa for testing
+$user_id = 8; // Jirenya Dhugaa for testing
 
 // Fetch storyteller data
 $stmt = $conn->prepare("

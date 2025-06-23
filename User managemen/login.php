@@ -43,7 +43,7 @@ include './db/dbConnection.php';
 
 <body class="bg-light">
   <div class="form-box shadow">
-    <form id="loginForm" method="POST" action="./db/login.php" novalidate>
+    <form id="loginForm" method="POST" action="./db/logindb.php" novalidate>
       <?php 
       if (isset($_SESSION['login_error'])) {
         echo '<div class="alert alert-danger text-center" role="alert">'
