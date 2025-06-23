@@ -1,3 +1,18 @@
+<?php
+// Check user role (must be admin)
+$userId = intval($_SESSION['user_id']);
+$userResult = $conn->query("SELECT role FROM users WHERE id = $userId LIMIT 1");
+if (!$userResult || $userResult->num_rows === 0) {
+    session_destroy();
+    header('Location: ../index.php?error=invalid_user');
+    exit();
+}
+$userRow = $userResult->fetch_assoc();
+if (strtolower($userRow['role']) !== 'admin') {
+    header('Location: ../index.php?error=not_authorized');
+    exit();
+}
+?>
 <?php include 'common/adminHeader.php'; ?>
 <!-- Admin Dashboard Custom Header (Consistent with Main Site) -->
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
