@@ -1,21 +1,27 @@
-<?php include 'common/header.php'; ?>
-
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Welcome | Oromo Artisan & Storyteller Marketplace</title>
-  <link rel="stylesheet" href="Customer dashboard/assets/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <style>
   body {
     background: linear-gradient(120deg, #f8f8f8 60%, #e0c3a3 100%);
   }
 
   .landing-hero {
-    margin-top: -1rem;
-    background:
-      url("https://media.licdn.com/dms/image/v2/D4E12AQHQteOqo9FyOQ/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1695207472629?e=2147483647&v=beta&t=rE19TLABHKh6-VcwvjTRJqln9mQgTUTAM0orhTBgEyg") center/cover no-repeat,
-      linear-gradient(rgba(255, 244, 230, 0), rgba(255, 244, 230, 0));
-    filter: blur(8px);
+    margin-top: 0.7rem !important;
+    /* Remove background image here, keep only gradient if desired */
+    background: linear-gradient(rgba(255, 244, 230, 0), rgba(255, 244, 230, 0));
     background-blend-mode: lighten;
     border-radius: 1.5em;
     box-shadow: 0 8px 40px #7c4f1d22;
@@ -61,21 +67,8 @@
     }
   }
 
-  .landing-hero::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(120deg,
-        rgba(224, 195, 163, 0.18) 60%,
-        rgba(124, 79, 29, 0.1) 100%);
-    z-index: 0;
-    border-radius: 1.5em;
-  }
-
   .landing-hero h1 {
+    margin-top: 1rem !important;
     font-size: 4rem;
     font-family: 'Poppins', 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     color: rgb(28, 185, 51);
@@ -89,6 +82,7 @@
   }
 
   .landing-hero p {
+    margin-top: 0.7rem !important;
     font-size: 1.3em;
     color: #f8f8ff;
     margin-bottom: 1.7em;
@@ -333,6 +327,18 @@
     margin-top: 0.1em;
   }
 
+  .lang-select-bar {
+    display: block;
+    text-align: right;
+    max-width: 420px;
+    margin: 0 0 0 auto !important;
+    /* align right, no bottom margin */
+    padding: 0 !important;
+    /* no padding */
+    position: relative;
+    top: 0;
+  }
+
   @media (max-width: 900px) {
     .landing-showcase {
       flex-direction: column;
@@ -398,14 +404,33 @@
       font-size: 1.5em;
       margin-bottom: 0.2em;
     }
+
+    .lang-select-bar {
+      max-width: 100vw;
+      margin: 0 0 0 auto !important;
+      padding: 0 !important;
+      text-align: right;
+      display: block;
+    }
+
+    .landing-hero {
+      margin-top: 0.3 !important;
+      /* Remove all top margin */
+      padding-top: 0 !important;
+      /* Remove all top padding */
+      max-width: 540px !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
   }
   </style>
 
-  </link>
 </head>
-
 <body>
-  <div style="text-align:right;max-width:900px;margin:0 auto 0.5em auto;">
+<?php include 'common/header.php'; ?>
+<!-- Main Content Start -->
+<main style="margin-top: 7.2rem;">
+  <div class="lang-select-bar">
     <select id="langSelect"
       style="padding:0.4em 1em;border-radius:1.2em;border:1px solid #e0c3a3;font-size:1em;background:#fffbe6;color:#7c4f1d;font-weight:bold;">
       <option value="en">English</option>
@@ -413,38 +438,39 @@
       <option value="am">Amharic</option>
     </select>
   </div>
-  <main>
-    <div class="landing-hero">
-      <h1 id="heroTitle">Oromo Artisan & Storyteller Anaadhufuu!!</h1>
-      <p id="heroDesc">Discover, support, and celebrate Oromo culture through artisan crafts and oral storytelling. This
-        platform connects artisans, storytellers, and Tourists in a vibrant, fair-trade community.</p>
-    </div>
-    <div class="showcase-animated-tagline" id="animatedTagline">Empowering Artisans</div>
-    <div class="landing-showcase" id="showcaseCards">
-      <!-- Showcase cards will be rendered by JS -->
-    </div>
-    <div class="landing-guides">
-      <h2 id="guidesTitle">How to Get the Most Out of This Marketplace</h2>
-      <ul id="guidesList">
-        <!-- Guide items will be rendered by JS -->
-      </ul>
-    </div>
-    <div class="landing-steps" id="stepsList">
-      <!-- Steps will be rendered by JS -->
-    </div>
-    <div class="landing-cta">
-      <a id="ctaBtn" href="Customer dashboard/index.php">Enter Marketplace</a>
-    </div>
-  </main>
-  <script>
+  <div class="landing-hero">
+    <h1 id="heroTitle">Oromo Artisan & Storyteller Anaadhufuu!!</h1>
+    <p id="heroDesc">Discover, support, and celebrate Oromo culture through artisan crafts and oral storytelling. This
+      platform connects artisans, storytellers, and Tourists in a vibrant, fair-trade community.</p>
+  </div>
+  <div class="showcase-animated-tagline" id="animatedTagline">Empowering Artisans</div>
+  <div class="landing-showcase" id="showcaseCards">
+    <!-- Showcase cards will be rendered by JS -->
+  </div>
+  <div class="landing-guides">
+    <h2 id="guidesTitle">How to Get the Most Out of This Marketplace</h2>
+    <ul id="guidesList">
+      <!-- Guide items will be rendered by JS -->
+    </ul>
+  </div>
+  <div class="landing-steps" id="stepsList">
+    <!-- Steps will be rendered by JS -->
+  </div>
+  <div class="landing-cta">
+    <a id="ctaBtn" href="Customer dashboard/index.php">Enter Marketplace</a>
+  </div>
+</main>
+<!-- Main Content End -->
+<script>
   // Language integration
   let langData = {};
   let currentLang = 'en';
   const showcaseImages = [
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMZGYbSKSQoi7nVCcmPgnh_8adNDLuC10BfaZ-gibOgEHzZloqh_KD6_oaq88PjXB9NXs&usqp=CAU",
-    "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80",
-    "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
-    "https://images.unsplash.com/photo-1511367461989-f85a21fda167?auto=format&fit=crop&w=400&q=80",
+    "images/tools.jpg",
+    "images/story.jpg",
+    "images/cart.png",
+    "images/dashboard.png",
+    "images/art.jpg",
     "https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=400&q=80"
   ];
   const showcaseLinks = [
@@ -554,5 +580,6 @@
   window.addEventListener('scroll', revealShowcaseCards);
   window.addEventListener('load', revealShowcaseCards);
   </script>
-  <?php include './common/footer.php'; ?>
+<?php include './common/footer.php'; ?>
 </body>
+</html>
