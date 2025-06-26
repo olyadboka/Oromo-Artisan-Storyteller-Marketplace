@@ -926,8 +926,6 @@ if (isset($con) && $con && $con instanceof mysqli && $con->connect_errno === 0) 
 
 <script>
 // Configuration - Exactly matches quickstart format
-const GEMINI_API_KEY = "AIzaSyC746ZGht2D9eR3pnlTot0OYcW4aMt6HFg";
-const MODEL_NAME = "gemini-2.0-flash"; // Using exact model from quickstart
 
 // DOM Elements
 const elements = {
